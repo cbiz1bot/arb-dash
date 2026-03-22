@@ -47,20 +47,16 @@
     min-height: 100vh;
     overflow-x: hidden;
     transition: background 0.3s, color 0.3s;
-    background-image: url('https://raw.githubusercontent.com/cbiz1bot/arb-dash/main/372821772_832862498209117_100237078611194650_n.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
   }
 
   body::before {
     content: '';
     position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.72);
-    pointer-events: none;
-    z-index: 0;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 20% 20%, var(--glow1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, var(--glow2) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
   }
 
   .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
@@ -225,94 +221,13 @@
   .setup-note { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; font-size: 11px; color: var(--muted); line-height: 1.8; font-family: 'Space Mono', monospace; }
   .setup-note strong { color: var(--text); }
 
-  /* ── TABLET (max 900px) ── */
   @media (max-width: 900px) {
     .stats-grid { grid-template-columns: repeat(3, 1fr); }
     .main-grid { grid-template-columns: 1fr; }
     .analytics-grid { grid-template-columns: 1fr; }
-    .sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .config-banner { flex-wrap: wrap; gap: 8px; }
-    .cfg-input { width: 100% !important; }
   }
-
-  /* ── MOBILE (max 600px) ── */
-  @media (max-width: 600px) {
-    .container { padding: 0 12px; }
-    header { padding: 14px 0; margin-bottom: 16px; }
-    .logo-text { font-size: 15px; }
-    .status-pill { display: none; }
-
-    /* Stats — 2 per row on mobile */
-    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
-    .stat-card { padding: 12px 14px; }
-    .stat-value { font-size: 22px; }
-    .stat-label { font-size: 9px; }
-
-    /* Tabs */
-    .tabs { width: 100%; justify-content: stretch; }
-    .tab { flex: 1; text-align: center; padding: 8px 10px; font-size: 12px; }
-
-    /* Config banner — stack vertically */
-    .config-banner { flex-direction: column; align-items: stretch; gap: 8px; padding: 12px; font-size: 12px; }
-    .config-banner strong { display: none; }
-    .cfg-input { width: 100% !important; font-size: 12px; }
-    .cfg-btn { width: 100%; padding: 8px; }
-
-    /* Panel headers */
-    .panel-header { padding: 12px 14px; flex-wrap: wrap; gap: 8px; }
-    .panel-title { font-size: 11px; }
-
-    /* Search bar */
-    .search-wrap { flex-direction: column; padding: 10px 12px; gap: 6px; }
-    .search-input { font-size: 12px; }
-    .filter-select { font-size: 12px; width: 100%; }
-
-    /* Table — hide less important columns on mobile */
-    table th:nth-child(5),
-    table td:nth-child(5),
-    table th:nth-child(6),
-    table td:nth-child(6) { display: none; }
-    th { font-size: 9px; padding: 8px 10px; }
-    td { padding: 10px 10px; font-size: 11px; }
-    .key-code { font-size: 10px; letter-spacing: 0.5px; }
-    .action-btn { font-size: 9px; padding: 3px 7px; }
-
-    /* Sidebar — single column on mobile */
-    .sidebar { display: flex; flex-direction: column; gap: 14px; }
-
-    /* Forms */
-    .panel > div { padding: 14px !important; }
-    .form-group { margin-bottom: 10px; }
-    input[type=text], input[type=number], input[type=password], select { padding: 8px 10px; font-size: 13px; }
-    .btn { padding: 10px; font-size: 13px; }
-
-    /* Price inputs on analytics */
-    .price-inputs { grid-template-columns: 1fr 1fr; gap: 8px; }
-    .revenue-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-    .revenue-value { font-size: 18px; }
-
-    /* Charts */
-    .chart-panel { padding: 14px; }
-    .chart-title { font-size: 10px; margin-bottom: 12px; }
-
-    /* Modal */
-    .modal { padding: 20px; }
-    .modal h3 { font-size: 14px; }
-    .modal p { font-size: 12px; }
-
-    /* Password screen */
-    .pw-box { padding: 28px 20px; }
-    .pw-title { font-size: 18px; }
-    .pw-icon { font-size: 34px; }
-
-    /* Setup note */
-    .setup-note { font-size: 10px; }
-
-    /* Bulk result */
-    .bulk-key { font-size: 10px; }
-
-    /* Toast */
-    .toast { bottom: 16px; right: 16px; left: 16px; text-align: center; }
+  @media (max-width: 500px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 </head>
@@ -498,10 +413,10 @@
       <div class="panel-header"><div class="panel-title">💰 Set Your Prices</div></div>
       <div style="padding:18px;">
         <div class="price-inputs">
-          <div class="price-input-wrap"><label>30 Days (£)</label><input id="price-30" type="number" value="20" min="0" oninput="updateRevenue()"></div>
-          <div class="price-input-wrap"><label>6 Months (£)</label><input id="price-180" type="number" value="90" min="0" oninput="updateRevenue()"></div>
-          <div class="price-input-wrap"><label>1 Year (£)</label><input id="price-365" type="number" value="120" min="0" oninput="updateRevenue()"></div>
-          <div class="price-input-wrap"><label>Lifetime (£)</label><input id="price-0" type="number" value="0" min="0" oninput="updateRevenue()"></div>
+          <div class="price-input-wrap"><label>30 Days (£)</label><input id="price-30" type="number" value="10" min="0" oninput="updateRevenue()"></div>
+          <div class="price-input-wrap"><label>6 Months (£)</label><input id="price-180" type="number" value="50" min="0" oninput="updateRevenue()"></div>
+          <div class="price-input-wrap"><label>1 Year (£)</label><input id="price-365" type="number" value="90" min="0" oninput="updateRevenue()"></div>
+          <div class="price-input-wrap"><label>Lifetime (£)</label><input id="price-0" type="number" value="150" min="0" oninput="updateRevenue()"></div>
         </div>
         <div class="revenue-grid" id="revenue-grid">
           <div class="revenue-card"><div class="revenue-label">Total Revenue</div><div class="revenue-value" id="rev-total">£0</div></div>
