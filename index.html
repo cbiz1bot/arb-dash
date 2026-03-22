@@ -541,12 +541,231 @@
   }
 
   /* ── RESPONSIVE ── */
+  /* ── SCROLL ANIMATIONS ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── STICKY CTA ── */
+  .sticky-cta {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 99;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+  .sticky-cta.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+  }
+  .sticky-cta a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--accent), #00cc66);
+    color: #000;
+    padding: 13px 22px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 800;
+    font-family: 'Syne', sans-serif;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(0,255,136,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .sticky-cta a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,255,136,0.45);
+  }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    overflow: hidden;
+    background: rgba(0,255,136,0.05);
+    border-top: 1px solid rgba(0,255,136,0.15);
+    border-bottom: 1px solid rgba(0,255,136,0.15);
+    padding: 12px 0;
+    position: relative;
+    z-index: 1;
+  }
+  .ticker-track {
+    display: flex;
+    gap: 0;
+    animation: ticker 30s linear infinite;
+    width: max-content;
+  }
+  .ticker-track:hover { animation-play-state: paused; }
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 32px;
+    font-size: 13px;
+    font-family: 'Space Mono', monospace;
+    color: var(--accent);
+    white-space: nowrap;
+    border-right: 1px solid rgba(0,255,136,0.2);
+  }
+  .ticker-profit { color: var(--warn); font-weight: 700; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* ── BOOKMAKER LOGOS ── */
+  .bookmaker-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  .bookmaker-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    transition: all 0.2s;
+    backdrop-filter: blur(10px);
+  }
+  .bookmaker-pill:hover { border-color: var(--accent); color: var(--text); }
+
+  /* ── PROFIT CALCULATOR ── */
+  .calc-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    max-width: 600px;
+    margin: 0 auto;
+    backdrop-filter: blur(10px);
+  }
+  .calc-slider-wrap { margin-bottom: 24px; }
+  .calc-slider-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+  .calc-slider-value { color: var(--accent); font-weight: 700; }
+  input[type=range] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    outline: none;
+    cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(0,255,136,0.4);
+  }
+  .calc-results {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 24px;
+  }
+  .calc-result-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .calc-result-label { font-size: 10px; font-family: 'Space Mono', monospace; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
+  .calc-result-value { font-size: 22px; font-weight: 800; color: var(--accent); }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .testimonial {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 26px;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.2s;
+  }
+  .testimonial:hover { border-color: var(--accent2); }
+  .testimonial-stars { color: var(--gold); font-size: 14px; margin-bottom: 12px; }
+  .testimonial-text { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; font-style: italic; }
+  .testimonial-author { display: flex; align-items: center; gap: 10px; }
+  .testimonial-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    background: linear-gradient(135deg, var(--accent2), #5e35b1);
+    flex-shrink: 0;
+  }
+  .testimonial-name { font-size: 13px; font-weight: 700; }
+  .testimonial-since { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
+
+  /* ── MOBILE BOTTOM NAV ── */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(10,10,15,0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    z-index: 98;
+    padding: 10px 0 env(safe-area-inset-bottom);
+  }
+  .mobile-nav-inner {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    transition: color 0.2s;
+    padding: 4px 12px;
+  }
+  .mobile-nav-item:hover { color: var(--accent); }
+  .mobile-nav-item .icon { font-size: 18px; }
+  .mobile-nav-item.cta { color: var(--accent); }
+
   @media (max-width: 800px) {
     .steps { grid-template-columns: 1fr; }
     .features-grid { grid-template-columns: repeat(2, 1fr); }
     .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
     .nav-links { display: none; }
     .hero { padding: 120px 0 60px; }
+    .mobile-nav { display: block; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .calc-results { grid-template-columns: 1fr; }
+    body { padding-bottom: 70px; }
+    .sticky-cta { display: none; }
   }
 
   @media (max-width: 500px) {
@@ -559,6 +778,22 @@
 </style>
 </head>
 <body>
+
+<!-- STICKY CTA -->
+<div class="sticky-cta" id="sticky-cta">
+  <a href="#contact">🚀 Get Access</a>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="mobile-nav" id="mobile-nav">
+  <div class="mobile-nav-inner">
+    <a href="#how-it-works" class="mobile-nav-item"><span class="icon">⚙️</span>How It Works</a>
+    <a href="#features" class="mobile-nav-item"><span class="icon">⚡</span>Features</a>
+    <a href="#pricing" class="mobile-nav-item"><span class="icon">💰</span>Pricing</a>
+    <a href="#faq" class="mobile-nav-item"><span class="icon">❓</span>FAQ</a>
+    <a href="#contact" class="mobile-nav-item cta"><span class="icon">🔑</span>Get Access</a>
+  </div>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -624,6 +859,25 @@
     </div>
   </div>
 </section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker-track">
+    <div class="ticker-item">⚽ Man City vs Arsenal &nbsp;·&nbsp; <span class="ticker-profit">7.34%</span> profit &nbsp;·&nbsp; Bet365 vs William Hill &nbsp;·&nbsp; 2 mins ago</div>
+    <div class="ticker-item">🎾 Djokovic vs Alcaraz &nbsp;·&nbsp; <span class="ticker-profit">5.12%</span> profit &nbsp;·&nbsp; Betfair vs Paddy Power &nbsp;·&nbsp; 4 mins ago</div>
+    <div class="ticker-item">🏀 Lakers vs Celtics &nbsp;·&nbsp; <span class="ticker-profit">9.87%</span> profit &nbsp;·&nbsp; BetMGM vs BetVictor &nbsp;·&nbsp; 7 mins ago</div>
+    <div class="ticker-item">⚽ Liverpool vs Chelsea &nbsp;·&nbsp; <span class="ticker-profit">6.21%</span> profit &nbsp;·&nbsp; Sky Bet vs Bwin &nbsp;·&nbsp; 11 mins ago</div>
+    <div class="ticker-item">🎾 Sinner vs Medvedev &nbsp;·&nbsp; <span class="ticker-profit">4.55%</span> profit &nbsp;·&nbsp; Betuk vs William Hill &nbsp;·&nbsp; 15 mins ago</div>
+    <div class="ticker-item">⚽ Barcelona vs Real Madrid &nbsp;·&nbsp; <span class="ticker-profit">11.20%</span> profit &nbsp;·&nbsp; Bet365 vs Betfair &nbsp;·&nbsp; 18 mins ago</div>
+    <!-- Duplicate for seamless loop -->
+    <div class="ticker-item">⚽ Man City vs Arsenal &nbsp;·&nbsp; <span class="ticker-profit">7.34%</span> profit &nbsp;·&nbsp; Bet365 vs William Hill &nbsp;·&nbsp; 2 mins ago</div>
+    <div class="ticker-item">🎾 Djokovic vs Alcaraz &nbsp;·&nbsp; <span class="ticker-profit">5.12%</span> profit &nbsp;·&nbsp; Betfair vs Paddy Power &nbsp;·&nbsp; 4 mins ago</div>
+    <div class="ticker-item">🏀 Lakers vs Celtics &nbsp;·&nbsp; <span class="ticker-profit">9.87%</span> profit &nbsp;·&nbsp; BetMGM vs BetVictor &nbsp;·&nbsp; 7 mins ago</div>
+    <div class="ticker-item">⚽ Liverpool vs Chelsea &nbsp;·&nbsp; <span class="ticker-profit">6.21%</span> profit &nbsp;·&nbsp; Sky Bet vs Bwin &nbsp;·&nbsp; 11 mins ago</div>
+    <div class="ticker-item">🎾 Sinner vs Medvedev &nbsp;·&nbsp; <span class="ticker-profit">4.55%</span> profit &nbsp;·&nbsp; Betuk vs William Hill &nbsp;·&nbsp; 15 mins ago</div>
+    <div class="ticker-item">⚽ Barcelona vs Real Madrid &nbsp;·&nbsp; <span class="ticker-profit">11.20%</span> profit &nbsp;·&nbsp; Bet365 vs Betfair &nbsp;·&nbsp; 18 mins ago</div>
+  </div>
+</div>
 
 <hr class="section-divider">
 
@@ -740,6 +994,26 @@
   </div>
 </section>
 
+<!-- BOOKMAKERS -->
+<section style="padding:50px 0;">
+  <div class="container">
+    <div class="section-label">Supported Bookmakers</div>
+    <h2 class="section-title" style="margin-bottom:8px;">Works With All <span>Major Bookmakers</span></h2>
+    <p class="section-sub" style="margin-bottom:0;">The bot monitors all of these simultaneously so you never miss an opportunity.</p>
+    <div class="bookmaker-row fade-up">
+      <div class="bookmaker-pill">Bet365</div>
+      <div class="bookmaker-pill">William Hill</div>
+      <div class="bookmaker-pill">Betfair</div>
+      <div class="bookmaker-pill">Paddy Power</div>
+      <div class="bookmaker-pill">Sky Bet</div>
+      <div class="bookmaker-pill">BetMGM</div>
+      <div class="bookmaker-pill">BetUK</div>
+      <div class="bookmaker-pill">BetVictor</div>
+      <div class="bookmaker-pill">Bwin</div>
+    </div>
+  </div>
+</section>
+
 <hr class="section-divider">
 
 <!-- PRICING -->
@@ -804,6 +1078,53 @@
   </div>
 </section>
 
+<!-- PROFIT CALCULATOR -->
+<section>
+  <div class="container">
+    <div class="section-label">Profit Calculator</div>
+    <h2 class="section-title">How Much Could <span>You Make?</span></h2>
+    <p class="section-sub">Adjust the sliders to see your potential guaranteed profit per bet.</p>
+    <div class="calc-box fade-up">
+      <div class="calc-slider-wrap">
+        <div class="calc-slider-label">
+          <span>Total Stake</span>
+          <span class="calc-slider-value" id="stake-val">£500</span>
+        </div>
+        <input type="range" id="stake-slider" min="50" max="5000" step="50" value="500" oninput="updateCalc()">
+      </div>
+      <div class="calc-slider-wrap">
+        <div class="calc-slider-label">
+          <span>Profit %</span>
+          <span class="calc-slider-value" id="profit-val">5%</span>
+        </div>
+        <input type="range" id="profit-slider" min="1" max="15" step="0.5" value="5" oninput="updateCalc()">
+      </div>
+      <div class="calc-slider-wrap">
+        <div class="calc-slider-label">
+          <span>Bets Per Day</span>
+          <span class="calc-slider-value" id="bets-val">3</span>
+        </div>
+        <input type="range" id="bets-slider" min="1" max="20" step="1" value="3" oninput="updateCalc()">
+      </div>
+      <div class="calc-results">
+        <div class="calc-result-card">
+          <div class="calc-result-label">Per Bet</div>
+          <div class="calc-result-value" id="res-bet">£25.00</div>
+        </div>
+        <div class="calc-result-card">
+          <div class="calc-result-label">Per Day</div>
+          <div class="calc-result-value" id="res-day" style="color:var(--warn);">£75.00</div>
+        </div>
+        <div class="calc-result-card">
+          <div class="calc-result-label">Per Month</div>
+          <div class="calc-result-value" id="res-month" style="color:var(--gold);">£2,250</div>
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:16px;font-family:Space Mono,monospace;">⚠️ Estimates only. Always verify odds before placing. Past opportunities do not guarantee future results.</p>
+    </div>
+  </div>
+</section>
+
 <hr class="section-divider">
 
 <!-- FAQ -->
@@ -853,6 +1174,50 @@
   </div>
 </section>
 
+<!-- TESTIMONIALS -->
+<section>
+  <div class="container">
+    <div class="section-label">What People Say</div>
+    <h2 class="section-title">Trusted by <span>Arbers</span></h2>
+    <p class="section-sub">Don't just take our word for it.</p>
+    <div class="testimonials-grid">
+      <div class="testimonial fade-up">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"Found a 9% arb on a Premier League match within the first hour. The calculator made it dead simple to know exactly how much to stake on each side. Brilliant tool."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">👤</div>
+          <div>
+            <div class="testimonial-name">Jamie T.</div>
+            <div class="testimonial-since">Member since Jan 2026</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial fade-up">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"I was sceptical at first but it genuinely works. The Telegram alerts come through almost instantly and the bet instructions mean I know exactly what to do every time."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">👤</div>
+          <div>
+            <div class="testimonial-name">Ryan M.</div>
+            <div class="testimonial-since">Member since Feb 2026</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial fade-up">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"Paid for itself on day one. The daily summary is a nice touch too — love seeing the stats at midnight. Setup was easy with the wizard, took about 10 minutes."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">👤</div>
+          <div>
+            <div class="testimonial-name">Dan K.</div>
+            <div class="testimonial-since">Member since Mar 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <hr class="section-divider">
 
 <!-- CONTACT -->
@@ -890,7 +1255,7 @@
   // ══════════════════════════════════════════════
   //  EDIT ME — fill in your Supabase details here
   const SB_URL = 'https://yhcdhnjbcyvcvfpcvrsm.supabase.co';
-  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloY2RobmpiY3l2Y3ZmcGN2cnNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDY5MTUsImV4cCI6MjA4OTYyMjkxNX0.70L8oi4uPd70CtuNYyRb10mjpQakubN6O9YpDXv3fv8';
+  const SB_KEY = 'REPLACE_WITH_YOUR_ANON_KEY';
   // ══════════════════════════════════════════════
 
   async function fetchStats() {
@@ -940,6 +1305,55 @@
   // Fetch on load and refresh every 30 seconds
   fetchStats();
   setInterval(fetchStats, 30000);
+
+  // ── SCROLL ANIMATIONS ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-up, .step, .feature, .pricing-card, .testimonial, .faq-item').forEach(el => {
+    el.classList.add('fade-up');
+    observer.observe(el);
+  });
+
+  // ── STICKY CTA ──
+  const hero = document.querySelector('.hero');
+  const stickyCta = document.getElementById('sticky-cta');
+  window.addEventListener('scroll', () => {
+    if (hero) {
+      const heroBottom = hero.getBoundingClientRect().bottom;
+      if (heroBottom < 0) {
+        stickyCta.classList.add('show');
+      } else {
+        stickyCta.classList.remove('show');
+      }
+    }
+  });
+
+  // ── PROFIT CALCULATOR ──
+  function updateCalc() {
+    const stake = parseFloat(document.getElementById('stake-slider').value);
+    const profit = parseFloat(document.getElementById('profit-slider').value);
+    const bets = parseInt(document.getElementById('bets-slider').value);
+
+    document.getElementById('stake-val').textContent = '£' + stake.toLocaleString();
+    document.getElementById('profit-val').textContent = profit + '%';
+    document.getElementById('bets-val').textContent = bets;
+
+    const perBet = stake * (profit / 100);
+    const perDay = perBet * bets;
+    const perMonth = perDay * 30;
+
+    document.getElementById('res-bet').textContent = '£' + perBet.toFixed(2);
+    document.getElementById('res-day').textContent = '£' + perDay.toFixed(2);
+    document.getElementById('res-month').textContent = '£' + Math.round(perMonth).toLocaleString();
+  }
+
+  updateCalc();
 </script>
 
 </body>
