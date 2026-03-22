@@ -633,21 +633,21 @@
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:800px;margin:0 auto;">
 
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;text-align:center;backdrop-filter:blur(10px);">
-        <div style="font-size:11px;font-family:Space Mono,monospace;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:10px;">Alerts Today</div>
-        <div id="counter-daily" style="font-size:44px;font-weight:800;color:var(--accent);">—</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:6px;font-family:Space Mono,monospace;">resets at midnight</div>
+        <div style="font-size:11px;font-family:Space Mono,monospace;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;">Alerts Today</div>
+        <div id="counter-daily" style="font-size:48px;font-weight:800;color:var(--accent);font-family:Syne,sans-serif;letter-spacing:0;line-height:1.1;">—</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:8px;font-family:Space Mono,monospace;">resets at midnight</div>
       </div>
 
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;text-align:center;backdrop-filter:blur(10px);">
-        <div style="font-size:11px;font-family:Space Mono,monospace;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:10px;">Total Alerts Sent</div>
-        <div id="counter-total" style="font-size:44px;font-weight:800;color:#b39dff;">—</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:6px;font-family:Space Mono,monospace;">and counting</div>
+        <div style="font-size:11px;font-family:Space Mono,monospace;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;">Total Alerts Sent</div>
+        <div id="counter-total" style="font-size:48px;font-weight:800;color:#b39dff;font-family:Syne,sans-serif;letter-spacing:0;line-height:1.1;">—</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:8px;font-family:Space Mono,monospace;">and counting</div>
       </div>
 
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;text-align:center;backdrop-filter:blur(10px);">
-        <div style="font-size:11px;font-family:Space Mono,monospace;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:10px;">Scan Interval</div>
-        <div style="font-size:44px;font-weight:800;color:var(--gold);">5s</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:6px;font-family:Space Mono,monospace;">always watching</div>
+        <div style="font-size:11px;font-family:Space Mono,monospace;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;">Scan Interval</div>
+        <div style="font-size:48px;font-weight:800;color:var(--gold);font-family:Syne,sans-serif;letter-spacing:0;line-height:1.1;">5s</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:8px;font-family:Space Mono,monospace;">always watching</div>
       </div>
 
     </div>
@@ -894,26 +894,29 @@
   // ══════════════════════════════════════════════
 
   async function fetchStats() {
+    if (!SB_URL || SB_URL.includes('your-project')) return;
     try {
       const res = await fetch(SB_URL + '/rest/v1/stats?select=id,value', {
         headers: {
           'apikey': SB_KEY,
           'Authorization': 'Bearer ' + SB_KEY,
+          'Accept': 'application/json',
         }
       });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
-      if (!Array.isArray(data)) return;
+      if (!Array.isArray(data) || data.length === 0) {
+        document.getElementById('counter-daily').textContent = '0';
+        document.getElementById('counter-total').textContent = '0';
+        return;
+      }
       data.forEach(row => {
-        if (row.id === 'daily_alerts') {
-          animateCounter('counter-daily', row.value || 0);
-        }
-        if (row.id === 'total_alerts') {
-          animateCounter('counter-total', row.value || 0);
-        }
+        if (row.id === 'daily_alerts') animateCounter('counter-daily', row.value || 0);
+        if (row.id === 'total_alerts') animateCounter('counter-total', row.value || 0);
       });
     } catch(e) {
-      document.getElementById('counter-daily').textContent = '—';
-      document.getElementById('counter-total').textContent = '—';
+      document.getElementById('counter-daily').textContent = '0';
+      document.getElementById('counter-total').textContent = '0';
     }
   }
 
