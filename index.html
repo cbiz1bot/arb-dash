@@ -4,51 +4,66 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CP's Arb Bot — Automated Arbitrage Alerts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap');
-
   :root {
-    --bg: #0a0a0f;
-    --surface: rgba(18,18,26,0.85);
-    --surface2: rgba(26,26,38,0.9);
-    --border: rgba(42,42,61,0.8);
-    --accent: #00ff88;
-    --accent2: #7c4dff;
-    --warn: #ff9800;
-    --danger: #ff3d6b;
-    --text: #e8e8f0;
-    --muted: #888899;
-    --gold: #ffd700;
+    --bg: #080b12;
+    --bg2: #0d1017;
+    --surface: rgba(17,22,34,0.9);
+    --surface2: rgba(22,28,42,0.95);
+    --surface-hover: rgba(25,32,50,0.95);
+    --border: rgba(50,60,90,0.5);
+    --border-bright: rgba(80,100,150,0.5);
+    --accent: #00e676;
+    --accent-dim: rgba(0,230,118,0.12);
+    --accent-glow: rgba(0,230,118,0.2);
+    --purple: #7c6af7;
+    --purple-dim: rgba(124,106,247,0.12);
+    --warn: #ffb300;
+    --danger: #f44336;
+    --text: #e2e8f4;
+    --text2: #a0aec0;
+    --muted: #64748b;
+    --gold: #f7c948;
+    --radius: 14px;
+    --radius-lg: 20px;
+    --shadow: 0 4px 32px rgba(0,0,0,0.4);
+    --shadow-accent: 0 0 40px rgba(0,230,118,0.08);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
 
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
-    background-image: url('https://raw.githubusercontent.com/cbiz1bot/arb-dash/main/372821772_832862498209117_100237078611194650_n.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+    -webkit-font-smoothing: antialiased;
   }
 
-  body::before {
-    content: '';
+  /* ── BACKGROUND BLOBS ── */
+  .bg-blobs {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.78);
     pointer-events: none;
     z-index: 0;
+    overflow: hidden;
   }
+  .bg-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.12;
+  }
+  .bg-blob-1 { width: 600px; height: 600px; background: #00e676; top: -150px; left: -150px; }
+  .bg-blob-2 { width: 500px; height: 500px; background: #7c6af7; bottom: 10%; right: -100px; }
+  .bg-blob-3 { width: 400px; height: 400px; background: #0ea5e9; top: 40%; left: 30%; }
 
   .container {
-    max-width: 1100px;
+    max-width: 1080px;
     margin: 0 auto;
     padding: 0 24px;
     position: relative;
@@ -59,740 +74,680 @@
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
-    z-index: 100;
-    background: rgba(10,10,15,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 0;
+    z-index: 200;
+    padding: 0;
   }
-
   .nav-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 24px;
+    max-width: 1080px;
+    margin: 14px auto;
+    padding: 12px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background: rgba(10,13,20,0.75);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
   }
-
   .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: var(--text);
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--text);
   }
-
   .nav-logo-icon {
-    width: 34px; height: 34px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--accent), #00b0ff);
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
+    font-size: 15px;
   }
-
-  .nav-logo-text {
-    font-size: 16px;
-    font-weight: 800;
-  }
-
+  .nav-logo-text { font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
   .nav-logo-text span { color: var(--accent); }
-
   .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 28px;
+    display: flex; align-items: center; gap: 6px;
     list-style: none;
   }
-
   .nav-links a {
-    color: var(--muted);
+    color: var(--text2);
     text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    transition: color 0.2s;
-  }
-
-  .nav-links a:hover { color: var(--text); }
-
-  .nav-cta {
-    background: linear-gradient(135deg, var(--accent), #00cc66);
-    color: #000 !important;
-    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 12px;
     border-radius: 8px;
-    font-weight: 700 !important;
-    font-size: 13px !important;
+    transition: all 0.2s;
   }
+  .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+  .nav-cta {
+    background: var(--accent) !important;
+    color: #000 !important;
+    font-weight: 700 !important;
+    padding: 7px 16px !important;
+  }
+  .nav-cta:hover { background: #00c853 !important; }
+  .nav-dash {
+    background: var(--purple) !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+    padding: 7px 14px !important;
+    font-size: 13px !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    transition: opacity 0.2s !important;
+  }
+  .nav-dash:hover { opacity: 0.85 !important; }
 
   /* ── HERO ── */
   .hero {
-    padding: 160px 0 100px;
+    padding: 140px 0 80px;
     text-align: center;
   }
-
   .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(0,255,136,0.08);
-    border: 1px solid rgba(0,255,136,0.2);
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent-dim);
+    border: 1px solid rgba(0,230,118,0.25);
     padding: 6px 16px;
     border-radius: 100px;
-    font-size: 12px;
+    font-size: 11px;
     font-family: 'Space Mono', monospace;
     color: var(--accent);
     margin-bottom: 28px;
-    animation: fadeUp 0.6s ease both;
+    animation: fadeUp 0.5s ease both;
+    letter-spacing: 0.5px;
   }
-
   .hero-dot {
     width: 6px; height: 6px;
     background: var(--accent);
     border-radius: 50%;
     animation: pulse 2s infinite;
+    flex-shrink: 0;
   }
-
-  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0}to{opacity:1} }
 
   .hero h1 {
-    font-size: clamp(36px, 6vw, 72px);
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 24px;
-    animation: fadeUp 0.6s 0.1s ease both;
+    font-size: clamp(38px, 6vw, 68px);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -2px;
+    margin-bottom: 22px;
+    animation: fadeUp 0.5s 0.08s ease both;
   }
-
-  .hero h1 span { color: var(--accent); }
-
+  .hero h1 .highlight {
+    background: linear-gradient(135deg, var(--accent), #00b0ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
   .hero-sub {
-    font-size: clamp(15px, 2.5vw, 20px);
-    color: var(--muted);
-    max-width: 600px;
-    margin: 0 auto 40px;
-    line-height: 1.7;
-    animation: fadeUp 0.6s 0.2s ease both;
+    font-size: 17px;
+    color: var(--text2);
+    max-width: 560px;
+    margin: 0 auto 36px;
+    line-height: 1.75;
+    font-weight: 400;
+    animation: fadeUp 0.5s 0.16s ease both;
   }
-
   .hero-actions {
-    display: flex;
-    gap: 14px;
-    justify-content: center;
-    flex-wrap: wrap;
-    animation: fadeUp 0.6s 0.3s ease both;
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp 0.5s 0.24s ease both;
+    margin-bottom: 56px;
   }
-
-  .btn-hero {
-    padding: 14px 32px;
+  .btn {
+    padding: 13px 28px;
     border-radius: 10px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     cursor: pointer;
     text-decoration: none;
     transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    display: inline-flex; align-items: center; gap: 8px;
     border: none;
   }
-
-  .btn-hero-primary {
-    background: linear-gradient(135deg, var(--accent), #00cc66);
+  .btn-primary {
+    background: var(--accent);
     color: #000;
   }
-
-  .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,255,136,0.25); }
-
-  .btn-hero-secondary {
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,230,118,0.3); background: #00f083; }
+  .btn-secondary {
     background: rgba(255,255,255,0.06);
     color: var(--text);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-bright);
   }
+  .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-1px); }
 
-  .btn-hero-secondary:hover { background: rgba(255,255,255,0.1); }
-
-  /* ── ALERT PREVIEW ── */
-  .alert-preview {
-    margin: 60px auto 0;
-    max-width: 380px;
+  /* ── LIVE STATS — HERO SECTION ── */
+  .stats-hero {
+    animation: fadeUp 0.5s 0.32s ease both;
+    margin-bottom: 60px;
+  }
+  .stats-hero-label {
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .stat-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: left;
-    animation: fadeUp 0.6s 0.4s ease both;
-    backdrop-filter: blur(10px);
+    border-radius: var(--radius-lg);
+    padding: 28px 20px;
+    text-align: center;
+    backdrop-filter: blur(16px);
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 20px 20px 0 0;
+  }
+  .stat-card.green::before { background: linear-gradient(90deg, var(--accent), transparent); }
+  .stat-card.purple::before { background: linear-gradient(90deg, var(--purple), transparent); }
+  .stat-card.gold::before { background: linear-gradient(90deg, var(--gold), transparent); }
+  .stat-card:hover { border-color: var(--border-bright); transform: translateY(-3px); }
+  .stat-label {
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .stat-number {
+    font-size: 46px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -2px;
+    margin-bottom: 6px;
+  }
+  .stat-card.green .stat-number { color: var(--accent); }
+  .stat-card.purple .stat-number { color: var(--purple); }
+  .stat-card.gold .stat-number { color: var(--gold); }
+  .stat-sub {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
   }
 
-  .alert-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  /* ── ALERT PREVIEW CARD ── */
+  .alert-preview-wrap {
+    animation: fadeUp 0.5s 0.4s ease both;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  .alert-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    text-align: left;
+    backdrop-filter: blur(16px);
+    box-shadow: var(--shadow), var(--shadow-accent);
+  }
+  .alert-card-header {
+    display: flex; align-items: center; gap: 10px;
     margin-bottom: 14px;
     padding-bottom: 14px;
     border-bottom: 1px solid var(--border);
   }
-
-  .telegram-icon {
+  .tg-bubble {
     width: 36px; height: 36px;
-    background: #229ED9;
+    background: #29b6f6;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
+    font-size: 17px;
     flex-shrink: 0;
   }
+  .tg-name { font-size: 13px; font-weight: 700; }
+  .tg-time { font-size: 11px; color: var(--muted); }
+  .alert-body { font-size: 12.5px; line-height: 1.9; }
+  .alert-title-row { font-size: 14px; font-weight: 800; color: var(--warn); margin-bottom: 8px; }
+  .alert-divider { border-top: 1px solid var(--border); margin: 8px 0; }
+  .alert-row { display: flex; justify-content: space-between; align-items: center; }
+  .alert-key { color: var(--muted); font-size: 11.5px; }
+  .alert-val { font-weight: 600; font-size: 12px; }
+  .alert-val.profit { color: var(--warn); font-size: 13.5px; font-weight: 800; }
+  .alert-calc { margin-top: 10px; background: rgba(0,230,118,0.05); border: 1px solid rgba(0,230,118,0.12); border-radius: 10px; padding: 10px 12px; }
+  .alert-calc-title { font-size: 11px; color: var(--muted); margin-bottom: 5px; font-family: 'Space Mono', monospace; }
+  .alert-calc-row { font-size: 12px; line-height: 1.7; }
+  .alert-profit-line { color: var(--accent); font-size: 13px; font-weight: 700; margin-top: 4px; }
 
-  .alert-bot-name { font-size: 13px; font-weight: 700; }
-  .alert-bot-sub { font-size: 11px; color: var(--muted); }
-
-  .alert-body { font-size: 13px; line-height: 1.8; }
-  .alert-body .alert-title { font-size: 15px; font-weight: 800; color: var(--accent); margin-bottom: 8px; }
-  .alert-body .divider { border-top: 1px solid var(--border); margin: 10px 0; }
-  .alert-body .row { display: flex; justify-content: space-between; margin-bottom: 4px; }
-  .alert-body .label { color: var(--muted); font-size: 12px; }
-  .alert-body .value { font-weight: 700; font-size: 12px; }
-  .alert-body .profit { color: var(--warn); font-size: 14px; font-weight: 800; }
-  .alert-links { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
-  .alert-link { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #4fc3f7; text-decoration: none; }
+  /* ── TICKER ── */
+  .ticker-wrap {
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,13,20,0.6);
+    padding: 12px 0;
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(8px);
+  }
+  .ticker-track {
+    display: flex;
+    white-space: nowrap;
+    animation: tickerScroll 30s linear infinite;
+    will-change: transform;
+  }
+  .ticker-track:hover { animation-play-state: paused; }
+  @keyframes tickerScroll { 0%{transform:translateX(0)}100%{transform:translateX(-50%)} }
+  .ticker-item {
+    display: inline-flex; align-items: center;
+    font-size: 12.5px; font-family: 'Space Mono', monospace;
+    color: var(--text2);
+    padding: 0 32px;
+    gap: 6px;
+  }
+  .ticker-profit { color: var(--accent); font-weight: 700; }
+  .ticker-sep { color: var(--border-bright); }
 
   /* ── SECTION ── */
-  section { padding: 80px 0; }
-
+  section { padding: 80px 0; position: relative; z-index: 1; }
   .section-label {
     font-size: 11px;
     font-family: 'Space Mono', monospace;
     text-transform: uppercase;
     letter-spacing: 2px;
     color: var(--accent);
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     text-align: center;
   }
-
   .section-title {
-    font-size: clamp(28px, 4vw, 44px);
+    font-size: clamp(26px, 4vw, 42px);
     font-weight: 800;
     text-align: center;
-    margin-bottom: 16px;
-    line-height: 1.2;
+    margin-bottom: 14px;
+    line-height: 1.15;
+    letter-spacing: -1px;
   }
-
-  .section-title span { color: var(--accent); }
-
+  .section-title .highlight {
+    background: linear-gradient(135deg, var(--accent), #00b0ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
   .section-sub {
     font-size: 16px;
-    color: var(--muted);
+    color: var(--text2);
     text-align: center;
-    max-width: 560px;
-    margin: 0 auto 56px;
-    line-height: 1.7;
+    max-width: 540px;
+    margin: 0 auto 52px;
+    line-height: 1.75;
+    font-weight: 400;
+  }
+  hr.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+    opacity: 0.6;
   }
 
   /* ── HOW IT WORKS ── */
   .steps {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    gap: 20px;
   }
-
   .step {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     padding: 28px;
-    backdrop-filter: blur(10px);
-    transition: border-color 0.2s, transform 0.2s;
+    backdrop-filter: blur(12px);
+    transition: border-color 0.25s, transform 0.25s;
   }
-
-  .step:hover { border-color: var(--accent2); transform: translateY(-4px); }
-
+  .step:hover { border-color: var(--border-bright); transform: translateY(-4px); }
   .step-num {
-    width: 40px; height: 40px;
-    background: linear-gradient(135deg, var(--accent2), #5e35b1);
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--purple), #5e35b1);
     border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
-    font-weight: 800;
+    font-size: 15px; font-weight: 800;
     font-family: 'Space Mono', monospace;
     color: #fff;
     margin-bottom: 16px;
   }
-
-  .step h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
-  .step p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .step h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+  .step p { font-size: 14px; color: var(--text2); line-height: 1.7; }
 
   /* ── FEATURES ── */
   .features-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
+    gap: 16px;
   }
-
   .feature {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
     padding: 24px;
-    backdrop-filter: blur(10px);
-    transition: border-color 0.2s;
+    backdrop-filter: blur(12px);
+    transition: border-color 0.25s, transform 0.2s;
   }
+  .feature:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .feature-icon { font-size: 26px; margin-bottom: 12px; }
+  .feature h3 { font-size: 14.5px; font-weight: 700; margin-bottom: 8px; }
+  .feature p { font-size: 13px; color: var(--text2); line-height: 1.7; }
 
-  .feature:hover { border-color: var(--accent); }
-
-  .feature-icon { font-size: 28px; margin-bottom: 14px; }
-  .feature h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-  .feature p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  /* ── BOOKMAKERS ── */
+  .bookmaker-row {
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+    max-width: 700px; margin: 0 auto;
+  }
+  .bookmaker-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+    backdrop-filter: blur(8px);
+    transition: all 0.2s;
+  }
+  .bookmaker-pill:hover { border-color: var(--accent); color: var(--accent); }
 
   /* ── PRICING ── */
   .pricing-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    max-width: 900px;
+    gap: 18px;
+    max-width: 860px;
     margin: 0 auto;
   }
-
   .pricing-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 32px 28px;
+    border-radius: var(--radius-lg);
+    padding: 32px 24px;
     text-align: center;
-    backdrop-filter: blur(10px);
-    transition: all 0.2s;
+    backdrop-filter: blur(12px);
+    transition: all 0.25s;
     position: relative;
   }
-
-  .pricing-card:hover { transform: translateY(-4px); }
-
+  .pricing-card:hover { transform: translateY(-4px); border-color: var(--border-bright); }
   .pricing-card.featured {
     border-color: var(--accent);
-    background: rgba(0,255,136,0.05);
+    background: rgba(0,230,118,0.04);
+    box-shadow: 0 0 40px rgba(0,230,118,0.08);
   }
-
   .featured-badge {
     position: absolute;
-    top: -12px;
-    left: 50%;
+    top: -12px; left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(135deg, var(--accent), #00cc66);
+    background: var(--accent);
     color: #000;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
     padding: 4px 14px;
     border-radius: 100px;
     white-space: nowrap;
     font-family: 'Space Mono', monospace;
+    letter-spacing: 0.5px;
   }
-
-  .pricing-plan { font-size: 12px; font-family: 'Space Mono', monospace; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; }
-  .pricing-price { font-size: 48px; font-weight: 800; margin-bottom: 4px; }
-  .pricing-price span { font-size: 20px; font-weight: 400; color: var(--muted); }
-  .pricing-period { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
-
-  .pricing-features {
-    list-style: none;
-    margin-bottom: 28px;
-    text-align: left;
-  }
-
-  .pricing-features li {
-    font-size: 13px;
+  .pricing-plan {
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
     color: var(--muted);
-    padding: 7px 0;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    margin-bottom: 12px;
   }
-
-  .pricing-features li:last-child { border-bottom: none; }
+  .pricing-price { font-size: 48px; font-weight: 900; letter-spacing: -2px; margin-bottom: 4px; }
+  .pricing-price span { font-size: 22px; font-weight: 400; color: var(--muted); }
+  .pricing-period { font-size: 12.5px; color: var(--muted); margin-bottom: 24px; }
+  .pricing-features { list-style: none; margin-bottom: 28px; text-align: left; }
+  .pricing-features li {
+    font-size: 13px; color: var(--text2);
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(50,60,90,0.3);
+    display: flex; align-items: center; gap: 8px;
+  }
   .pricing-features li::before { content: '✓'; color: var(--accent); font-weight: 700; font-size: 13px; flex-shrink: 0; }
-
+  .pricing-features li:last-child { border-bottom: none; }
   .btn-pricing {
     width: 100%;
-    padding: 12px;
+    display: block;
+    padding: 13px;
     border-radius: 10px;
     font-size: 14px;
     font-weight: 700;
-    font-family: 'Syne', sans-serif;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
     text-decoration: none;
-    display: block;
+    text-align: center;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
   }
+  .btn-pricing-primary { background: var(--accent); color: #000; }
+  .btn-pricing-primary:hover { background: #00f083; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,230,118,0.25); }
+  .btn-pricing-secondary { background: rgba(255,255,255,0.07); color: var(--text); border: 1px solid var(--border-bright); }
+  .btn-pricing-secondary:hover { background: rgba(255,255,255,0.12); }
 
-  .btn-pricing-primary { background: linear-gradient(135deg, var(--accent), #00cc66); color: #000; }
-  .btn-pricing-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-  .btn-pricing-secondary { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); }
-  .btn-pricing-secondary:hover { background: rgba(255,255,255,0.1); }
-
-  /* ── DISCLAIMER ── */
   .disclaimer {
-    background: rgba(255,152,0,0.06);
-    border: 1px solid rgba(255,152,0,0.2);
+    max-width: 680px; margin: 36px auto 0;
+    font-size: 12px; color: var(--muted);
+    text-align: center; line-height: 1.7;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 16px 20px;
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.7;
-    text-align: center;
-    max-width: 700px;
-    margin: 40px auto 0;
-    font-family: 'Space Mono', monospace;
   }
 
-  /* ── FAQ ── */
-  .faq-list { max-width: 700px; margin: 0 auto; }
-
-  .faq-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    margin-bottom: 12px;
-    overflow: hidden;
-    backdrop-filter: blur(10px);
-    transition: border-color 0.2s;
-  }
-
-  .faq-item:hover { border-color: var(--accent2); }
-
-  .faq-q {
-    padding: 18px 20px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .faq-q::after { content: '+'; font-size: 20px; color: var(--accent); flex-shrink: 0; transition: transform 0.2s; }
-  .faq-item.open .faq-q::after { transform: rotate(45deg); }
-
-  .faq-a {
-    display: none;
-    padding: 0 20px 18px;
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.7;
-    border-top: 1px solid var(--border);
-    padding-top: 16px;
-  }
-
-  .faq-item.open .faq-a { display: block; }
-
-  /* ── CONTACT ── */
-  .contact-box {
-    max-width: 560px;
-    margin: 0 auto;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 40px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-  }
-
-  .contact-box h3 { font-size: 24px; font-weight: 800; margin-bottom: 12px; }
-  .contact-box p { font-size: 14px; color: var(--muted); margin-bottom: 28px; line-height: 1.7; }
-
-  .contact-methods { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-
-  .contact-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 700;
-    font-family: 'Syne', sans-serif;
-    text-decoration: none;
-    transition: all 0.2s;
-    border: none;
-    cursor: pointer;
-  }
-
-  .contact-telegram { background: #229ED9; color: #fff; }
-  .contact-telegram:hover { opacity: 0.9; transform: translateY(-1px); }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 28px 0;
-    text-align: center;
-    font-size: 12px;
-    color: var(--muted);
-    font-family: 'Space Mono', monospace;
-    position: relative;
-    z-index: 1;
-  }
-
-  footer span { color: var(--accent); }
-
-  /* ── DIVIDER ── */
-  .section-divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 0;
-  }
-
-  /* ── RESPONSIVE ── */
-  /* ── SCROLL ANIMATIONS ── */
-  .fade-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ── STICKY CTA ── */
-  .sticky-cta {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 99;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.3s ease;
-    pointer-events: none;
-  }
-  .sticky-cta.show {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: all;
-  }
-  .sticky-cta a {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, var(--accent), #00cc66);
-    color: #000;
-    padding: 13px 22px;
-    border-radius: 50px;
-    font-size: 14px;
-    font-weight: 800;
-    font-family: 'Syne', sans-serif;
-    text-decoration: none;
-    box-shadow: 0 4px 20px rgba(0,255,136,0.35);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .sticky-cta a:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(0,255,136,0.45);
-  }
-
-  /* ── TICKER ── */
-  .ticker-wrap {
-    overflow: hidden;
-    background: rgba(0,255,136,0.05);
-    border-top: 1px solid rgba(0,255,136,0.15);
-    border-bottom: 1px solid rgba(0,255,136,0.15);
-    padding: 12px 0;
-    position: relative;
-    z-index: 1;
-  }
-  .ticker-track {
-    display: flex;
-    gap: 0;
-    animation: ticker 30s linear infinite;
-    width: max-content;
-  }
-  .ticker-track:hover { animation-play-state: paused; }
-  .ticker-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 0 32px;
-    font-size: 13px;
-    font-family: 'Space Mono', monospace;
-    color: var(--accent);
-    white-space: nowrap;
-    border-right: 1px solid rgba(0,255,136,0.2);
-  }
-  .ticker-profit { color: var(--warn); font-weight: 700; }
-  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-
-  /* ── BOOKMAKER LOGOS ── */
-  .bookmaker-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-    margin-top: 40px;
-  }
-  .bookmaker-pill {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 13px;
-    font-weight: 700;
-    font-family: 'Space Mono', monospace;
-    color: var(--muted);
-    transition: all 0.2s;
-    backdrop-filter: blur(10px);
-  }
-  .bookmaker-pill:hover { border-color: var(--accent); color: var(--text); }
-
-  /* ── PROFIT CALCULATOR ── */
+  /* ── CALCULATOR ── */
   .calc-box {
+    max-width: 620px;
+    margin: 0 auto;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
     padding: 36px;
-    max-width: 600px;
-    margin: 0 auto;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
   }
-  .calc-slider-wrap { margin-bottom: 24px; }
-  .calc-slider-label {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    font-size: 13px;
-    color: var(--muted);
-    font-family: 'Space Mono', monospace;
+  .calc-row { margin-bottom: 24px; }
+  .calc-row-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
   }
-  .calc-slider-value { color: var(--accent); font-weight: 700; }
+  .calc-row-label { font-size: 13px; font-weight: 600; color: var(--text2); }
+  .calc-row-val { font-size: 15px; font-weight: 800; color: var(--accent); font-family: 'Space Mono', monospace; }
   input[type=range] {
-    width: 100%;
-    -webkit-appearance: none;
-    height: 4px;
-    border-radius: 2px;
-    background: var(--border);
-    outline: none;
-    cursor: pointer;
+    width: 100%; -webkit-appearance: none; appearance: none;
+    height: 4px; border-radius: 4px;
+    background: var(--border); outline: none; cursor: pointer;
   }
   input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 18px; height: 18px;
     border-radius: 50%;
     background: var(--accent);
-    cursor: pointer;
-    box-shadow: 0 0 8px rgba(0,255,136,0.4);
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--accent);
+    transition: transform 0.15s;
   }
+  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
   .calc-results {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-top: 24px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    margin-top: 28px;
   }
   .calc-result-card {
-    background: var(--surface2);
+    background: var(--bg2);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: var(--radius);
+    padding: 18px 14px;
     text-align: center;
   }
-  .calc-result-label { font-size: 10px; font-family: 'Space Mono', monospace; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
-  .calc-result-value { font-size: 22px; font-weight: 800; color: var(--accent); }
+  .calc-result-label { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .calc-result-value { font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
+
+  /* ── FAQ ── */
+  .faq-list { max-width: 680px; margin: 0 auto; }
+  .faq-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.2s;
+  }
+  .faq-item:hover { border-color: var(--border-bright); }
+  .faq-q {
+    padding: 18px 20px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px;
+    user-select: none;
+  }
+  .faq-q::after {
+    content: '+';
+    font-size: 20px;
+    color: var(--muted);
+    font-weight: 400;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+  .faq-item.open .faq-q::after { transform: rotate(45deg); color: var(--accent); }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    font-size: 13.5px; color: var(--text2); line-height: 1.75;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 20px;
+  }
+  .faq-item.open .faq-a { max-height: 200px; padding: 0 20px 18px; }
 
   /* ── TESTIMONIALS ── */
   .testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
   }
   .testimonial {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 26px;
-    backdrop-filter: blur(10px);
-    transition: border-color 0.2s;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    backdrop-filter: blur(12px);
+    transition: border-color 0.25s;
   }
-  .testimonial:hover { border-color: var(--accent2); }
-  .testimonial-stars { color: var(--gold); font-size: 14px; margin-bottom: 12px; }
-  .testimonial-text { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; font-style: italic; }
+  .testimonial:hover { border-color: var(--border-bright); }
+  .testimonial-stars { font-size: 14px; color: var(--gold); margin-bottom: 12px; letter-spacing: 2px; }
+  .testimonial-text { font-size: 13.5px; color: var(--text2); line-height: 1.75; margin-bottom: 18px; font-style: italic; }
   .testimonial-author { display: flex; align-items: center; gap: 10px; }
   .testimonial-avatar {
     width: 36px; height: 36px;
+    background: var(--purple-dim);
+    border: 1px solid var(--border-bright);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 16px;
-    background: linear-gradient(135deg, var(--accent2), #5e35b1);
     flex-shrink: 0;
   }
   .testimonial-name { font-size: 13px; font-weight: 700; }
-  .testimonial-since { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
+  .testimonial-since { font-size: 11px; color: var(--muted); }
 
-  /* ── MOBILE BOTTOM NAV ── */
-  .mobile-nav {
-    display: none;
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    background: rgba(10,10,15,0.95);
-    backdrop-filter: blur(12px);
-    border-top: 1px solid var(--border);
-    z-index: 98;
-    padding: 10px 0 env(safe-area-inset-bottom);
+  /* ── CONTACT ── */
+  .contact-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 48px;
+    text-align: center;
+    max-width: 560px;
+    margin: 0 auto;
+    backdrop-filter: blur(16px);
   }
-  .mobile-nav-inner {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-  .mobile-nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
+  .contact-icon { font-size: 48px; margin-bottom: 16px; }
+  .contact-card h3 { font-size: 24px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
+  .contact-card p { font-size: 15px; color: var(--text2); line-height: 1.7; margin-bottom: 28px; }
+  .btn-telegram {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #29b6f6;
+    color: #fff;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
     text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-telegram:hover { background: #039be5; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(41,182,246,0.3); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    text-align: center;
     color: var(--muted);
-    font-size: 10px;
-    font-family: 'Space Mono', monospace;
-    transition: color 0.2s;
-    padding: 4px 12px;
+    font-size: 12.5px;
+    position: relative; z-index: 1;
   }
-  .mobile-nav-item:hover { color: var(--accent); }
-  .mobile-nav-item .icon { font-size: 18px; }
-  .mobile-nav-item.cta { color: var(--accent); }
 
+  /* ── STICKY CTA ── */
+  .sticky-cta {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    z-index: 500;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: all 0.3s;
+    pointer-events: none;
+  }
+  .sticky-cta.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .sticky-cta a {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent);
+    color: #000;
+    padding: 13px 22px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none;
+    box-shadow: 0 4px 24px rgba(0,230,118,0.35);
+    transition: all 0.2s;
+  }
+  .sticky-cta a:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,230,118,0.4); }
+
+  /* ── SCROLL FADE ── */
+  .fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
   @media (max-width: 800px) {
-    .steps { grid-template-columns: 1fr; }
-    .features-grid { grid-template-columns: repeat(2, 1fr); }
-    .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+    .steps, .features-grid, .pricing-grid, .testimonials-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .stat-number { font-size: 32px; }
     .nav-links { display: none; }
-    .hero { padding: 120px 0 60px; }
-    .mobile-nav { display: block; }
-    .testimonials-grid { grid-template-columns: 1fr; }
-    .calc-results { grid-template-columns: 1fr; }
-    body { padding-bottom: 70px; }
-    .sticky-cta { display: none; }
+    .calc-results { grid-template-columns: repeat(3, 1fr); }
+    .hero h1 { letter-spacing: -1px; }
+    .contact-card { padding: 32px 24px; }
   }
-
-  @media (max-width: 500px) {
-    .features-grid { grid-template-columns: 1fr; }
-    .hero h1 { font-size: 32px; }
-    .alert-preview { max-width: 100%; }
-    .contact-box { padding: 28px 20px; }
-    section { padding: 56px 0; }
+  @media (max-width: 540px) {
+    .stats-grid { grid-template-columns: 1fr; max-width: 260px; }
+    .calc-results { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
-<!-- STICKY CTA -->
-<div class="sticky-cta" id="sticky-cta">
-  <a href="#contact">🚀 Get Access</a>
-</div>
-
-<!-- MOBILE BOTTOM NAV -->
-<div class="mobile-nav" id="mobile-nav">
-  <div class="mobile-nav-inner">
-    <a href="#how-it-works" class="mobile-nav-item"><span class="icon">⚙️</span>How It Works</a>
-    <a href="#features" class="mobile-nav-item"><span class="icon">⚡</span>Features</a>
-    <a href="#pricing" class="mobile-nav-item"><span class="icon">💰</span>Pricing</a>
-    <a href="#faq" class="mobile-nav-item"><span class="icon">❓</span>FAQ</a>
-    <a href="#contact" class="mobile-nav-item cta"><span class="icon">🔑</span>Get Access</a>
-  </div>
+<div class="bg-blobs">
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-blob bg-blob-3"></div>
 </div>
 
 <!-- NAV -->
@@ -802,7 +757,7 @@
       <div class="nav-logo-icon">🔍</div>
       <div class="nav-logo-text">CP's <span>Arb Bot</span></div>
     </a>
-    <div style="display:flex;align-items:center;gap:12px;">
+    <div style="display:flex;align-items:center;gap:6px;">
       <ul class="nav-links">
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#features">Features</a></li>
@@ -810,7 +765,7 @@
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#contact" class="nav-cta">Get Access</a></li>
       </ul>
-      <a href="https://cbiz1bot.github.io/arb-dash/dashboard.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#7c4dff,#5e35b1);color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;font-family:Syne,sans-serif;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">🔐 Dashboard</a>
+      <a href="https://cbiz1bot.github.io/arb-dash/dashboard.html" target="_blank" class="nav-dash">🔐 Dashboard</a>
     </div>
   </div>
 </nav>
@@ -820,40 +775,62 @@
   <div class="container">
     <div class="hero-badge">
       <div class="hero-dot"></div>
-      Now Live — Arbitrage Alerts in Real Time
+      Live — Real-Time Arbitrage Alerts
     </div>
-    <h1>Find <span>Guaranteed Profit</span><br>Bets on Autopilot</h1>
-    <p class="hero-sub">CP's Arb Bot monitors top bookmakers 24/7 and instantly alerts you on Telegram the moment a qualifying arbitrage opportunity is found — so you never miss a bet.</p>
+    <h1>Find <span class="highlight">Guaranteed Profit</span><br>Bets on Autopilot</h1>
+    <p class="hero-sub">CP's Arb Bot monitors top bookmakers 24/7 and fires an instant Telegram alert the moment a qualifying arbitrage opportunity appears — complete with odds, stakes and calculator.</p>
     <div class="hero-actions">
-      <a href="#pricing" class="btn-hero btn-hero-primary">🚀 Get Started</a>
-      <a href="#how-it-works" class="btn-hero btn-hero-secondary">Learn More →</a>
+      <a href="#pricing" class="btn btn-primary">🚀 Get Started</a>
+      <a href="#how-it-works" class="btn btn-secondary">See How It Works →</a>
+    </div>
+
+    <!-- LIVE STATS -->
+    <div class="stats-hero">
+      <div class="stats-hero-label">⚡ Live Stats — Updated Every 30 Seconds</div>
+      <div class="stats-grid">
+        <div class="stat-card green">
+          <div class="stat-label">Alerts Today</div>
+          <div class="stat-number" id="counter-daily">—</div>
+          <div class="stat-sub">resets at midnight</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-label">Total Alerts</div>
+          <div class="stat-number" id="counter-total">—</div>
+          <div class="stat-sub">and counting</div>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-label">Scan Interval</div>
+          <div class="stat-number">5s</div>
+          <div class="stat-sub">always watching</div>
+        </div>
+      </div>
     </div>
 
     <!-- ALERT PREVIEW -->
-    <div class="alert-preview">
-      <div class="alert-header">
-        <div class="telegram-icon">✈️</div>
-        <div>
-          <div class="alert-bot-name">CP's Arb Bot</div>
-          <div class="alert-bot-sub">Just now</div>
+    <div class="alert-preview-wrap">
+      <div class="alert-card">
+        <div class="alert-card-header">
+          <div class="tg-bubble">✈️</div>
+          <div>
+            <div class="tg-name">CP's Arb Bot</div>
+            <div class="tg-time">Just now</div>
+          </div>
+          <div style="margin-left:auto;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);border-radius:6px;padding:3px 10px;font-size:11px;font-family:'Space Mono',monospace;color:var(--accent);">LIVE</div>
         </div>
-      </div>
-      <div class="alert-body">
-        <div class="alert-title">🟠 New Arb Bet Alert!</div>
-        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">━━━━━━━━━━━━━━━━━━━━</div>
-        <div class="row"><span class="label">🕐 Found at</span><span class="value">22 Mar 2026 18:42</span></div>
-        <div class="row"><span class="label">🏆 Event</span><span class="value">Man City vs Arsenal</span></div>
-        <div class="row"><span class="label">💰 Profit</span><span class="value profit">7.34%</span></div>
-        <div class="row"><span class="label">📚 Books</span><span class="value">Bet365 vs William Hill</span></div>
-        <div class="row"><span class="label">📊 Odds</span><span class="value">2.10 / 3.80</span></div>
-        <div style="font-size:12px;color:var(--muted);margin:8px 0;">━━━━━━━━━━━━━━━━━━━━</div>
-        <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">🧮 Calculator (£100 stake)</div>
-        <div style="font-size:12px;">📌 Bet365 @ 2.10 → Stake <b>£64.38</b></div>
-        <div style="font-size:12px;">📌 William Hill @ 3.80 → Stake <b>£35.62</b></div>
-        <div style="font-size:12px;color:var(--accent);margin-top:6px;">💰 Guaranteed profit: <b>£7.34</b></div>
-        <div class="alert-links">
-          <span class="alert-link">➡️ Bet 1 — Bet365</span>
-          <span class="alert-link">➡️ Bet 2 — William Hill</span>
+        <div class="alert-body">
+          <div class="alert-title-row">🟠 New Arb Bet Alert!</div>
+          <div class="alert-divider"></div>
+          <div class="alert-row"><span class="alert-key">🕐 Found at</span><span class="alert-val">22 Mar 2026 18:42</span></div>
+          <div class="alert-row"><span class="alert-key">🏆 Event</span><span class="alert-val">Man City vs Arsenal</span></div>
+          <div class="alert-row"><span class="alert-key">💰 Profit</span><span class="alert-val profit">7.34%</span></div>
+          <div class="alert-row"><span class="alert-key">📚 Books</span><span class="alert-val">Bet365 vs William Hill</span></div>
+          <div class="alert-row"><span class="alert-key">📊 Odds</span><span class="alert-val">2.10 / 3.80</span></div>
+          <div class="alert-calc">
+            <div class="alert-calc-title">🧮 Calculator (£100 total stake)</div>
+            <div class="alert-calc-row">📌 Bet365 @ 2.10 → Stake <b>£64.38</b></div>
+            <div class="alert-calc-row">📌 William Hill @ 3.80 → Stake <b>£35.62</b></div>
+            <div class="alert-profit-line">💰 Guaranteed profit: <b>£7.34</b></div>
+          </div>
         </div>
       </div>
     </div>
@@ -862,144 +839,117 @@
 
 <!-- TICKER -->
 <div class="ticker-wrap">
-  <div class="ticker-track" id="ticker-track">
-    <div class="ticker-item">⚽ Man City vs Arsenal &nbsp;·&nbsp; <span class="ticker-profit">7.34%</span> profit &nbsp;·&nbsp; Bet365 vs William Hill &nbsp;·&nbsp; 2 mins ago</div>
-    <div class="ticker-item">🎾 Djokovic vs Alcaraz &nbsp;·&nbsp; <span class="ticker-profit">5.12%</span> profit &nbsp;·&nbsp; Betfair vs Paddy Power &nbsp;·&nbsp; 4 mins ago</div>
-    <div class="ticker-item">🏀 Lakers vs Celtics &nbsp;·&nbsp; <span class="ticker-profit">9.87%</span> profit &nbsp;·&nbsp; BetMGM vs BetVictor &nbsp;·&nbsp; 7 mins ago</div>
-    <div class="ticker-item">⚽ Liverpool vs Chelsea &nbsp;·&nbsp; <span class="ticker-profit">6.21%</span> profit &nbsp;·&nbsp; Sky Bet vs Bwin &nbsp;·&nbsp; 11 mins ago</div>
-    <div class="ticker-item">🎾 Sinner vs Medvedev &nbsp;·&nbsp; <span class="ticker-profit">4.55%</span> profit &nbsp;·&nbsp; Betuk vs William Hill &nbsp;·&nbsp; 15 mins ago</div>
-    <div class="ticker-item">⚽ Barcelona vs Real Madrid &nbsp;·&nbsp; <span class="ticker-profit">11.20%</span> profit &nbsp;·&nbsp; Bet365 vs Betfair &nbsp;·&nbsp; 18 mins ago</div>
-    <!-- Duplicate for seamless loop -->
-    <div class="ticker-item">⚽ Man City vs Arsenal &nbsp;·&nbsp; <span class="ticker-profit">7.34%</span> profit &nbsp;·&nbsp; Bet365 vs William Hill &nbsp;·&nbsp; 2 mins ago</div>
-    <div class="ticker-item">🎾 Djokovic vs Alcaraz &nbsp;·&nbsp; <span class="ticker-profit">5.12%</span> profit &nbsp;·&nbsp; Betfair vs Paddy Power &nbsp;·&nbsp; 4 mins ago</div>
-    <div class="ticker-item">🏀 Lakers vs Celtics &nbsp;·&nbsp; <span class="ticker-profit">9.87%</span> profit &nbsp;·&nbsp; BetMGM vs BetVictor &nbsp;·&nbsp; 7 mins ago</div>
-    <div class="ticker-item">⚽ Liverpool vs Chelsea &nbsp;·&nbsp; <span class="ticker-profit">6.21%</span> profit &nbsp;·&nbsp; Sky Bet vs Bwin &nbsp;·&nbsp; 11 mins ago</div>
-    <div class="ticker-item">🎾 Sinner vs Medvedev &nbsp;·&nbsp; <span class="ticker-profit">4.55%</span> profit &nbsp;·&nbsp; Betuk vs William Hill &nbsp;·&nbsp; 15 mins ago</div>
-    <div class="ticker-item">⚽ Barcelona vs Real Madrid &nbsp;·&nbsp; <span class="ticker-profit">11.20%</span> profit &nbsp;·&nbsp; Bet365 vs Betfair &nbsp;·&nbsp; 18 mins ago</div>
+  <div class="ticker-track">
+    <div class="ticker-item">⚽ Man City vs Arsenal <span class="ticker-sep">·</span> <span class="ticker-profit">7.34%</span> profit <span class="ticker-sep">·</span> Bet365 vs William Hill <span class="ticker-sep">·</span> 2 mins ago</div>
+    <div class="ticker-item">🎾 Djokovic vs Alcaraz <span class="ticker-sep">·</span> <span class="ticker-profit">5.12%</span> profit <span class="ticker-sep">·</span> Betfair vs Paddy Power <span class="ticker-sep">·</span> 4 mins ago</div>
+    <div class="ticker-item">🏀 Lakers vs Celtics <span class="ticker-sep">·</span> <span class="ticker-profit">9.87%</span> profit <span class="ticker-sep">·</span> BetMGM vs BetVictor <span class="ticker-sep">·</span> 7 mins ago</div>
+    <div class="ticker-item">⚽ Liverpool vs Chelsea <span class="ticker-sep">·</span> <span class="ticker-profit">6.21%</span> profit <span class="ticker-sep">·</span> Sky Bet vs Bwin <span class="ticker-sep">·</span> 11 mins ago</div>
+    <div class="ticker-item">🎾 Sinner vs Medvedev <span class="ticker-sep">·</span> <span class="ticker-profit">4.55%</span> profit <span class="ticker-sep">·</span> Betuk vs William Hill <span class="ticker-sep">·</span> 15 mins ago</div>
+    <div class="ticker-item">⚽ Barcelona vs Real Madrid <span class="ticker-sep">·</span> <span class="ticker-profit">11.20%</span> profit <span class="ticker-sep">·</span> Bet365 vs Betfair <span class="ticker-sep">·</span> 18 mins ago</div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item">⚽ Man City vs Arsenal <span class="ticker-sep">·</span> <span class="ticker-profit">7.34%</span> profit <span class="ticker-sep">·</span> Bet365 vs William Hill <span class="ticker-sep">·</span> 2 mins ago</div>
+    <div class="ticker-item">🎾 Djokovic vs Alcaraz <span class="ticker-sep">·</span> <span class="ticker-profit">5.12%</span> profit <span class="ticker-sep">·</span> Betfair vs Paddy Power <span class="ticker-sep">·</span> 4 mins ago</div>
+    <div class="ticker-item">🏀 Lakers vs Celtics <span class="ticker-sep">·</span> <span class="ticker-profit">9.87%</span> profit <span class="ticker-sep">·</span> BetMGM vs BetVictor <span class="ticker-sep">·</span> 7 mins ago</div>
+    <div class="ticker-item">⚽ Liverpool vs Chelsea <span class="ticker-sep">·</span> <span class="ticker-profit">6.21%</span> profit <span class="ticker-sep">·</span> Sky Bet vs Bwin <span class="ticker-sep">·</span> 11 mins ago</div>
+    <div class="ticker-item">🎾 Sinner vs Medvedev <span class="ticker-sep">·</span> <span class="ticker-profit">4.55%</span> profit <span class="ticker-sep">·</span> Betuk vs William Hill <span class="ticker-sep">·</span> 15 mins ago</div>
+    <div class="ticker-item">⚽ Barcelona vs Real Madrid <span class="ticker-sep">·</span> <span class="ticker-profit">11.20%</span> profit <span class="ticker-sep">·</span> Bet365 vs Betfair <span class="ticker-sep">·</span> 18 mins ago</div>
   </div>
 </div>
 
-<hr class="section-divider">
-
-<!-- LIVE STATS -->
-<section style="padding:50px 0;">
-  <div class="container">
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:800px;margin:0 auto;">
-
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;text-align:center;backdrop-filter:blur(10px);">
-        <div style="font-size:11px;font-family:Space Mono,monospace;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;">Alerts Today</div>
-        <div id="counter-daily" style="font-size:48px;font-weight:800;color:var(--accent);font-family:Syne,sans-serif;letter-spacing:0;line-height:1.1;">—</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:8px;font-family:Space Mono,monospace;">resets at midnight</div>
-      </div>
-
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;text-align:center;backdrop-filter:blur(10px);">
-        <div style="font-size:11px;font-family:Space Mono,monospace;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;">Total Alerts Sent</div>
-        <div id="counter-total" style="font-size:48px;font-weight:800;color:#b39dff;font-family:Syne,sans-serif;letter-spacing:0;line-height:1.1;">—</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:8px;font-family:Space Mono,monospace;">and counting</div>
-      </div>
-
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;text-align:center;backdrop-filter:blur(10px);">
-        <div style="font-size:11px;font-family:Space Mono,monospace;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;">Scan Interval</div>
-        <div style="font-size:48px;font-weight:800;color:var(--gold);font-family:Syne,sans-serif;letter-spacing:0;line-height:1.1;">5s</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:8px;font-family:Space Mono,monospace;">always watching</div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<hr class="section-divider">
+<hr class="divider">
 
 <!-- HOW IT WORKS -->
 <section id="how-it-works">
   <div class="container">
     <div class="section-label">How It Works</div>
-    <h2 class="section-title">Up and Running in <span>Minutes</span></h2>
-    <p class="section-sub">No technical knowledge needed. Follow the setup guide, enter your license key and let the bot do the rest.</p>
+    <h2 class="section-title">Up and Running in <span class="highlight">Minutes</span></h2>
+    <p class="section-sub">No technical knowledge required. Run the setup wizard, enter your key, and let the bot do the rest.</p>
     <div class="steps">
-      <div class="step">
+      <div class="step fade-up">
         <div class="step-num">1</div>
         <h3>Purchase a License</h3>
-        <p>Choose a plan that suits you and contact us to get your unique license key sent instantly.</p>
+        <p>Choose your plan and message us on Telegram. Your unique license key is sent instantly.</p>
       </div>
-      <div class="step">
+      <div class="step fade-up">
         <div class="step-num">2</div>
-        <h3>Set Up the Bot</h3>
-        <p>Follow our simple setup guide to get the bot running on your PC or Mac in just a few minutes.</p>
+        <h3>Run the Setup Wizard</h3>
+        <p>Our guided wizard walks you through the full install in minutes — no command-line knowledge needed.</p>
       </div>
-      <div class="step">
+      <div class="step fade-up">
         <div class="step-num">3</div>
-        <h3>Receive Alerts</h3>
-        <p>The bot scans 24/7 and sends instant Telegram alerts when a qualifying arb bet is found — complete with odds, stakes and bookmaker links.</p>
+        <h3>Receive Instant Alerts</h3>
+        <p>The bot scans every 5 seconds and fires Telegram alerts the moment a qualifying arb is found.</p>
       </div>
     </div>
   </div>
 </section>
 
-<hr class="section-divider">
+<hr class="divider">
 
 <!-- FEATURES -->
 <section id="features">
   <div class="container">
     <div class="section-label">Features</div>
-    <h2 class="section-title">Everything You Need to <span>Arb Smarter</span></h2>
-    <p class="section-sub">Built from the ground up to be fast, reliable and easy to use.</p>
+    <h2 class="section-title">Everything You Need to <span class="highlight">Arb Smarter</span></h2>
+    <p class="section-sub">Built from the ground up to be fast, reliable, and effortless to use.</p>
     <div class="features-grid">
-      <div class="feature">
+      <div class="feature fade-up">
         <div class="feature-icon">⚡</div>
-        <h3>Real Time Scanning</h3>
-        <p>The bot scans every 5 seconds so you're always first to know when a new opportunity appears.</p>
+        <h3>Real-Time Scanning</h3>
+        <p>Scans every 5 seconds so you're always the first to know when a new opportunity appears.</p>
       </div>
-      <div class="feature">
+      <div class="feature fade-up">
         <div class="feature-icon">📲</div>
         <h3>Instant Telegram Alerts</h3>
         <p>Alerts land directly in your Telegram — personal chat or group. Never miss a bet again.</p>
       </div>
-      <div class="feature">
+      <div class="feature fade-up">
         <div class="feature-icon">🧮</div>
         <h3>Built-in Calculator</h3>
-        <p>Every alert includes a pre-calculated stake breakdown based on £100 so you know exactly how much to place on each side.</p>
+        <p>Every alert includes an automatic stake breakdown so you know exactly how much to place on each side.</p>
       </div>
-      <div class="feature">
-        <div class="feature-icon">🎯</div>
-        <h3>Smart Filtering</h3>
-        <p>Set your own minimum profit %, bookmakers and sports. Only get alerted for bets that match your criteria.</p>
-      </div>
-      <div class="feature">
+      <div class="feature fade-up">
         <div class="feature-icon">🔗</div>
         <h3>Direct Bookmaker Links</h3>
-        <p>One tap takes you straight to the bookmaker so you can place your bet before the odds move.</p>
+        <p>One tap from the alert takes you straight to the right page on each bookmaker — no hunting required.</p>
       </div>
-      <div class="feature">
+      <div class="feature fade-up">
+        <div class="feature-icon">🔒</div>
+        <h3>License-Protected</h3>
+        <p>Secure device-locked licensing so your bot stays private. Easy to reset if you switch machines.</p>
+      </div>
+      <div class="feature fade-up">
+        <div class="feature-icon">🛠️</div>
+        <h3>Setup Wizard</h3>
+        <p>A built-in interactive wizard configures everything for you. No editing config files by hand.</p>
+      </div>
+      <div class="feature fade-up">
+        <div class="feature-icon">⏰</div>
+        <h3>Age Filtering</h3>
+        <p>Set a maximum bet age so you only receive alerts for fresh opportunities — no stale odds.</p>
+      </div>
+      <div class="feature fade-up">
+        <div class="feature-icon">📊</div>
+        <h3>Profit Threshold</h3>
+        <p>Configure your minimum profit percentage so you only see arbs worth acting on.</p>
+      </div>
+      <div class="feature fade-up">
         <div class="feature-icon">📅</div>
         <h3>Daily Summary</h3>
-        <p>Get a midnight summary showing total bets found, best profit seen and most active bookmaker of the day.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">💚</div>
-        <h3>Hourly Heartbeat</h3>
-        <p>The bot checks in every hour to confirm it is still running — so you always know it is working in the background.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🔐</div>
-        <h3>License Protected</h3>
-        <p>Each license is tied to a single device to keep things secure and exclusive.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🖥️</div>
-        <h3>Mac & PC Support</h3>
-        <p>Works on both Mac (Big Sur or later) and Windows 10 or later. Simple setup with a full guide included.</p>
+        <p>An automated midnight recap shows you how many arbs were found today and in total.</p>
       </div>
     </div>
   </div>
 </section>
 
+<hr class="divider">
+
 <!-- BOOKMAKERS -->
-<section style="padding:50px 0;">
+<section>
   <div class="container">
     <div class="section-label">Supported Bookmakers</div>
-    <h2 class="section-title" style="margin-bottom:8px;">Works With All <span>Major Bookmakers</span></h2>
-    <p class="section-sub" style="margin-bottom:0;">The bot monitors all of these simultaneously so you never miss an opportunity.</p>
+    <h2 class="section-title">Works With All <span class="highlight">Major Bookmakers</span></h2>
+    <p class="section-sub">The bot monitors all of these simultaneously so you never miss an opportunity.</p>
     <div class="bookmaker-row fade-up">
       <div class="bookmaker-pill">Bet365</div>
       <div class="bookmaker-pill">William Hill</div>
@@ -1014,17 +964,17 @@
   </div>
 </section>
 
-<hr class="section-divider">
+<hr class="divider">
 
 <!-- PRICING -->
 <section id="pricing">
   <div class="container">
     <div class="section-label">Pricing</div>
-    <h2 class="section-title">Simple, <span>Transparent</span> Pricing</h2>
-    <p class="section-sub">No hidden fees. Cancel anytime. The bot pays for itself with your very first successful arb bet.</p>
+    <h2 class="section-title">Simple, <span class="highlight">Transparent</span> Pricing</h2>
+    <p class="section-sub">No hidden fees. Cancel anytime. The bot pays for itself with your very first successful arb.</p>
     <div class="pricing-grid">
 
-      <div class="pricing-card">
+      <div class="pricing-card fade-up">
         <div class="pricing-plan">Monthly</div>
         <div class="pricing-price"><span>£</span>20</div>
         <div class="pricing-period">per month</div>
@@ -1038,7 +988,7 @@
         <a href="#contact" class="btn-pricing btn-pricing-secondary">Get Started</a>
       </div>
 
-      <div class="pricing-card featured">
+      <div class="pricing-card featured fade-up">
         <div class="featured-badge">⭐ Most Popular</div>
         <div class="pricing-plan">6 Months</div>
         <div class="pricing-price"><span>£</span>90</div>
@@ -1054,7 +1004,7 @@
         <a href="#contact" class="btn-pricing btn-pricing-primary">Get Started</a>
       </div>
 
-      <div class="pricing-card">
+      <div class="pricing-card fade-up">
         <div class="pricing-plan">Annual</div>
         <div class="pricing-price"><span>£</span>120</div>
         <div class="pricing-period">per year — save £120</div>
@@ -1071,9 +1021,8 @@
       </div>
 
     </div>
-
     <div class="disclaimer">
-      ⚠️ A premium subscription to surebet.com is required to use this bot. This is not included in the price above — however it will pay for itself immediately with your first successful arbitrage bet. This bot is a software tool only. Always verify odds before placing bets. You are responsible for your own betting decisions.
+      ⚠️ A premium surebet.com subscription is required to use this bot (not included above). This bot is a software tool only. Always verify odds before placing. You are responsible for your own betting decisions.
     </div>
   </div>
 </section>
@@ -1082,27 +1031,27 @@
 <section>
   <div class="container">
     <div class="section-label">Profit Calculator</div>
-    <h2 class="section-title">How Much Could <span>You Make?</span></h2>
-    <p class="section-sub">Adjust the sliders to see your potential guaranteed profit per bet.</p>
+    <h2 class="section-title">How Much Could <span class="highlight">You Make?</span></h2>
+    <p class="section-sub">Adjust the sliders to see your potential guaranteed returns per bet.</p>
     <div class="calc-box fade-up">
-      <div class="calc-slider-wrap">
-        <div class="calc-slider-label">
-          <span>Total Stake</span>
-          <span class="calc-slider-value" id="stake-val">£500</span>
+      <div class="calc-row">
+        <div class="calc-row-header">
+          <span class="calc-row-label">Total Stake</span>
+          <span class="calc-row-val" id="stake-val">£500</span>
         </div>
         <input type="range" id="stake-slider" min="50" max="5000" step="50" value="500" oninput="updateCalc()">
       </div>
-      <div class="calc-slider-wrap">
-        <div class="calc-slider-label">
-          <span>Profit %</span>
-          <span class="calc-slider-value" id="profit-val">5%</span>
+      <div class="calc-row">
+        <div class="calc-row-header">
+          <span class="calc-row-label">Profit %</span>
+          <span class="calc-row-val" id="profit-val">5%</span>
         </div>
         <input type="range" id="profit-slider" min="1" max="15" step="0.5" value="5" oninput="updateCalc()">
       </div>
-      <div class="calc-slider-wrap">
-        <div class="calc-slider-label">
-          <span>Bets Per Day</span>
-          <span class="calc-slider-value" id="bets-val">3</span>
+      <div class="calc-row" style="margin-bottom:0;">
+        <div class="calc-row-header">
+          <span class="calc-row-label">Bets Per Day</span>
+          <span class="calc-row-val" id="bets-val">3</span>
         </div>
         <input type="range" id="bets-slider" min="1" max="20" step="1" value="3" oninput="updateCalc()">
       </div>
@@ -1120,70 +1069,64 @@
           <div class="calc-result-value" id="res-month" style="color:var(--gold);">£2,250</div>
         </div>
       </div>
-      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:16px;font-family:Space Mono,monospace;">⚠️ Estimates only. Always verify odds before placing. Past opportunities do not guarantee future results.</p>
+      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:20px;font-family:'Space Mono',monospace;line-height:1.6;">⚠️ Estimates only. Verify odds before placing. Past opportunities do not guarantee future results.</p>
     </div>
   </div>
 </section>
 
-<hr class="section-divider">
+<hr class="divider">
 
 <!-- FAQ -->
 <section id="faq">
   <div class="container">
     <div class="section-label">FAQ</div>
-    <h2 class="section-title">Common <span>Questions</span></h2>
+    <h2 class="section-title">Common <span class="highlight">Questions</span></h2>
     <p class="section-sub">Everything you need to know before getting started.</p>
     <div class="faq-list">
-
-      <div class="faq-item">
+      <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">What is arbitrage betting?</div>
         <div class="faq-a">Arbitrage betting (or arbing) involves placing bets on all possible outcomes of an event across different bookmakers, where the combined odds guarantee a profit regardless of the result. The bot finds these opportunities automatically.</div>
       </div>
-
-      <div class="faq-item">
+      <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">Is arbitrage betting legal?</div>
         <div class="faq-a">Yes, arbitrage betting is completely legal. Some bookmakers may limit or close accounts of frequent arbers, but it is not against any law. We recommend spreading your activity across multiple bookmakers.</div>
       </div>
-
-      <div class="faq-item">
+      <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">What do I need to get started?</div>
         <div class="faq-a">You need a PC or Mac (Mac Big Sur or later, Windows 10 or later), a surebet.com premium account, Google Chrome, and a Telegram account. A full setup guide is included with every license.</div>
       </div>
-
-      <div class="faq-item">
+      <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">Do I need to leave my computer on?</div>
-        <div class="faq-a">Yes, the bot runs on your PC or Mac so it needs to be left on and connected to the internet while the bot is running. It will alert you on your phone via Telegram wherever you are.</div>
+        <div class="faq-a">Yes — the bot runs locally on your machine so it needs to stay on and connected while scanning. Alerts come to your phone via Telegram wherever you are.</div>
       </div>
-
-      <div class="faq-item">
+      <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">How quickly does it find bets?</div>
         <div class="faq-a">The bot scans every 5 seconds and sends alerts instantly. Most bets are found and alerted within seconds of appearing on surebet.com.</div>
       </div>
-
-      <div class="faq-item">
+      <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">Can I use it on multiple devices?</div>
-        <div class="faq-a">Each license is tied to one device for security. If you need to switch devices, simply contact us and we will reset your device registration free of charge.</div>
+        <div class="faq-a">Each license is tied to one device for security. If you need to switch, contact us and we'll reset your device registration free of charge.</div>
       </div>
-
-      <div class="faq-item">
+      <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">Can I share it with friends?</div>
-        <div class="faq-a">Each license key only works on one device. If your friends want access they will need their own license key. Group deals may be available — contact us for details.</div>
+        <div class="faq-a">Each license key only works on one device. Friends will need their own key. Group deals may be available — contact us for details.</div>
       </div>
-
     </div>
   </div>
 </section>
+
+<hr class="divider">
 
 <!-- TESTIMONIALS -->
 <section>
   <div class="container">
     <div class="section-label">What People Say</div>
-    <h2 class="section-title">Trusted by <span>Arbers</span></h2>
+    <h2 class="section-title">Trusted by <span class="highlight">Arbers</span></h2>
     <p class="section-sub">Don't just take our word for it.</p>
     <div class="testimonials-grid">
       <div class="testimonial fade-up">
         <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"Found a 9% arb on a Premier League match within the first hour. The calculator made it dead simple to know exactly how much to stake on each side. Brilliant tool."</p>
+        <p class="testimonial-text">"Found a 9% arb on a Premier League match within the first hour. The calculator made it dead simple to know how much to stake on each side. Brilliant tool."</p>
         <div class="testimonial-author">
           <div class="testimonial-avatar">👤</div>
           <div>
@@ -1194,7 +1137,7 @@
       </div>
       <div class="testimonial fade-up">
         <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"I was sceptical at first but it genuinely works. The Telegram alerts come through almost instantly and the bet instructions mean I know exactly what to do every time."</p>
+        <p class="testimonial-text">"I was sceptical at first but it genuinely works. The Telegram alerts come through almost instantly and the bet instructions tell me exactly what to do every time."</p>
         <div class="testimonial-author">
           <div class="testimonial-avatar">👤</div>
           <div>
@@ -1205,12 +1148,12 @@
       </div>
       <div class="testimonial fade-up">
         <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"Paid for itself on day one. The daily summary is a nice touch too — love seeing the stats at midnight. Setup was easy with the wizard, took about 10 minutes."</p>
+        <p class="testimonial-text">"Paid for itself on day one. Love the daily stats summary at midnight too — keeps you motivated. Setup wizard made it super easy, took about 10 minutes."</p>
         <div class="testimonial-author">
           <div class="testimonial-avatar">👤</div>
           <div>
-            <div class="testimonial-name">Dan K.</div>
-            <div class="testimonial-since">Member since Mar 2026</div>
+            <div class="testimonial-name">Lee P.</div>
+            <div class="testimonial-since">Member since Jan 2026</div>
           </div>
         </div>
       </div>
@@ -1218,21 +1161,22 @@
   </div>
 </section>
 
-<hr class="section-divider">
+<hr class="divider">
 
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
     <div class="section-label">Get Access</div>
-    <h2 class="section-title">Ready to <span>Start Arbing?</span></h2>
-    <p class="section-sub">Get in touch to purchase your license key and get set up today.</p>
-    <div class="contact-box">
-      <h3>Contact Us</h3>
-      <p>Send us a message on Telegram with your chosen plan and we will get you set up with a license key and the setup guide right away.</p>
-      <div class="contact-methods">
-        <a href="https://t.me/yourusername" class="contact-btn contact-telegram">✈️ Message on Telegram</a>
-      </div>
-      <p style="margin-top:20px;font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;">Replace the link above with your actual Telegram username</p>
+    <h2 class="section-title">Ready to <span class="highlight">Start Arbing?</span></h2>
+    <p class="section-sub">Message us on Telegram to get your license key and start finding guaranteed profit bets today.</p>
+    <div class="contact-card fade-up">
+      <div class="contact-icon">✈️</div>
+      <h3>Message Us on Telegram</h3>
+      <p>Choose your plan, send us a message, and your license key will be with you straight away. We'll help you get set up if needed.</p>
+      <a href="https://t.me/cparbbot" target="_blank" class="btn-telegram">
+        <span style="font-size:18px;">✈️</span>
+        Contact on Telegram
+      </a>
     </div>
   </div>
 </section>
@@ -1240,33 +1184,33 @@
 <!-- FOOTER -->
 <footer>
   <div class="container">
-    <p>© 2026 <span>CP's Arb Bot</span> — All rights reserved &nbsp;|&nbsp; Software tool only, not financial advice &nbsp;|&nbsp; Use at your own risk</p>
+    <p>© 2026 CP's Arb Bot &nbsp;·&nbsp; A software tool for arbitrage alert monitoring &nbsp;·&nbsp; <a href="#faq" style="color:var(--muted);text-decoration:none;">FAQ</a></p>
+    <p style="margin-top:8px;">⚠️ Always verify odds before placing bets. Gambling can be addictive — please gamble responsibly.</p>
   </div>
 </footer>
 
+<!-- STICKY CTA -->
+<div class="sticky-cta" id="sticky-cta">
+  <a href="#contact">🚀 Get Your License Key</a>
+</div>
+
 <script>
+  // ── FAQ ──
   function toggleFaq(el) {
-    const item = el.parentElement;
+    const item = el.closest('.faq-item');
     const isOpen = item.classList.contains('open');
     document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
     if (!isOpen) item.classList.add('open');
   }
 
-  // ══════════════════════════════════════════════
-  //  EDIT ME — fill in your Supabase details here
+  // ── SUPABASE STATS ──
   const SB_URL = 'https://yhcdhnjbcyvcvfpcvrsm.supabase.co';
   const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloY2RobmpiY3l2Y3ZmcGN2cnNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDY5MTUsImV4cCI6MjA4OTYyMjkxNX0.70L8oi4uPd70CtuNYyRb10mjpQakubN6O9YpDXv3fv8';
-  // ══════════════════════════════════════════════
 
   async function fetchStats() {
-    if (!SB_URL || SB_URL.includes('your-project')) return;
     try {
       const res = await fetch(SB_URL + '/rest/v1/stats?select=id,value', {
-        headers: {
-          'apikey': SB_KEY,
-          'Authorization': 'Bearer ' + SB_KEY,
-          'Accept': 'application/json',
-        }
+        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Accept': 'application/json' }
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
@@ -1280,20 +1224,18 @@
         if (row.id === 'total_alerts') animateCounter('counter-total', row.value || 0);
       });
     } catch(e) {
-      document.getElementById('counter-daily').textContent = '0';
-      document.getElementById('counter-total').textContent = '0';
+      document.getElementById('counter-daily').textContent = '—';
+      document.getElementById('counter-total').textContent = '—';
     }
   }
 
   function animateCounter(id, target) {
     const el = document.getElementById(id);
     if (!el) return;
-    const start = 0;
     const duration = 1200;
     const startTime = performance.now();
     function update(now) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
+      const progress = Math.min((now - startTime) / duration, 1);
       const ease = 1 - Math.pow(1 - progress, 3);
       el.textContent = Math.floor(ease * target).toLocaleString();
       if (progress < 1) requestAnimationFrame(update);
@@ -1302,59 +1244,40 @@
     requestAnimationFrame(update);
   }
 
-  // Fetch on load and refresh every 30 seconds
   fetchStats();
   setInterval(fetchStats, 30000);
 
-  // ── SCROLL ANIMATIONS ──
+  // ── SCROLL FADE ──
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.15 });
-
-  document.querySelectorAll('.fade-up, .step, .feature, .pricing-card, .testimonial, .faq-item').forEach(el => {
-    el.classList.add('fade-up');
-    observer.observe(el);
-  });
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
   // ── STICKY CTA ──
-  const hero = document.querySelector('.hero');
+  const heroSection = document.querySelector('.hero');
   const stickyCta = document.getElementById('sticky-cta');
   window.addEventListener('scroll', () => {
-    if (hero) {
-      const heroBottom = hero.getBoundingClientRect().bottom;
-      if (heroBottom < 0) {
-        stickyCta.classList.add('show');
-      } else {
-        stickyCta.classList.remove('show');
-      }
+    if (heroSection) {
+      stickyCta.classList.toggle('show', heroSection.getBoundingClientRect().bottom < 0);
     }
-  });
+  }, { passive: true });
 
   // ── PROFIT CALCULATOR ──
   function updateCalc() {
     const stake = parseFloat(document.getElementById('stake-slider').value);
     const profit = parseFloat(document.getElementById('profit-slider').value);
     const bets = parseInt(document.getElementById('bets-slider').value);
-
     document.getElementById('stake-val').textContent = '£' + stake.toLocaleString();
     document.getElementById('profit-val').textContent = profit + '%';
     document.getElementById('bets-val').textContent = bets;
-
     const perBet = stake * (profit / 100);
     const perDay = perBet * bets;
     const perMonth = perDay * 30;
-
     document.getElementById('res-bet').textContent = '£' + perBet.toFixed(2);
     document.getElementById('res-day').textContent = '£' + perDay.toFixed(2);
     document.getElementById('res-month').textContent = '£' + Math.round(perMonth).toLocaleString();
   }
-
   updateCalc();
 </script>
-
 </body>
 </html>
