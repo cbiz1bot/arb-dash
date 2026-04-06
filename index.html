@@ -8,18 +8,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #080b12;
-    --bg2: #0d1017;
-    --surface: rgba(17,22,34,0.9);
-    --surface2: rgba(22,28,42,0.95);
-    --surface-hover: rgba(25,32,50,0.95);
-    --border: rgba(50,60,90,0.5);
-    --border-bright: rgba(80,100,150,0.5);
-    --accent: #00e676;
-    --accent-dim: rgba(0,230,118,0.12);
-    --accent-glow: rgba(0,230,118,0.2);
-    --purple: #7c6af7;
-    --purple-dim: rgba(124,106,247,0.12);
+    --bg: #040307;
+    --bg2: #090612;
+    --surface: rgba(18,13,34,0.86);
+    --surface2: rgba(28,18,52,0.9);
+    --surface-hover: rgba(34,23,64,0.94);
+    --border: rgba(116,86,200,0.33);
+    --border-bright: rgba(150,115,248,0.48);
+    --accent: #b388ff;
+    --accent-dim: rgba(179,136,255,0.14);
+    --accent-glow: rgba(179,136,255,0.24);
+    --purple: #8b5cf6;
+    --purple-dim: rgba(139,92,246,0.16);
     --warn: #ffb300;
     --danger: #f44336;
     --text: #e2e8f4;
@@ -36,12 +36,31 @@
   html { scroll-behavior: smooth; }
 
   body {
-    background: var(--bg);
+    background: linear-gradient(
+      155deg,
+      #010103 0%,
+      #09050f calc(40% + (var(--scroll-pct, 0) * 12%)),
+      #140a28 100%
+    );
     color: var(--text);
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: -20% -10% -20% -10%;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(circle at 20% calc(15% + (var(--scroll-pct, 0) * 30%)), rgba(135,78,255,0.22), transparent 52%),
+      radial-gradient(circle at 85% calc(78% - (var(--scroll-pct, 0) * 28%)), rgba(189,120,255,0.20), transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(36,13,70,0.32), transparent 62%);
+    transform: translate3d(0, calc(var(--scroll-pct, 0) * -70px), 0);
+    transition: transform 0.12s linear;
   }
 
   /* ── BACKGROUND BLOBS ── */
@@ -58,9 +77,9 @@
     filter: blur(120px);
     opacity: 0.12;
   }
-  .bg-blob-1 { width: 600px; height: 600px; background: #00e676; top: -150px; left: -150px; }
-  .bg-blob-2 { width: 500px; height: 500px; background: #7c6af7; bottom: 10%; right: -100px; }
-  .bg-blob-3 { width: 400px; height: 400px; background: #0ea5e9; top: 40%; left: 30%; }
+  .bg-blob-1 { width: 600px; height: 600px; background: #8b5cf6; top: -150px; left: -150px; }
+  .bg-blob-2 { width: 500px; height: 500px; background: #c084fc; bottom: 10%; right: -100px; }
+  .bg-blob-3 { width: 400px; height: 400px; background: #6d28d9; top: 40%; left: 30%; }
 
   .container {
     max-width: 1080px;
@@ -460,6 +479,14 @@
     transition: all 0.2s;
   }
   .bookmaker-pill:hover { border-color: var(--accent); color: var(--accent); }
+  .bookmaker-note {
+    margin: 16px auto 0;
+    max-width: 760px;
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
 
   /* ── PRICING ── */
   .pricing-grid {
@@ -593,6 +620,60 @@
   }
   .calc-result-label { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
   .calc-result-value { font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
+
+  /* ── ODDS CALCULATOR ── */
+  .odds-calc-box {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    backdrop-filter: blur(12px);
+  }
+  .odds-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .odds-field label {
+    display: block;
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .odds-field input,
+  .odds-field select {
+    width: 100%;
+    padding: 11px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+  }
+  .odds-field input:focus,
+  .odds-field select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+  .odds-result {
+    margin-top: 16px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.8;
+  }
+  .odds-result b { color: var(--text); }
+  .odds-result .good { color: var(--accent); font-weight: 700; }
+  .odds-result .bad { color: var(--warn); font-weight: 700; }
 
   /* ── FAQ ── */
   .faq-list { max-width: 680px; margin: 0 auto; }
@@ -729,16 +810,27 @@
   /* ── RESPONSIVE ── */
   @media (max-width: 800px) {
     .steps, .features-grid, .pricing-grid, .testimonials-grid { grid-template-columns: 1fr; }
-    .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .stats-grid { grid-template-columns: 1fr; gap: 10px; max-width: 520px; }
     .stat-number { font-size: 32px; }
     .nav-links { display: none; }
     .calc-results { grid-template-columns: repeat(3, 1fr); }
+    .odds-form-grid { grid-template-columns: 1fr; }
     .hero h1 { letter-spacing: -1px; }
     .contact-card { padding: 32px 24px; }
   }
   @media (max-width: 540px) {
-    .stats-grid { grid-template-columns: 1fr; max-width: 260px; }
+    .stats-grid { grid-template-columns: 1fr; max-width: 320px; }
     .calc-results { grid-template-columns: 1fr; }
+    .hero { padding: 124px 0 64px; }
+    .nav-inner { margin: 10px auto; padding: 10px 14px; }
+    .nav-dash { padding: 7px 12px !important; font-size: 12px !important; }
+  }
+
+  /* ── REDUCED MOTION / PERF ── */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+    .ticker-track { animation: none !important; transform: none !important; }
   }
 </style>
 </head>
@@ -761,6 +853,7 @@
       <ul class="nav-links">
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#features">Features</a></li>
+        <li><a href="#odds-calculator">Odds Calculator</a></li>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#contact" class="nav-cta">Get Access</a></li>
@@ -790,12 +883,12 @@
       <div class="stats-grid">
         <div class="stat-card green">
           <div class="stat-label">Alerts Today</div>
-          <div class="stat-number" id="counter-daily">—</div>
+          <div class="stat-number" id="counter-daily">0</div>
           <div class="stat-sub">resets at midnight</div>
         </div>
         <div class="stat-card purple">
           <div class="stat-label">Total Alerts</div>
-          <div class="stat-number" id="counter-total">—</div>
+          <div class="stat-number" id="counter-total">0</div>
           <div class="stat-sub">and counting</div>
         </div>
         <div class="stat-card gold">
@@ -822,14 +915,15 @@
           <div class="alert-divider"></div>
           <div class="alert-row"><span class="alert-key">🕐 Found at</span><span class="alert-val">22 Mar 2026 18:42</span></div>
           <div class="alert-row"><span class="alert-key">🏆 Event</span><span class="alert-val">Man City vs Arsenal</span></div>
-          <div class="alert-row"><span class="alert-key">💰 Profit</span><span class="alert-val profit">7.34%</span></div>
+          <div class="alert-row"><span class="alert-key">🎯 Market</span><span class="alert-val">Over/Under Cards 3.5</span></div>
+          <div class="alert-row"><span class="alert-key">💰 Profit</span><span class="alert-val profit">24.00%</span></div>
           <div class="alert-row"><span class="alert-key">📚 Books</span><span class="alert-val">Bet365 vs William Hill</span></div>
-          <div class="alert-row"><span class="alert-key">📊 Odds</span><span class="alert-val">2.10 / 3.80</span></div>
+          <div class="alert-row"><span class="alert-key">📊 Odds</span><span class="alert-val">1.95 / 2.20</span></div>
           <div class="alert-calc">
             <div class="alert-calc-title">🧮 Calculator (£100 total stake)</div>
-            <div class="alert-calc-row">📌 Bet365 @ 2.10 → Stake <b>£64.38</b></div>
-            <div class="alert-calc-row">📌 William Hill @ 3.80 → Stake <b>£35.62</b></div>
-            <div class="alert-profit-line">💰 Guaranteed profit: <b>£7.34</b></div>
+            <div class="alert-calc-row">📌 Over 3.5 Cards @ Bet365 (1.95) → Stake <b>£53.66</b></div>
+            <div class="alert-calc-row">📌 Under 3.5 Cards @ William Hill (2.20) → Stake <b>£46.34</b></div>
+            <div class="alert-profit-line">💰 Guaranteed profit: <b>£24.00</b></div>
           </div>
         </div>
       </div>
@@ -840,21 +934,52 @@
 <!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-track">
-    <div class="ticker-item">⚽ Man City vs Arsenal <span class="ticker-sep">·</span> <span class="ticker-profit">7.34%</span> profit <span class="ticker-sep">·</span> Bet365 vs William Hill <span class="ticker-sep">·</span> 2 mins ago</div>
-    <div class="ticker-item">🎾 Djokovic vs Alcaraz <span class="ticker-sep">·</span> <span class="ticker-profit">5.12%</span> profit <span class="ticker-sep">·</span> Betfair vs Paddy Power <span class="ticker-sep">·</span> 4 mins ago</div>
-    <div class="ticker-item">🏀 Lakers vs Celtics <span class="ticker-sep">·</span> <span class="ticker-profit">9.87%</span> profit <span class="ticker-sep">·</span> BetMGM vs BetVictor <span class="ticker-sep">·</span> 7 mins ago</div>
-    <div class="ticker-item">⚽ Liverpool vs Chelsea <span class="ticker-sep">·</span> <span class="ticker-profit">6.21%</span> profit <span class="ticker-sep">·</span> Sky Bet vs Bwin <span class="ticker-sep">·</span> 11 mins ago</div>
-    <div class="ticker-item">🎾 Sinner vs Medvedev <span class="ticker-sep">·</span> <span class="ticker-profit">4.55%</span> profit <span class="ticker-sep">·</span> Betuk vs William Hill <span class="ticker-sep">·</span> 15 mins ago</div>
-    <div class="ticker-item">⚽ Barcelona vs Real Madrid <span class="ticker-sep">·</span> <span class="ticker-profit">11.20%</span> profit <span class="ticker-sep">·</span> Bet365 vs Betfair <span class="ticker-sep">·</span> 18 mins ago</div>
+    <div class="ticker-item">⚽ Man City vs Arsenal <span class="ticker-sep">·</span> Over/Under Cards 3.5 <span class="ticker-sep">·</span> <span class="ticker-profit">24.00%</span> profit <span class="ticker-sep">·</span> Bet365 vs William Hill <span class="ticker-sep">·</span> 2 mins ago</div>
+    <div class="ticker-item">🎾 Djokovic vs Alcaraz <span class="ticker-sep">·</span> Over/Under Games 22.5 <span class="ticker-sep">·</span> <span class="ticker-profit">5.12%</span> profit <span class="ticker-sep">·</span> Betfair vs Paddy Power <span class="ticker-sep">·</span> 4 mins ago</div>
+    <div class="ticker-item">🏀 Lakers vs Celtics <span class="ticker-sep">·</span> Over/Under Rebounds 46.5 <span class="ticker-sep">·</span> <span class="ticker-profit">9.87%</span> profit <span class="ticker-sep">·</span> BetMGM vs BetVictor <span class="ticker-sep">·</span> 7 mins ago</div>
+    <div class="ticker-item">⚽ Liverpool vs Chelsea <span class="ticker-sep">·</span> Over/Under Cards 4.5 <span class="ticker-sep">·</span> <span class="ticker-profit">6.21%</span> profit <span class="ticker-sep">·</span> Sky Bet vs Bwin <span class="ticker-sep">·</span> 11 mins ago</div>
+    <div class="ticker-item">🎾 Sinner vs Medvedev <span class="ticker-sep">·</span> Over/Under Aces 10.5 <span class="ticker-sep">·</span> <span class="ticker-profit">4.55%</span> profit <span class="ticker-sep">·</span> Betuk vs William Hill <span class="ticker-sep">·</span> 15 mins ago</div>
+    <div class="ticker-item">⚽ Barcelona vs Real Madrid <span class="ticker-sep">·</span> Over/Under Cards 5.5 <span class="ticker-sep">·</span> <span class="ticker-profit">11.20%</span> profit <span class="ticker-sep">·</span> Bet365 vs Betfair <span class="ticker-sep">·</span> 18 mins ago</div>
     <!-- duplicate for seamless loop -->
-    <div class="ticker-item">⚽ Man City vs Arsenal <span class="ticker-sep">·</span> <span class="ticker-profit">7.34%</span> profit <span class="ticker-sep">·</span> Bet365 vs William Hill <span class="ticker-sep">·</span> 2 mins ago</div>
-    <div class="ticker-item">🎾 Djokovic vs Alcaraz <span class="ticker-sep">·</span> <span class="ticker-profit">5.12%</span> profit <span class="ticker-sep">·</span> Betfair vs Paddy Power <span class="ticker-sep">·</span> 4 mins ago</div>
-    <div class="ticker-item">🏀 Lakers vs Celtics <span class="ticker-sep">·</span> <span class="ticker-profit">9.87%</span> profit <span class="ticker-sep">·</span> BetMGM vs BetVictor <span class="ticker-sep">·</span> 7 mins ago</div>
-    <div class="ticker-item">⚽ Liverpool vs Chelsea <span class="ticker-sep">·</span> <span class="ticker-profit">6.21%</span> profit <span class="ticker-sep">·</span> Sky Bet vs Bwin <span class="ticker-sep">·</span> 11 mins ago</div>
-    <div class="ticker-item">🎾 Sinner vs Medvedev <span class="ticker-sep">·</span> <span class="ticker-profit">4.55%</span> profit <span class="ticker-sep">·</span> Betuk vs William Hill <span class="ticker-sep">·</span> 15 mins ago</div>
-    <div class="ticker-item">⚽ Barcelona vs Real Madrid <span class="ticker-sep">·</span> <span class="ticker-profit">11.20%</span> profit <span class="ticker-sep">·</span> Bet365 vs Betfair <span class="ticker-sep">·</span> 18 mins ago</div>
+    <div class="ticker-item">⚽ Man City vs Arsenal <span class="ticker-sep">·</span> Over/Under Cards 3.5 <span class="ticker-sep">·</span> <span class="ticker-profit">24.00%</span> profit <span class="ticker-sep">·</span> Bet365 vs William Hill <span class="ticker-sep">·</span> 2 mins ago</div>
+    <div class="ticker-item">🎾 Djokovic vs Alcaraz <span class="ticker-sep">·</span> Over/Under Games 22.5 <span class="ticker-sep">·</span> <span class="ticker-profit">5.12%</span> profit <span class="ticker-sep">·</span> Betfair vs Paddy Power <span class="ticker-sep">·</span> 4 mins ago</div>
+    <div class="ticker-item">🏀 Lakers vs Celtics <span class="ticker-sep">·</span> Over/Under Rebounds 46.5 <span class="ticker-sep">·</span> <span class="ticker-profit">9.87%</span> profit <span class="ticker-sep">·</span> BetMGM vs BetVictor <span class="ticker-sep">·</span> 7 mins ago</div>
+    <div class="ticker-item">⚽ Liverpool vs Chelsea <span class="ticker-sep">·</span> Over/Under Cards 4.5 <span class="ticker-sep">·</span> <span class="ticker-profit">6.21%</span> profit <span class="ticker-sep">·</span> Sky Bet vs Bwin <span class="ticker-sep">·</span> 11 mins ago</div>
+    <div class="ticker-item">🎾 Sinner vs Medvedev <span class="ticker-sep">·</span> Over/Under Aces 10.5 <span class="ticker-sep">·</span> <span class="ticker-profit">4.55%</span> profit <span class="ticker-sep">·</span> Betuk vs William Hill <span class="ticker-sep">·</span> 15 mins ago</div>
+    <div class="ticker-item">⚽ Barcelona vs Real Madrid <span class="ticker-sep">·</span> Over/Under Cards 5.5 <span class="ticker-sep">·</span> <span class="ticker-profit">11.20%</span> profit <span class="ticker-sep">·</span> Bet365 vs Betfair <span class="ticker-sep">·</span> 18 mins ago</div>
   </div>
 </div>
+
+<hr class="divider">
+
+<!-- ODDS CALCULATOR -->
+<section id="odds-calculator">
+  <div class="container">
+    <div class="section-label">Tools</div>
+    <h2 class="section-title">Homemade <span class="highlight">Odds Calculator</span></h2>
+    <p class="section-sub">Enter both sides of the market and switch between decimal or fractional odds.</p>
+    <div class="odds-calc-box fade-up">
+      <div class="odds-form-grid">
+        <div class="odds-field">
+          <label for="odds-format">Odds Format</label>
+          <select id="odds-format" onchange="updateOddsCalc()">
+            <option value="decimal">Decimal</option>
+            <option value="fractional">Fractional</option>
+          </select>
+        </div>
+        <div class="odds-field">
+          <label for="odd-a">Side A Odds</label>
+          <input id="odd-a" type="text" value="1.95" oninput="updateOddsCalc()" placeholder="e.g. 1.95 or 19/20">
+        </div>
+        <div class="odds-field">
+          <label for="odd-b">Side B Odds</label>
+          <input id="odd-b" type="text" value="2.20" oninput="updateOddsCalc()" placeholder="e.g. 2.20 or 6/5">
+        </div>
+      </div>
+      <div id="odds-result" class="odds-result">Enter valid odds to calculate.</div>
+    </div>
+  </div>
+</section>
 
 <hr class="divider">
 
@@ -863,17 +988,17 @@
   <div class="container">
     <div class="section-label">How It Works</div>
     <h2 class="section-title">Up and Running in <span class="highlight">Minutes</span></h2>
-    <p class="section-sub">No technical knowledge required. Run the setup wizard, enter your key, and let the bot do the rest.</p>
+    <p class="section-sub">No technical knowledge required. Join the private Telegram group and receive arb alerts instantly.</p>
     <div class="steps">
       <div class="step fade-up">
         <div class="step-num">1</div>
-        <h3>Purchase a License</h3>
-        <p>Choose your plan and message us on Telegram. Your unique license key is sent instantly.</p>
+        <h3>Purchase Group Access</h3>
+        <p>Choose your plan and message us on Telegram. We add you to the private alert group right away.</p>
       </div>
       <div class="step fade-up">
         <div class="step-num">2</div>
-        <h3>Run the Setup Wizard</h3>
-        <p>Our guided wizard walks you through the full install in minutes — no command-line knowledge needed.</p>
+        <h3>Join the Telegram Group</h3>
+        <p>Once payment is confirmed, you are added to the private group where all arb alerts are posted live.</p>
       </div>
       <div class="step fade-up">
         <div class="step-num">3</div>
@@ -915,8 +1040,8 @@
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">🔒</div>
-        <h3>License-Protected</h3>
-        <p>Secure device-locked licensing so your bot stays private. Easy to reset if you switch machines.</p>
+        <h3>Private Group Access</h3>
+        <p>Access is managed through a private Telegram group so members get fast, direct alerts in one place.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">🛠️</div>
@@ -956,11 +1081,24 @@
       <div class="bookmaker-pill">Betfair</div>
       <div class="bookmaker-pill">Paddy Power</div>
       <div class="bookmaker-pill">Sky Bet</div>
+      <div class="bookmaker-pill">Ladbrokes</div>
+      <div class="bookmaker-pill">Coral</div>
+      <div class="bookmaker-pill">Unibet</div>
+      <div class="bookmaker-pill">888sport</div>
+      <div class="bookmaker-pill">Betfred</div>
+      <div class="bookmaker-pill">BoyleSports</div>
+      <div class="bookmaker-pill">Spreadex</div>
+      <div class="bookmaker-pill">Midnite</div>
+      <div class="bookmaker-pill">QuinnBet</div>
+      <div class="bookmaker-pill">LiveScore Bet</div>
+      <div class="bookmaker-pill">Virgin Bet</div>
+      <div class="bookmaker-pill">Parimatch</div>
       <div class="bookmaker-pill">BetMGM</div>
       <div class="bookmaker-pill">BetUK</div>
       <div class="bookmaker-pill">BetVictor</div>
       <div class="bookmaker-pill">Bwin</div>
     </div>
+    <p class="bookmaker-note">Also works with selected worldwide bookmakers and major exchanges, including Betfair Exchange and Smarkets.</p>
   </div>
 </section>
 
@@ -983,7 +1121,7 @@
           <li>Telegram alerts</li>
           <li>Built-in calculator</li>
           <li>Setup guide included</li>
-          <li>Single device license</li>
+          <li>Private Telegram group access</li>
         </ul>
         <a href="#contact" class="btn-pricing btn-pricing-secondary">Get Started</a>
       </div>
@@ -998,7 +1136,7 @@
           <li>Telegram alerts</li>
           <li>Built-in calculator</li>
           <li>Setup guide included</li>
-          <li>Single device license</li>
+          <li>Private Telegram group access</li>
           <li>Priority support</li>
         </ul>
         <a href="#contact" class="btn-pricing btn-pricing-primary">Get Started</a>
@@ -1013,7 +1151,7 @@
           <li>Telegram alerts</li>
           <li>Built-in calculator</li>
           <li>Setup guide included</li>
-          <li>Single device license</li>
+          <li>Private Telegram group access</li>
           <li>Priority support</li>
           <li>Best value</li>
         </ul>
@@ -1022,7 +1160,7 @@
 
     </div>
     <div class="disclaimer">
-      ⚠️ A premium surebet.com subscription is required to use this bot (not included above). This bot is a software tool only. Always verify odds before placing. You are responsible for your own betting decisions.
+      ⚠️ No additional surebet subscription is required. You are buying direct access to our private Telegram alert group. Always verify odds before placing. You are responsible for your own betting decisions.
     </div>
   </div>
 </section>
@@ -1093,23 +1231,23 @@
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">What do I need to get started?</div>
-        <div class="faq-a">You need a PC or Mac (Mac Big Sur or later, Windows 10 or later), a surebet.com premium account, Google Chrome, and a Telegram account. A full setup guide is included with every license.</div>
+        <div class="faq-a">You only need a Telegram account and bookmaker accounts to place your bets. No surebet.com subscription is needed.</div>
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">Do I need to leave my computer on?</div>
-        <div class="faq-a">Yes — the bot runs locally on your machine so it needs to stay on and connected while scanning. Alerts come to your phone via Telegram wherever you are.</div>
+        <div class="faq-a">No. Alerts are posted in our private Telegram group, so you can receive them directly on your phone without running anything locally.</div>
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">How quickly does it find bets?</div>
-        <div class="faq-a">The bot scans every 5 seconds and sends alerts instantly. Most bets are found and alerted within seconds of appearing on surebet.com.</div>
+        <div class="faq-a">Alerts are posted in real time to the private group. Most opportunities appear in the feed within seconds of being detected.</div>
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">Can I use it on multiple devices?</div>
-        <div class="faq-a">Each license is tied to one device for security. If you need to switch, contact us and we'll reset your device registration free of charge.</div>
+        <div class="faq-a">You can access the private alert group from any device where you use Telegram.</div>
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">Can I share it with friends?</div>
-        <div class="faq-a">Each license key only works on one device. Friends will need their own key. Group deals may be available — contact us for details.</div>
+        <div class="faq-a">Access is for paying members only. Friends need their own membership to join the private alert group. Group deals may be available — contact us for details.</div>
       </div>
     </div>
   </div>
@@ -1168,11 +1306,11 @@
   <div class="container">
     <div class="section-label">Get Access</div>
     <h2 class="section-title">Ready to <span class="highlight">Start Arbing?</span></h2>
-    <p class="section-sub">Message us on Telegram to get your license key and start finding guaranteed profit bets today.</p>
+    <p class="section-sub">Message us on Telegram to buy access and get added to the private alert group today.</p>
     <div class="contact-card fade-up">
       <div class="contact-icon">✈️</div>
       <h3>Message Us on Telegram</h3>
-      <p>Choose your plan, send us a message, and your license key will be with you straight away. We'll help you get set up if needed.</p>
+      <p>Choose your plan, send us a message, and we will add you to the private Telegram alert group straight away.</p>
       <a href="https://t.me/cparbbot" target="_blank" class="btn-telegram">
         <span style="font-size:18px;">✈️</span>
         Contact on Telegram
@@ -1191,7 +1329,7 @@
 
 <!-- STICKY CTA -->
 <div class="sticky-cta" id="sticky-cta">
-  <a href="#contact">🚀 Get Your License Key</a>
+  <a href="#contact">🚀 Get Group Access</a>
 </div>
 
 <script>
@@ -1201,32 +1339,6 @@
     const isOpen = item.classList.contains('open');
     document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
     if (!isOpen) item.classList.add('open');
-  }
-
-  // ── SUPABASE STATS ──
-  const SB_URL = 'https://yhcdhnjbcyvcvfpcvrsm.supabase.co';
-  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloY2RobmpiY3l2Y3ZmcGN2cnNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDY5MTUsImV4cCI6MjA4OTYyMjkxNX0.70L8oi4uPd70CtuNYyRb10mjpQakubN6O9YpDXv3fv8';
-
-  async function fetchStats() {
-    try {
-      const res = await fetch(SB_URL + '/rest/v1/stats?select=id,value', {
-        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Accept': 'application/json' }
-      });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-      if (!Array.isArray(data) || data.length === 0) {
-        document.getElementById('counter-daily').textContent = '0';
-        document.getElementById('counter-total').textContent = '0';
-        return;
-      }
-      data.forEach(row => {
-        if (row.id === 'daily_alerts') animateCounter('counter-daily', row.value || 0);
-        if (row.id === 'total_alerts') animateCounter('counter-total', row.value || 0);
-      });
-    } catch(e) {
-      document.getElementById('counter-daily').textContent = '—';
-      document.getElementById('counter-total').textContent = '—';
-    }
   }
 
   function animateCounter(id, target) {
@@ -1244,6 +1356,52 @@
     requestAnimationFrame(update);
   }
 
+  // ── LIVE STATS (minimal risk w/ anon key + locked-down view) ──
+  // 1) In Supabase, create a VIEW named `public_stats` that exposes only the stats you want public.
+  // 2) Put your *anon* key below (anon keys are meant to be public).
+  const SB_URL = 'https://yhcdhnjbcyvcvfpcvrsm.supabase.co';
+  const SB_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloY2RobmpiY3l2Y3ZmcGN2cnNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDY5MTUsImV4cCI6MjA4OTYyMjkxNX0.70L8oi4uPd70CtuNYyRb10mjpQakubN6O9YpDXv3fv8'
+
+  async function fetchStats() {
+    const dailyEl = document.getElementById('counter-daily');
+    const totalEl = document.getElementById('counter-total');
+    if (!SB_ANON_KEY) {
+      dailyEl.textContent = '—';
+      totalEl.textContent = '—';
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        SB_URL + '/rest/v1/public_stats?select=id,value',
+        {
+          cache: 'no-store',
+          headers: {
+            'apikey': SB_ANON_KEY,
+            'Authorization': 'Bearer ' + SB_ANON_KEY,
+            'Accept': 'application/json',
+          }
+        }
+      );
+
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const rows = await res.json();
+
+      let daily = 0;
+      let total = 0;
+      (rows || []).forEach((row) => {
+        if (row.id === 'daily_alerts') daily = Number(row.value || 0);
+        if (row.id === 'total_alerts') total = Number(row.value || 0);
+      });
+
+      animateCounter('counter-daily', daily);
+      animateCounter('counter-total', total);
+    } catch (e) {
+      dailyEl.textContent = '—';
+      totalEl.textContent = '—';
+    }
+  }
+
   fetchStats();
   setInterval(fetchStats, 30000);
 
@@ -1256,7 +1414,12 @@
   // ── STICKY CTA ──
   const heroSection = document.querySelector('.hero');
   const stickyCta = document.getElementById('sticky-cta');
+  const root = document.documentElement;
   window.addEventListener('scroll', () => {
+    const maxScroll = Math.max(document.body.scrollHeight - window.innerHeight, 1);
+    const scrollPct = Math.min(window.scrollY / maxScroll, 1);
+    root.style.setProperty('--scroll-pct', scrollPct.toFixed(3));
+
     if (heroSection) {
       stickyCta.classList.toggle('show', heroSection.getBoundingClientRect().bottom < 0);
     }
@@ -1278,6 +1441,57 @@
     document.getElementById('res-month').textContent = '£' + Math.round(perMonth).toLocaleString();
   }
   updateCalc();
+
+  // ── HOMEMADE ODDS CALCULATOR ──
+  function parseOdd(raw, format) {
+    if (!raw) return NaN;
+    const value = String(raw).trim();
+
+    if (format === 'decimal') {
+      const dec = parseFloat(value);
+      return Number.isFinite(dec) && dec > 1 ? dec : NaN;
+    }
+
+    const parts = value.split('/');
+    if (parts.length !== 2) return NaN;
+    const num = parseFloat(parts[0]);
+    const den = parseFloat(parts[1]);
+    if (!Number.isFinite(num) || !Number.isFinite(den) || den <= 0) return NaN;
+    return num / den + 1;
+  }
+
+  function updateOddsCalc() {
+    const format = document.getElementById('odds-format').value;
+    const a = parseOdd(document.getElementById('odd-a').value, format);
+    const b = parseOdd(document.getElementById('odd-b').value, format);
+    const resultEl = document.getElementById('odds-result');
+
+    if (!Number.isFinite(a) || !Number.isFinite(b)) {
+      resultEl.innerHTML = 'Please enter valid odds. Decimal examples: <b>1.95</b>, <b>2.20</b>. Fractional examples: <b>19/20</b>, <b>6/5</b>.';
+      return;
+    }
+
+    const inv = (1 / a) + (1 / b);
+    const implied = inv * 100;
+    const totalStake = 100;
+    const stakeA = (totalStake / a) / inv;
+    const stakeB = (totalStake / b) / inv;
+    const payout = totalStake / inv;
+    const profit = payout - totalStake;
+    const profitPct = (profit / totalStake) * 100;
+    const statusClass = inv < 1 ? 'good' : 'bad';
+    const statusText = inv < 1 ? 'Arbitrage found' : 'No arbitrage';
+
+    resultEl.innerHTML =
+      'Implied probability: <b>' + implied.toFixed(2) + '%</b><br>' +
+      'Status: <span class="' + statusClass + '">' + statusText + '</span><br>' +
+      'Split for £100 total stake: <b>£' + stakeA.toFixed(2) + '</b> on Side A and <b>£' + stakeB.toFixed(2) + '</b> on Side B<br>' +
+      'Projected return: <b>£' + payout.toFixed(2) + '</b> (' +
+      (profit >= 0 ? '+' : '') + '<b>£' + profit.toFixed(2) + '</b>, ' +
+      (profitPct >= 0 ? '+' : '') + profitPct.toFixed(2) + '%)';
+  }
+
+  updateOddsCalc();
 </script>
 </body>
 </html>
