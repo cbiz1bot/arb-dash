@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ghost Arb Bot — Automated Arbitrage Alerts</title>
+<!--
+  Logo 404 or wrong image on GitHub Pages?
+  Project sites use a URL like https://USER.github.io/REPO_NAME/ — relative "ghost-arb-logo.png"
+  must resolve under that folder. Uncomment ONE line below and set REPO_NAME to your repo
+  (e.g. arb-dash). Use trailing slash. Leave both commented for local file:// or custom domain at site root.
+-->
+<!-- <base href="/REPO_NAME/"> -->
+<!-- <base href="https://USER.github.io/REPO_NAME/"> -->
+<link rel="preload" href="./ghost-arb-logo.png" as="image" type="image/png" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -358,8 +367,10 @@
   .tg-bubble-logo {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
+    padding: 3px;
+    box-sizing: border-box;
   }
   .tg-name { font-size: 13px; font-weight: 700; }
   .tg-time { font-size: 11px; color: var(--muted); }
@@ -741,7 +752,7 @@
     transition: max-height 0.3s ease, padding 0.3s ease;
     padding: 0 20px;
   }
-  .faq-item.open .faq-a { max-height: 200px; padding: 0 20px 18px; }
+  .faq-item.open .faq-a { max-height: 320px; padding: 0 20px 18px; }
 
   /* ── TESTIMONIALS ── */
   .testimonials-grid {
@@ -771,32 +782,94 @@
   .testimonial-name { font-size: 13px; font-weight: 700; }
   .testimonial-since { font-size: 11px; color: var(--muted); }
 
-  /* ── CONTACT ── */
+  /* ── GET ACCESS / CHECKOUT ── */
   .contact-card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 48px;
+    padding: 40px 40px 44px;
     text-align: center;
-    max-width: 560px;
+    max-width: 720px;
     margin: 0 auto;
     backdrop-filter: blur(16px);
   }
-  .contact-icon { font-size: 48px; margin-bottom: 16px; }
-  .contact-card h3 { font-size: 24px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
-  .contact-card p { font-size: 15px; color: var(--text2); line-height: 1.7; margin-bottom: 28px; }
-  .btn-telegram {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: #29b6f6;
-    color: #fff;
-    padding: 14px 32px;
+  .contact-icon { font-size: 44px; margin-bottom: 14px; }
+  .contact-card h3 { font-size: 22px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
+  .contact-card > p { font-size: 14.5px; color: var(--text2); line-height: 1.75; margin-bottom: 28px; max-width: 520px; margin-left: auto; margin-right: auto; }
+  .access-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    text-align: left;
+    margin-bottom: 28px;
+  }
+  .access-step {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    position: relative;
+  }
+  .access-step-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .access-step h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .access-step p { font-size: 12.5px; color: var(--text2); line-height: 1.65; margin: 0; }
+  .access-note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 22px;
+    font-family: 'Space Mono', monospace;
+  }
+  .access-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+  }
+  .btn-checkout {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--purple), var(--accent));
+    color: #0a0614;
+    padding: 14px 28px;
     border-radius: 12px;
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 800;
     text-decoration: none;
     transition: all 0.2s;
+    box-shadow: 0 6px 24px rgba(139, 92, 246, 0.28);
   }
-  .btn-telegram:hover { background: #039be5; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(41,182,246,0.3); }
+  .btn-checkout:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(139, 92, 246, 0.35); color: #0a0614; }
+  .btn-checkout-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 22px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--text);
+    border: 1px solid var(--border-bright);
+    background: rgba(255,255,255,0.04);
+    transition: all 0.2s;
+  }
+  .btn-checkout-outline:hover { border-color: var(--accent); color: var(--accent); }
+  @media (max-width: 700px) {
+    .access-steps { grid-template-columns: 1fr; }
+    .contact-card { padding: 32px 22px 36px; }
+  }
 
   /* ── FOOTER ── */
   footer {
@@ -821,17 +894,17 @@
   .sticky-cta.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
   .sticky-cta a {
     display: inline-flex; align-items: center; gap: 8px;
-    background: var(--accent);
-    color: #000;
+    background: linear-gradient(135deg, var(--purple), var(--accent));
+    color: #0a0614;
     padding: 13px 22px;
     border-radius: 12px;
     font-size: 14px;
     font-weight: 800;
     text-decoration: none;
-    box-shadow: 0 4px 24px rgba(0,230,118,0.35);
+    box-shadow: 0 4px 24px rgba(139, 92, 246, 0.35);
     transition: all 0.2s;
   }
-  .sticky-cta a:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,230,118,0.4); }
+  .sticky-cta a:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(139, 92, 246, 0.42); color: #0a0614; }
 
   /* ── SCROLL FADE ── */
   .fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
@@ -878,7 +951,7 @@
 <nav>
   <div class="nav-inner">
     <a class="nav-logo" href="#">
-      <img class="nav-logo-img" src="ghost-arb-logo.png" alt="Ghost Arb Bot logo" width="48" height="48" decoding="async">
+      <img class="nav-logo-img" src="./ghost-arb-logo.png" alt="Ghost Arb Bot logo" width="48" height="48" decoding="async" fetchpriority="high">
       <div class="nav-logo-text">Ghost <span>Arb Bot</span></div>
     </a>
     <div style="display:flex;align-items:center;gap:6px;">
@@ -888,7 +961,7 @@
         <li><a href="#odds-calculator">Odds Calculator</a></li>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="#contact" class="nav-cta">Get Access</a></li>
+        <li><a href="#pricing" class="nav-cta">Get Access</a></li>
       </ul>
       <a href="https://cbiz1bot.github.io/arb-dash/dashboard.html" target="_blank" class="nav-dash">🔐 Dashboard</a>
     </div>
@@ -899,7 +972,7 @@
 <section class="hero">
   <div class="container">
     <div class="hero-logo-wrap">
-      <img class="hero-brand-logo" src="ghost-arb-logo.png" alt="Ghost Arb Bot — GHOST arbitrage betting bot logo" width="480" height="480" decoding="async">
+      <img class="hero-brand-logo" src="./ghost-arb-logo.png" alt="Ghost Arb Bot — GHOST arbitrage betting bot logo" width="480" height="480" decoding="async" fetchpriority="high">
     </div>
     <div class="hero-badge">
       <div class="hero-dot"></div>
@@ -939,7 +1012,7 @@
       <div class="alert-card">
         <div class="alert-card-header">
           <div class="tg-bubble" aria-hidden="true">
-            <img class="tg-bubble-logo" src="ghost-arb-logo.png" alt="">
+            <img class="tg-bubble-logo" src="./ghost-arb-logo.png" alt="">
           </div>
           <div>
             <div class="tg-name">Ghost Arb Bot</div>
@@ -1025,17 +1098,17 @@
   <div class="container">
     <div class="section-label">How It Works</div>
     <h2 class="section-title">Up and Running in <span class="highlight">Minutes</span></h2>
-    <p class="section-sub">No technical knowledge required. Join the private Telegram group and receive arb alerts instantly.</p>
+    <p class="section-sub">No technical knowledge required. Pay online, get your private invite link by email, and start receiving alerts in Telegram.</p>
     <div class="steps">
       <div class="step fade-up">
         <div class="step-num">1</div>
-        <h3>Purchase Group Access</h3>
-        <p>Choose your plan and message us on Telegram. We add you to the private alert group right away.</p>
+        <h3>Choose your plan &amp; pay</h3>
+        <p>Pick monthly, 6 months, or annual and complete checkout securely. No back-and-forth messages required.</p>
       </div>
       <div class="step fade-up">
         <div class="step-num">2</div>
-        <h3>Join the Telegram Group</h3>
-        <p>Once payment is confirmed, you are added to the private group where all arb alerts are posted live.</p>
+        <h3>Check your email</h3>
+        <p>Right after payment, we send a one-time private Telegram invite link to the address you used at checkout.</p>
       </div>
       <div class="step fade-up">
         <div class="step-num">3</div>
@@ -1078,7 +1151,7 @@
       <div class="feature fade-up">
         <div class="feature-icon">🔒</div>
         <h3>Private Group Access</h3>
-        <p>Access is managed through a private Telegram group so members get fast, direct alerts in one place.</p>
+        <p>Members join through a private invite link (delivered by email after purchase) so the group stays exclusive and automated.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">🛠️</div>
@@ -1158,9 +1231,9 @@
           <li>Telegram alerts</li>
           <li>Built-in calculator</li>
           <li>Setup guide included</li>
-          <li>Private Telegram group access</li>
+          <li>Invite link emailed after checkout</li>
         </ul>
-        <a href="#contact" class="btn-pricing btn-pricing-secondary">Get Started</a>
+        <a href="#contact" id="pl-monthly" class="btn-pricing btn-pricing-secondary">Buy now</a>
       </div>
 
       <div class="pricing-card featured fade-up">
@@ -1173,10 +1246,10 @@
           <li>Telegram alerts</li>
           <li>Built-in calculator</li>
           <li>Setup guide included</li>
-          <li>Private Telegram group access</li>
+          <li>Invite link emailed after checkout</li>
           <li>Priority support</li>
         </ul>
-        <a href="#contact" class="btn-pricing btn-pricing-primary">Get Started</a>
+        <a href="#contact" id="pl-six" class="btn-pricing btn-pricing-primary">Buy now</a>
       </div>
 
       <div class="pricing-card fade-up">
@@ -1188,16 +1261,16 @@
           <li>Telegram alerts</li>
           <li>Built-in calculator</li>
           <li>Setup guide included</li>
-          <li>Private Telegram group access</li>
+          <li>Invite link emailed after checkout</li>
           <li>Priority support</li>
           <li>Best value</li>
         </ul>
-        <a href="#contact" class="btn-pricing btn-pricing-secondary">Get Started</a>
+        <a href="#contact" id="pl-annual" class="btn-pricing btn-pricing-secondary">Buy now</a>
       </div>
 
     </div>
     <div class="disclaimer">
-      ⚠️ No additional surebet subscription is required. You are buying direct access to our private Telegram alert group. Always verify odds before placing. You are responsible for your own betting decisions.
+      ⚠️ No additional surebet subscription is required. Checkout is automated; your private Telegram invite is sent to the email you use at payment. Always verify odds before placing. You are responsible for your own betting decisions.
     </div>
   </div>
 </section>
@@ -1268,7 +1341,11 @@
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">What do I need to get started?</div>
-        <div class="faq-a">You only need a Telegram account and bookmaker accounts to place your bets. No surebet.com subscription is needed.</div>
+        <div class="faq-a">A valid email (for your invite), a Telegram account to join the private group, and bookmaker accounts to place bets. No surebet.com subscription is needed.</div>
+      </div>
+      <div class="faq-item fade-up">
+        <div class="faq-q" onclick="toggleFaq(this)">How do I get my Telegram invite after paying?</div>
+        <div class="faq-a">As soon as checkout completes, we email a private one-time invite link to the address you used when paying. Tap the link, join the group, and alerts start flowing. If nothing arrives within a few minutes, check spam or promotions folders.</div>
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">Do I need to leave my computer on?</div>
@@ -1284,7 +1361,7 @@
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">Can I share it with friends?</div>
-        <div class="faq-a">Access is for paying members only. Friends need their own membership to join the private alert group. Group deals may be available — contact us for details.</div>
+        <div class="faq-a">Access is for paying members only. Each person needs their own checkout so they receive their own invite email. Group or bulk deals may be available — reach out via the support channel listed in your welcome email.</div>
       </div>
     </div>
   </div>
@@ -1338,20 +1415,38 @@
 
 <hr class="divider">
 
-<!-- CONTACT -->
+<!-- GET ACCESS -->
 <section id="contact">
   <div class="container">
     <div class="section-label">Get Access</div>
     <h2 class="section-title">Ready to <span class="highlight">Start Arbing?</span></h2>
-    <p class="section-sub">Message us on Telegram to buy access and get added to the private alert group today.</p>
+    <p class="section-sub">Pay online in seconds. Your private Telegram invite is delivered automatically to your inbox.</p>
     <div class="contact-card fade-up">
-      <div class="contact-icon">✈️</div>
-      <h3>Message Us on Telegram</h3>
-      <p>Choose your plan, send us a message, and we will add you to the private Telegram alert group straight away.</p>
-      <a href="https://t.me/cparbbot" target="_blank" class="btn-telegram">
-        <span style="font-size:18px;">✈️</span>
-        Contact on Telegram
-      </a>
+      <div class="contact-icon">📧</div>
+      <h3>Instant checkout · Invite by email</h3>
+      <p>Select a plan above, complete secure payment, and open the email we send you — it contains your personal link to join the private alert group.</p>
+      <div class="access-steps">
+        <div class="access-step">
+          <div class="access-step-num">Step 1</div>
+          <h4>Pick a plan</h4>
+          <p>Use the <strong>Buy now</strong> button on Monthly, 6 Months, or Annual. You will be taken to our secure payment page.</p>
+        </div>
+        <div class="access-step">
+          <div class="access-step-num">Step 2</div>
+          <h4>Pay securely</h4>
+          <p>Complete checkout with your card or wallet. Use an email you check often — that is where we send your invite.</p>
+        </div>
+        <div class="access-step">
+          <div class="access-step-num">Step 3</div>
+          <h4>Join via link</h4>
+          <p>Open the email, tap the Telegram invite, and you are in. Alerts begin as soon as you are in the group.</p>
+        </div>
+      </div>
+      <p class="access-note">Tip: If you do not see the message within a few minutes, check spam or promotions. The link is unique to your purchase.</p>
+      <div class="access-actions">
+        <a href="#pricing" class="btn-checkout">See plans &amp; pricing</a>
+        <a href="#faq" class="btn-checkout-outline">Questions? Read FAQ</a>
+      </div>
     </div>
   </div>
 </section>
@@ -1366,10 +1461,41 @@
 
 <!-- STICKY CTA -->
 <div class="sticky-cta" id="sticky-cta">
-  <a href="#contact">🚀 Get Group Access</a>
+  <a href="#pricing">🚀 Buy access</a>
 </div>
 
 <script>
+  // ── PAYMENT LINKS (paste your Stripe Payment Links, Lemon Squeezy, etc.) ──
+  // Leave a string empty to keep that button scrolling to #contact until you add a URL.
+  const PAYMENT_LINKS = {
+    monthly: '',
+    sixMonths: '',
+    annual: ''
+  };
+
+  function applyPaymentLinks() {
+    const pairs = [
+      ['pl-monthly', PAYMENT_LINKS.monthly],
+      ['pl-six', PAYMENT_LINKS.sixMonths],
+      ['pl-annual', PAYMENT_LINKS.annual]
+    ];
+    pairs.forEach(function (pair) {
+      var id = pair[0];
+      var url = pair[1];
+      var a = document.getElementById(id);
+      if (!a || !url || typeof url !== 'string' || !url.trim()) return;
+      a.href = url.trim();
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyPaymentLinks);
+  } else {
+    applyPaymentLinks();
+  }
+
   // ── FAQ ──
   function toggleFaq(el) {
     const item = el.closest('.faq-item');
