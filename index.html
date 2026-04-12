@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CP's Arb Bot — Automated Arbitrage Alerts</title>
+<title>Ghost Arb Bot — Automated Arbitrage Alerts</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -112,12 +112,14 @@
     display: flex; align-items: center; gap: 10px;
     text-decoration: none; color: var(--text);
   }
-  .nav-logo-icon {
-    width: 32px; height: 32px;
-    background: linear-gradient(135deg, var(--accent), #00b0ff);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px;
+  .nav-logo-img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: rgba(18, 13, 34, 0.6);
+    flex-shrink: 0;
   }
   .nav-logo-text { font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
   .nav-logo-text span { color: var(--accent); }
@@ -159,6 +161,27 @@
     padding: 140px 0 80px;
     text-align: center;
   }
+  /* Logo: own row, no overlap with site copy (logo already includes wordmark) */
+  .hero-logo-wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 12px;
+    margin-bottom: clamp(14px, 2.5vw, 24px);
+  }
+  .hero-brand-logo {
+    display: block;
+    width: 100%;
+    max-width: min(480px, 90vw);
+    height: auto;
+    margin: 0 auto;
+    object-fit: contain;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    filter: drop-shadow(0 16px 40px rgba(139, 92, 246, 0.38));
+    animation: fadeUp 0.55s ease both;
+  }
+
   .hero-badge {
     display: inline-flex; align-items: center; gap: 8px;
     background: var(--accent-dim);
@@ -325,11 +348,18 @@
   }
   .tg-bubble {
     width: 36px; height: 36px;
-    background: #29b6f6;
+    background: var(--surface2);
+    border: 1px solid var(--border);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 17px;
+    overflow: hidden;
     flex-shrink: 0;
+  }
+  .tg-bubble-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
   .tg-name { font-size: 13px; font-weight: 700; }
   .tg-time { font-size: 11px; color: var(--muted); }
@@ -822,6 +852,8 @@
     .stats-grid { grid-template-columns: 1fr; max-width: 320px; }
     .calc-results { grid-template-columns: 1fr; }
     .hero { padding: 124px 0 64px; }
+    .hero-logo-wrap { margin-bottom: clamp(12px, 3vw, 22px); }
+    .hero-brand-logo { max-width: min(420px, 94vw); }
     .nav-inner { margin: 10px auto; padding: 10px 14px; }
     .nav-dash { padding: 7px 12px !important; font-size: 12px !important; }
   }
@@ -846,8 +878,8 @@
 <nav>
   <div class="nav-inner">
     <a class="nav-logo" href="#">
-      <div class="nav-logo-icon">🔍</div>
-      <div class="nav-logo-text">CP's <span>Arb Bot</span></div>
+      <img class="nav-logo-img" src="ghost-arb-logo.png" alt="Ghost Arb Bot logo" width="48" height="48" decoding="async">
+      <div class="nav-logo-text">Ghost <span>Arb Bot</span></div>
     </a>
     <div style="display:flex;align-items:center;gap:6px;">
       <ul class="nav-links">
@@ -866,12 +898,15 @@
 <!-- HERO -->
 <section class="hero">
   <div class="container">
+    <div class="hero-logo-wrap">
+      <img class="hero-brand-logo" src="ghost-arb-logo.png" alt="Ghost Arb Bot — GHOST arbitrage betting bot logo" width="480" height="480" decoding="async">
+    </div>
     <div class="hero-badge">
       <div class="hero-dot"></div>
       Live — Real-Time Arbitrage Alerts
     </div>
     <h1>Find <span class="highlight">Guaranteed Profit</span><br>Bets on Autopilot</h1>
-    <p class="hero-sub">CP's Arb Bot monitors top bookmakers 24/7 and fires an instant Telegram alert the moment a qualifying arbitrage opportunity appears — complete with odds, stakes and calculator.</p>
+    <p class="hero-sub">Ghost Arb Bot monitors top bookmakers 24/7 and fires an instant Telegram alert the moment a qualifying arbitrage opportunity appears — complete with odds, stakes and calculator.</p>
     <div class="hero-actions">
       <a href="#pricing" class="btn btn-primary">🚀 Get Started</a>
       <a href="#how-it-works" class="btn btn-secondary">See How It Works →</a>
@@ -903,15 +938,17 @@
     <div class="alert-preview-wrap">
       <div class="alert-card">
         <div class="alert-card-header">
-          <div class="tg-bubble">✈️</div>
+          <div class="tg-bubble" aria-hidden="true">
+            <img class="tg-bubble-logo" src="ghost-arb-logo.png" alt="">
+          </div>
           <div>
-            <div class="tg-name">CP's Arb Bot</div>
+            <div class="tg-name">Ghost Arb Bot</div>
             <div class="tg-time">Just now</div>
           </div>
           <div style="margin-left:auto;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);border-radius:6px;padding:3px 10px;font-size:11px;font-family:'Space Mono',monospace;color:var(--accent);">LIVE</div>
         </div>
         <div class="alert-body">
-          <div class="alert-title-row">🟠 New Arb Bet Alert!</div>
+          <div class="alert-title-row">🟠 New Arb Bet Alert! <span style="font-size:12px;color:var(--text2);font-weight:400;">(Example)</span></div>
           <div class="alert-divider"></div>
           <div class="alert-row"><span class="alert-key">🕐 Found at</span><span class="alert-val">22 Mar 2026 18:42</span></div>
           <div class="alert-row"><span class="alert-key">🏆 Event</span><span class="alert-val">Man City vs Arsenal</span></div>
@@ -1322,7 +1359,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="container">
-    <p>© 2026 CP's Arb Bot &nbsp;·&nbsp; A software tool for arbitrage alert monitoring &nbsp;·&nbsp; <a href="#faq" style="color:var(--muted);text-decoration:none;">FAQ</a></p>
+    <p>© 2026 Ghost Arb Bot &nbsp;·&nbsp; A software tool for arbitrage alert monitoring &nbsp;·&nbsp; <a href="#faq" style="color:var(--muted);text-decoration:none;">FAQ</a></p>
     <p style="margin-top:8px;">⚠️ Always verify odds before placing bets. Gambling can be addictive — please gamble responsibly.</p>
   </div>
 </footer>
