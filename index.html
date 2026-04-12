@@ -1467,10 +1467,12 @@
 <script>
   // ── PAYMENT LINKS (paste your Stripe Payment Links, Lemon Squeezy, etc.) ──
   // Leave a string empty to keep that button scrolling to #contact until you add a URL.
+  // Paste your live checkout URLs (Stripe Payment Links, Lemon Squeezy, etc.).
+  // Non-empty strings wire the matching "Buy now" button (opens in a new tab).
   const PAYMENT_LINKS = {
-    monthly: '',
-    sixMonths: '',
-    annual: ''
+    monthly: 'https://buy.stripe.com/bJeaEQ3tH2JT18a7qf2B205',
+    sixMonths: 'https://buy.stripe.com/bJe14g7JX0BL046h0P2B203',
+    annual: 'https://buy.stripe.com/7sY5kwaW9acl4km8uj2B202'
   };
 
   function applyPaymentLinks() {
