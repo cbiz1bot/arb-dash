@@ -39,6 +39,8 @@
     --radius-lg: 20px;
     --shadow: 0 4px 32px rgba(0,0,0,0.4);
     --shadow-accent: 0 0 40px rgba(0,230,118,0.08);
+    --section-space: clamp(64px, 8vw, 82px);
+    --section-sub-gap: clamp(28px, 4vw, 44px);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -241,7 +243,7 @@
   .hero-actions {
     display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
     animation: fadeUp 0.5s 0.24s ease both;
-    margin-bottom: 56px;
+    margin-bottom: 48px;
   }
   .btn {
     padding: 13px 28px;
@@ -270,7 +272,7 @@
   /* ── LIVE STATS — HERO SECTION ── */
   .stats-hero {
     animation: fadeUp 0.5s 0.32s ease both;
-    margin-bottom: 60px;
+    margin-bottom: 48px;
   }
   .stats-hero-label {
     font-size: 11px;
@@ -337,8 +339,11 @@
   /* ── ALERT PREVIEW CARD ── */
   .alert-preview-wrap {
     animation: fadeUp 0.5s 0.4s ease both;
-    max-width: 400px;
+    max-width: 1020px;
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
   }
   .alert-card {
     background: var(--surface);
@@ -416,7 +421,7 @@
   .ticker-sep { color: var(--border-bright); }
 
   /* ── SECTION ── */
-  section { padding: 80px 0; position: relative; z-index: 1; }
+  section { padding: var(--section-space) 0; position: relative; z-index: 1; }
   .section-label {
     font-size: 11px;
     font-family: 'Space Mono', monospace;
@@ -445,7 +450,7 @@
     color: var(--text2);
     text-align: center;
     max-width: 540px;
-    margin: 0 auto 52px;
+    margin: 0 auto var(--section-sub-gap);
     line-height: 1.75;
     font-weight: 400;
   }
@@ -754,33 +759,74 @@
   }
   .faq-item.open .faq-a { max-height: 320px; padding: 0 20px 18px; }
 
-  /* ── TESTIMONIALS ── */
-  .testimonials-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
-  }
-  .testimonial {
+  /* ── OWNER MESSAGE ── */
+  .owner-card {
+    max-width: 780px;
+    margin: 0 auto;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 24px;
+    padding: 30px 28px;
     backdrop-filter: blur(12px);
-    transition: border-color 0.25s;
+    box-shadow: var(--shadow);
   }
-  .testimonial:hover { border-color: var(--border-bright); }
-  .testimonial-stars { font-size: 14px; color: var(--gold); margin-bottom: 12px; letter-spacing: 2px; }
-  .testimonial-text { font-size: 13.5px; color: var(--text2); line-height: 1.75; margin-bottom: 18px; font-style: italic; }
-  .testimonial-author { display: flex; align-items: center; gap: 10px; }
-  .testimonial-avatar {
-    width: 36px; height: 36px;
-    background: var(--purple-dim);
+  .owner-badge {
+    display: inline-block;
+    margin-bottom: 12px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
     border: 1px solid var(--border-bright);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
+    border-radius: 100px;
+    padding: 5px 12px;
+    font-family: 'Space Mono', monospace;
   }
-  .testimonial-name { font-size: 13px; font-weight: 700; }
-  .testimonial-since { font-size: 11px; color: var(--muted); }
+  .owner-quote {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--text);
+    margin-bottom: 18px;
+  }
+  .owner-quote strong { color: #fff; }
+  .owner-highlight {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .owner-metric {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .owner-metric .k {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 5px;
+  }
+  .owner-metric .v {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+  .owner-note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin: 0;
+    font-family: 'Space Mono', monospace;
+  }
+  @media (max-width: 760px) {
+    .owner-highlight { grid-template-columns: 1fr; }
+  }
 
   /* ── GET ACCESS / CHECKOUT ── */
   .contact-card {
@@ -828,6 +874,18 @@
     margin-bottom: 22px;
     font-family: 'Space Mono', monospace;
   }
+  .contact-email {
+    margin: -4px 0 18px;
+    font-size: 13px;
+    color: var(--text2);
+    font-family: 'Space Mono', monospace;
+  }
+  .contact-email a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .contact-email a:hover { text-decoration: underline; }
   .access-actions {
     display: flex;
     flex-wrap: wrap;
@@ -912,7 +970,8 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 800px) {
-    .steps, .features-grid, .pricing-grid, .testimonials-grid { grid-template-columns: 1fr; }
+    .steps, .features-grid, .pricing-grid { grid-template-columns: 1fr; }
+    .alert-preview-wrap { grid-template-columns: 1fr; max-width: 420px; }
     .stats-grid { grid-template-columns: 1fr; gap: 10px; max-width: 520px; }
     .stat-number { font-size: 32px; }
     .nav-links { display: none; }
@@ -920,6 +979,10 @@
     .odds-form-grid { grid-template-columns: 1fr; }
     .hero h1 { letter-spacing: -1px; }
     .contact-card { padding: 32px 24px; }
+    :root {
+      --section-space: clamp(56px, 10vw, 70px);
+      --section-sub-gap: 30px;
+    }
   }
   @media (max-width: 540px) {
     .stats-grid { grid-template-columns: 1fr; max-width: 320px; }
@@ -1037,6 +1100,62 @@
           </div>
         </div>
       </div>
+      <div class="alert-card">
+        <div class="alert-card-header">
+          <div class="tg-bubble" aria-hidden="true">
+            <img class="tg-bubble-logo" src="./ghost-arb-logo.png" alt="">
+          </div>
+          <div>
+            <div class="tg-name">Ghost Arb Bot</div>
+            <div class="tg-time">1 min ago</div>
+          </div>
+          <div style="margin-left:auto;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);border-radius:6px;padding:3px 10px;font-size:11px;font-family:'Space Mono',monospace;color:var(--accent);">LIVE</div>
+        </div>
+        <div class="alert-body">
+          <div class="alert-title-row">🟢 New Arb Bet Alert! <span style="font-size:12px;color:var(--text2);font-weight:400;">(Example)</span></div>
+          <div class="alert-divider"></div>
+          <div class="alert-row"><span class="alert-key">🕐 Found at</span><span class="alert-val">22 Mar 2026 18:45</span></div>
+          <div class="alert-row"><span class="alert-key">🏆 Event</span><span class="alert-val">Inter vs Napoli</span></div>
+          <div class="alert-row"><span class="alert-key">🎯 Market</span><span class="alert-val">BTTS Yes / No</span></div>
+          <div class="alert-row"><span class="alert-key">💰 Profit</span><span class="alert-val profit">8.04%</span></div>
+          <div class="alert-row"><span class="alert-key">📚 Books</span><span class="alert-val">Sky Bet vs Paddy Power</span></div>
+          <div class="alert-row"><span class="alert-key">📊 Odds</span><span class="alert-val">1.94 / 2.27</span></div>
+          <div class="alert-calc">
+            <div class="alert-calc-title">🧮 Calculator (£100 total stake)</div>
+            <div class="alert-calc-row">📌 BTTS Yes @ Sky Bet (1.94) → Stake <b>£53.92</b></div>
+            <div class="alert-calc-row">📌 BTTS No @ Paddy Power (2.27) → Stake <b>£46.08</b></div>
+            <div class="alert-profit-line">💰 Guaranteed profit: <b>£4.60</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="alert-card">
+        <div class="alert-card-header">
+          <div class="tg-bubble" aria-hidden="true">
+            <img class="tg-bubble-logo" src="./ghost-arb-logo.png" alt="">
+          </div>
+          <div>
+            <div class="tg-name">Ghost Arb Bot</div>
+            <div class="tg-time">2 mins ago</div>
+          </div>
+          <div style="margin-left:auto;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);border-radius:6px;padding:3px 10px;font-size:11px;font-family:'Space Mono',monospace;color:var(--accent);">LIVE</div>
+        </div>
+        <div class="alert-body">
+          <div class="alert-title-row">🟢 New Arb Bet Alert! <span style="font-size:12px;color:var(--text2);font-weight:400;">(Example)</span></div>
+          <div class="alert-divider"></div>
+          <div class="alert-row"><span class="alert-key">🕐 Found at</span><span class="alert-val">22 Mar 2026 18:47</span></div>
+          <div class="alert-row"><span class="alert-key">🏆 Event</span><span class="alert-val">Atletico vs Sevilla</span></div>
+          <div class="alert-row"><span class="alert-key">🎯 Market</span><span class="alert-val">Over/Under 0.5 Goals</span></div>
+          <div class="alert-row"><span class="alert-key">💰 Profit</span><span class="alert-val profit">2.83%</span></div>
+          <div class="alert-row"><span class="alert-key">📚 Books</span><span class="alert-val">Unibet vs BetVictor</span></div>
+          <div class="alert-row"><span class="alert-key">📊 Odds</span><span class="alert-val">1.14 / 10.50</span></div>
+          <div class="alert-calc">
+            <div class="alert-calc-title">🧮 Calculator (£100 total stake)</div>
+            <div class="alert-calc-row">📌 Over 0.5 Goals @ Unibet (1.14) → Stake <b>£90.22</b></div>
+            <div class="alert-calc-row">📌 Under 0.5 Goals @ BetVictor (10.50) → Stake <b>£9.78</b></div>
+            <div class="alert-profit-line">💰 Guaranteed profit: <b>£2.83</b></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1059,37 +1178,6 @@
     <div class="ticker-item">⚽ Barcelona vs Real Madrid <span class="ticker-sep">·</span> Over/Under Cards 5.5 <span class="ticker-sep">·</span> <span class="ticker-profit">11.20%</span> profit <span class="ticker-sep">·</span> Bet365 vs Betfair <span class="ticker-sep">·</span> 18 mins ago</div>
   </div>
 </div>
-
-<hr class="divider">
-
-<!-- ODDS CALCULATOR -->
-<section id="odds-calculator">
-  <div class="container">
-    <div class="section-label">Tools</div>
-    <h2 class="section-title">Homemade <span class="highlight">Odds Calculator</span></h2>
-    <p class="section-sub">Enter both sides of the market and switch between decimal or fractional odds.</p>
-    <div class="odds-calc-box fade-up">
-      <div class="odds-form-grid">
-        <div class="odds-field">
-          <label for="odds-format">Odds Format</label>
-          <select id="odds-format" onchange="updateOddsCalc()">
-            <option value="decimal">Decimal</option>
-            <option value="fractional">Fractional</option>
-          </select>
-        </div>
-        <div class="odds-field">
-          <label for="odd-a">Side A Odds</label>
-          <input id="odd-a" type="text" value="1.95" oninput="updateOddsCalc()" placeholder="e.g. 1.95 or 19/20">
-        </div>
-        <div class="odds-field">
-          <label for="odd-b">Side B Odds</label>
-          <input id="odd-b" type="text" value="2.20" oninput="updateOddsCalc()" placeholder="e.g. 2.20 or 6/5">
-        </div>
-      </div>
-      <div id="odds-result" class="odds-result">Enter valid odds to calculate.</div>
-    </div>
-  </div>
-</section>
 
 <hr class="divider">
 
@@ -1174,41 +1262,6 @@
         <p>An automated midnight recap shows you how many arbs were found today and in total.</p>
       </div>
     </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- BOOKMAKERS -->
-<section>
-  <div class="container">
-    <div class="section-label">Supported Bookmakers</div>
-    <h2 class="section-title">Works With All <span class="highlight">Major Bookmakers</span></h2>
-    <p class="section-sub">The bot monitors all of these simultaneously so you never miss an opportunity.</p>
-    <div class="bookmaker-row fade-up">
-      <div class="bookmaker-pill">Bet365</div>
-      <div class="bookmaker-pill">William Hill</div>
-      <div class="bookmaker-pill">Betfair</div>
-      <div class="bookmaker-pill">Paddy Power</div>
-      <div class="bookmaker-pill">Sky Bet</div>
-      <div class="bookmaker-pill">Ladbrokes</div>
-      <div class="bookmaker-pill">Coral</div>
-      <div class="bookmaker-pill">Unibet</div>
-      <div class="bookmaker-pill">888sport</div>
-      <div class="bookmaker-pill">Betfred</div>
-      <div class="bookmaker-pill">BoyleSports</div>
-      <div class="bookmaker-pill">Spreadex</div>
-      <div class="bookmaker-pill">Midnite</div>
-      <div class="bookmaker-pill">QuinnBet</div>
-      <div class="bookmaker-pill">LiveScore Bet</div>
-      <div class="bookmaker-pill">Virgin Bet</div>
-      <div class="bookmaker-pill">Parimatch</div>
-      <div class="bookmaker-pill">BetMGM</div>
-      <div class="bookmaker-pill">BetUK</div>
-      <div class="bookmaker-pill">BetVictor</div>
-      <div class="bookmaker-pill">Bwin</div>
-    </div>
-    <p class="bookmaker-note">Also works with selected worldwide bookmakers and major exchanges, including Betfair Exchange and Smarkets.</p>
   </div>
 </section>
 
@@ -1327,6 +1380,39 @@
 
 <hr class="divider">
 
+<!-- OWNER MESSAGE -->
+<section>
+  <div class="container">
+    <div class="section-label">Message From The Owner</div>
+    <h2 class="section-title">Why I Believe This Is <span class="highlight">Insane Value</span></h2>
+    <p class="section-sub">Real numbers from my own trial run using the exact same alert flow you get.</p>
+    <div class="owner-card fade-up">
+      <div class="owner-badge">Owner-tested results</div>
+      <p class="owner-quote">
+        I started with an initial <strong>£400 bankroll</strong> and, by following the alerts with discipline, scaled it to <strong>£2,000+</strong> within <strong>31 days</strong>.
+        For me, that made the <strong>£20/month</strong> plan feel like a no-brainer.
+      </p>
+      <div class="owner-highlight">
+        <div class="owner-metric">
+          <span class="k">Starting bankroll</span>
+          <span class="v">£400</span>
+        </div>
+        <div class="owner-metric">
+          <span class="k">31-day result</span>
+          <span class="v">£2,000+</span>
+        </div>
+        <div class="owner-metric">
+          <span class="k">Monthly cost</span>
+          <span class="v">£20</span>
+        </div>
+      </div>
+      <p class="owner-note">Of course results vary by bankroll, staking discipline and market availability — but this shows the scale possible when used correctly.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
 <!-- FAQ -->
 <section id="faq">
   <div class="container">
@@ -1372,46 +1458,66 @@
 
 <hr class="divider">
 
-<!-- TESTIMONIALS -->
+<!-- BOOKMAKERS -->
 <section>
   <div class="container">
-    <div class="section-label">What People Say</div>
-    <h2 class="section-title">Trusted by <span class="highlight">Arbers</span></h2>
-    <p class="section-sub">Don't just take our word for it.</p>
-    <div class="testimonials-grid">
-      <div class="testimonial fade-up">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"Found a 9% arb on a Premier League match within the first hour. The calculator made it dead simple to know how much to stake on each side. Brilliant tool."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">👤</div>
-          <div>
-            <div class="testimonial-name">Jamie T.</div>
-            <div class="testimonial-since">Member since Jan 2026</div>
-          </div>
+    <div class="section-label">Supported Bookmakers</div>
+    <h2 class="section-title">Works With All <span class="highlight">Major Bookmakers</span></h2>
+    <p class="section-sub">The bot monitors all of these simultaneously so you never miss an opportunity.</p>
+    <div class="bookmaker-row fade-up">
+      <div class="bookmaker-pill">Bet365</div>
+      <div class="bookmaker-pill">William Hill</div>
+      <div class="bookmaker-pill">Betfair</div>
+      <div class="bookmaker-pill">Paddy Power</div>
+      <div class="bookmaker-pill">Sky Bet</div>
+      <div class="bookmaker-pill">Ladbrokes</div>
+      <div class="bookmaker-pill">Coral</div>
+      <div class="bookmaker-pill">Unibet</div>
+      <div class="bookmaker-pill">888sport</div>
+      <div class="bookmaker-pill">Betfred</div>
+      <div class="bookmaker-pill">BoyleSports</div>
+      <div class="bookmaker-pill">Spreadex</div>
+      <div class="bookmaker-pill">Midnite</div>
+      <div class="bookmaker-pill">QuinnBet</div>
+      <div class="bookmaker-pill">LiveScore Bet</div>
+      <div class="bookmaker-pill">Virgin Bet</div>
+      <div class="bookmaker-pill">Parimatch</div>
+      <div class="bookmaker-pill">BetMGM</div>
+      <div class="bookmaker-pill">BetUK</div>
+      <div class="bookmaker-pill">BetVictor</div>
+      <div class="bookmaker-pill">Bwin</div>
+    </div>
+    <p class="bookmaker-note">Also works with selected worldwide bookmakers and major exchanges, including Betfair Exchange and Smarkets.</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ODDS CALCULATOR -->
+<section id="odds-calculator">
+  <div class="container">
+    <div class="section-label">Tools</div>
+    <h2 class="section-title">Homemade <span class="highlight">Odds Calculator</span></h2>
+    <p class="section-sub">Enter both sides of the market and switch between decimal or fractional odds.</p>
+    <div class="odds-calc-box fade-up">
+      <div class="odds-form-grid">
+        <div class="odds-field">
+          <label for="odds-format">Odds Format</label>
+          <select id="odds-format" onchange="updateOddsCalc()">
+            <option value="decimal">Decimal</option>
+            <option value="fractional">Fractional</option>
+          </select>
+        </div>
+        <div class="odds-field">
+          <label for="odd-a">Side A Odds</label>
+          <input id="odd-a" type="text" value="1.95" oninput="updateOddsCalc()" placeholder="e.g. 1.95 or 19/20">
+        </div>
+        <div class="odds-field">
+          <label for="odd-b">Side B Odds</label>
+          <input id="odd-b" type="text" value="2.20" oninput="updateOddsCalc()" placeholder="e.g. 2.20 or 6/5">
         </div>
       </div>
-      <div class="testimonial fade-up">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"I was sceptical at first but it genuinely works. The Telegram alerts come through almost instantly and the bet instructions tell me exactly what to do every time."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">👤</div>
-          <div>
-            <div class="testimonial-name">Ryan M.</div>
-            <div class="testimonial-since">Member since Feb 2026</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial fade-up">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"Paid for itself on day one. Love the daily stats summary at midnight too — keeps you motivated. Setup wizard made it super easy, took about 10 minutes."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">👤</div>
-          <div>
-            <div class="testimonial-name">Lee P.</div>
-            <div class="testimonial-since">Member since Jan 2026</div>
-          </div>
-        </div>
-      </div>
+      <div id="odds-result" class="odds-result">Enter valid odds to calculate.</div>
     </div>
   </div>
 </section>
@@ -1446,8 +1552,10 @@
         </div>
       </div>
       <p class="access-note">Tip: If you closed the checkout page, check your email — or spam/promotions folders. The link is unique to your purchase.</p>
+      <p class="contact-email">Need help? Email us at <a href="mailto:ghost.arb.bot.official@gmail.com">ghost.arb.bot.official@gmail.com</a></p>
       <div class="access-actions">
         <a href="#pricing" class="btn-checkout">See plans &amp; pricing</a>
+        <a href="mailto:ghost.arb.bot.official@gmail.com?subject=Ghost%20Arb%20Bot%20Support" class="btn-checkout-outline">Contact Us</a>
         <a href="#faq" class="btn-checkout-outline">Questions? Read FAQ</a>
       </div>
     </div>
