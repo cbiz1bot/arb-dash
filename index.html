@@ -616,143 +616,6 @@
     padding: 16px 20px;
   }
 
-  /* ── LIFETIME / SOURCE CODE ── */
-  .lifetime-wrap {
-    max-width: 640px;
-    margin: 40px auto 0;
-  }
-  .lifetime-card {
-    background: linear-gradient(165deg, rgba(247, 201, 72, 0.06), var(--surface));
-    border: 1px solid rgba(247, 201, 72, 0.35);
-    border-radius: var(--radius-lg);
-    padding: 32px 28px 36px;
-    text-align: center;
-    position: relative;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
-  }
-  .lifetime-badge {
-    display: inline-block;
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--gold);
-    border: 1px solid rgba(247, 201, 72, 0.4);
-    padding: 5px 14px;
-    border-radius: 100px;
-    margin-bottom: 14px;
-  }
-  .lifetime-title {
-    font-size: clamp(22px, 4vw, 28px);
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    margin-bottom: 12px;
-  }
-  .lifetime-lead {
-    font-size: 14px;
-    color: var(--text2);
-    line-height: 1.75;
-    margin-bottom: 20px;
-    text-align: left;
-  }
-  .lifetime-features {
-    list-style: none;
-    text-align: left;
-    margin: 0 0 22px;
-    padding: 0;
-  }
-  .lifetime-features li {
-    font-size: 13px;
-    color: var(--text2);
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(116, 86, 200, 0.15);
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    line-height: 1.5;
-  }
-  .lifetime-features li:last-child { border-bottom: none; }
-  .lifetime-features li::before {
-    content: '✓';
-    color: var(--gold);
-    font-weight: 800;
-    flex-shrink: 0;
-  }
-  .lifetime-form-note {
-    font-size: 13px;
-    color: var(--text2);
-    line-height: 1.65;
-    margin-bottom: 18px;
-    text-align: left;
-  }
-  .lifetime-form {
-    text-align: left;
-    max-width: 420px;
-    margin: 0 auto;
-  }
-  .lifetime-form label {
-    display: block;
-    font-size: 11px;
-    font-family: 'Space Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-  .lifetime-form input[type="email"],
-  .lifetime-form textarea {
-    width: 100%;
-    box-sizing: border-box;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    padding: 12px 14px;
-    margin-bottom: 16px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .lifetime-form textarea {
-    resize: vertical;
-    min-height: 88px;
-    line-height: 1.5;
-  }
-  .lifetime-form input:focus,
-  .lifetime-form textarea:focus {
-    border-color: var(--border-bright);
-  }
-  .btn-lifetime {
-    width: 100%;
-    padding: 14px 20px;
-    border: none;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 800;
-    font-family: 'Inter', sans-serif;
-    cursor: pointer;
-    background: linear-gradient(135deg, var(--gold), #e6a800);
-    color: #1a1204;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 6px 24px rgba(247, 201, 72, 0.25);
-  }
-  .btn-lifetime:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 28px rgba(247, 201, 72, 0.35);
-  }
-  .lifetime-hint {
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-top: 16px;
-    font-family: 'Space Mono', monospace;
-  }
-  .lifetime-hint a { color: var(--accent); text-decoration: none; }
-  .lifetime-hint a:hover { text-decoration: underline; }
-
   /* ── CALCULATOR ── */
   .calc-box {
     max-width: 620px;
@@ -1097,7 +960,6 @@
         <li><a href="#features">Features</a></li>
         <li><a href="#odds-calculator">Odds Calculator</a></li>
         <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#lifetime">Lifetime</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#pricing" class="nav-cta">Get Access</a></li>
       </ul>
@@ -1236,7 +1098,7 @@
   <div class="container">
     <div class="section-label">How It Works</div>
     <h2 class="section-title">Up and Running in <span class="highlight">Minutes</span></h2>
-    <p class="section-sub">No technical knowledge required. Pay online, get your private invite link by email, and start receiving alerts in Telegram.</p>
+    <p class="section-sub">No technical knowledge required. Pay online, follow the on-screen steps after checkout — your invite link is shown there — and start receiving alerts in Telegram.</p>
     <div class="steps">
       <div class="step fade-up">
         <div class="step-num">1</div>
@@ -1245,8 +1107,8 @@
       </div>
       <div class="step fade-up">
         <div class="step-num">2</div>
-        <h3>Check your email</h3>
-        <p>Right after payment, we send a one-time private Telegram invite link to the address you used at checkout.</p>
+        <h3>Get your invite</h3>
+        <p>When payment completes, your private Telegram invite link is shown on the success screen — follow the on-screen instructions. We also email the same link to the address you used at checkout.</p>
       </div>
       <div class="step fade-up">
         <div class="step-num">3</div>
@@ -1289,7 +1151,7 @@
       <div class="feature fade-up">
         <div class="feature-icon">🔒</div>
         <h3>Private Group Access</h3>
-        <p>Members join through a private invite link (delivered by email after purchase) so the group stays exclusive and automated.</p>
+        <p>Members join through a private invite link (shown after checkout and sent by email) so the group stays exclusive and automated.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">🛠️</div>
@@ -1369,7 +1231,8 @@
           <li>Telegram alerts</li>
           <li>Built-in calculator</li>
           <li>Setup guide included</li>
-          <li>Invite link emailed after checkout</li>
+          <li>Includes our paid third-party software feed</li>
+          <li>Invite link on-screen after payment + emailed</li>
         </ul>
         <a href="#contact" id="pl-monthly" class="btn-pricing btn-pricing-secondary">Buy now</a>
       </div>
@@ -1384,7 +1247,8 @@
           <li>Telegram alerts</li>
           <li>Built-in calculator</li>
           <li>Setup guide included</li>
-          <li>Invite link emailed after checkout</li>
+          <li>Includes our paid third-party software feed</li>
+          <li>Invite link on-screen after payment + emailed</li>
           <li>Priority support</li>
         </ul>
         <a href="#contact" id="pl-six" class="btn-pricing btn-pricing-primary">Buy now</a>
@@ -1399,7 +1263,8 @@
           <li>Telegram alerts</li>
           <li>Built-in calculator</li>
           <li>Setup guide included</li>
-          <li>Invite link emailed after checkout</li>
+          <li>Includes our paid third-party software feed</li>
+          <li>Invite link on-screen after payment + emailed</li>
           <li>Priority support</li>
           <li>Best value</li>
         </ul>
@@ -1408,29 +1273,7 @@
 
     </div>
     <div class="disclaimer">
-      ⚠️ No additional surebet subscription is required. Checkout is automated; your private Telegram invite is sent to the email you use at payment. Always verify odds before placing. You are responsible for your own betting decisions.
-    </div>
-
-    <div id="lifetime" class="lifetime-wrap fade-up">
-      <div class="lifetime-card">
-        <div class="lifetime-badge">Negotiated · Source included</div>
-        <h3 class="lifetime-title">Lifetime + full bot codebase</h3>
-        <p class="lifetime-lead">A separate offering from subscription access: you receive a <strong>lifetime</strong> arrangement that includes the <strong>actual bot source code</strong>. Fork it, change it, self-host it, or integrate it into your own stack — subject to agreed terms with the owner.</p>
-        <ul class="lifetime-features">
-          <li>Lifetime usage rights as defined in your agreement (not the same as the monthly group plan).</li>
-          <li>Full codebase so you can modify behaviour, branding, and deployment.</li>
-          <li>Pricing and licence details are negotiated privately — there is no fixed checkout link.</li>
-        </ul>
-        <p class="lifetime-form-note">Leave your email below. The owner will contact you to discuss scope, price, and delivery of the code.</p>
-        <form class="lifetime-form" id="lifetime-form" action="#" method="get" novalidate>
-          <label for="lifetime-email">Your email (we’ll reply here)</label>
-          <input type="email" id="lifetime-email" name="email" required autocomplete="email" placeholder="you@example.com">
-          <label for="lifetime-message">Optional message</label>
-          <textarea id="lifetime-message" name="message" placeholder="e.g. budget range, intended use, timeline…"></textarea>
-          <button type="submit" class="btn-lifetime">Request contact about lifetime + code</button>
-        </form>
-        <p class="lifetime-hint" id="lifetime-mail-hint">This opens your email app with a pre-filled message to <span id="lifetime-owner-display">the owner</span>. If mail doesn’t open, copy the text and email the address you configured in the site script.</p>
-      </div>
+      ⚠️ Access includes our paid third-party software feed via the private Telegram group — you do not need to buy that separate software yourself. Checkout is automated; after paying, your Telegram invite link appears on the confirmation screen — follow the prompts — and the same link is emailed to you. Always verify odds before placing. You are responsible for your own betting decisions.
     </div>
   </div>
 </section>
@@ -1447,7 +1290,7 @@
           <span class="calc-row-label">Total Stake</span>
           <span class="calc-row-val" id="stake-val">£500</span>
         </div>
-        <input type="range" id="stake-slider" min="50" max="1000" step="50" value="500" oninput="updateCalc()">
+        <input type="range" id="stake-slider" min="50" max="5000" step="50" value="500" oninput="updateCalc()">
       </div>
       <div class="calc-row">
         <div class="calc-row-header">
@@ -1501,11 +1344,11 @@
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">What do I need to get started?</div>
-        <div class="faq-a">A valid email (for your invite), a Telegram account to join the private group, and bookmaker accounts to place bets. No surebet.com subscription is needed.</div>
+        <div class="faq-a">A valid email (for your invite), a Telegram account to join the private group, and bookmaker accounts to place bets. You do not need to buy our underlying third-party paid software separately — it is already included through our private Telegram group access.</div>
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">How do I get my Telegram invite after paying?</div>
-        <div class="faq-a">As soon as checkout completes, we email a private one-time invite link to the address you used when paying. Tap the link, join the group, and alerts start flowing. If nothing arrives within a few minutes, check spam or promotions folders.</div>
+        <div class="faq-a">As soon as checkout completes, your invite link is shown on the payment success screen — follow the on-screen steps. We also email the same one-time link to the address you used. Tap it, join the group, and alerts start flowing. If you missed the screen and nothing arrives in your inbox within a few minutes, check spam or promotions folders.</div>
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">Do I need to leave my computer on?</div>
@@ -1522,10 +1365,6 @@
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">Can I share it with friends?</div>
         <div class="faq-a">Access is for paying members only. Each person needs their own checkout so they receive their own invite email. Group or bulk deals may be available — reach out via the support channel listed in your welcome email.</div>
-      </div>
-      <div class="faq-item fade-up">
-        <div class="faq-q" onclick="toggleFaq(this)">What is the lifetime package with source code?</div>
-        <div class="faq-a">It is a separate, negotiated offer: you agree terms directly with the owner for lifetime rights and delivery of the full bot codebase so you can alter and run it yourself. It is not sold through the Stripe subscription links. Use the Lifetime section under Pricing to leave your email and start a conversation.</div>
       </div>
     </div>
   </div>
@@ -1584,11 +1423,11 @@
   <div class="container">
     <div class="section-label">Get Access</div>
     <h2 class="section-title">Ready to <span class="highlight">Start Arbing?</span></h2>
-    <p class="section-sub">Pay online in seconds. Your private Telegram invite is delivered automatically to your inbox.</p>
+    <p class="section-sub">Pay online in seconds. After checkout, your invite link appears on screen — follow the steps there — and we also send it to your email.</p>
     <div class="contact-card fade-up">
       <div class="contact-icon">📧</div>
-      <h3>Instant checkout · Invite by email</h3>
-      <p>Select a plan above, complete secure payment, and open the email we send you — it contains your personal link to join the private alert group.</p>
+      <h3>Instant checkout · On-screen invite</h3>
+      <p>Select a plan above and complete secure payment. On the confirmation page, your personal Telegram invite link is displayed — follow the on-screen instructions to join. We also email the same link to the address you used.</p>
       <div class="access-steps">
         <div class="access-step">
           <div class="access-step-num">Step 1</div>
@@ -1598,15 +1437,15 @@
         <div class="access-step">
           <div class="access-step-num">Step 2</div>
           <h4>Pay securely</h4>
-          <p>Complete checkout with your card or wallet. Use an email you check often — that is where we send your invite.</p>
+          <p>Complete checkout with your card or wallet. Watch the success page for your invite link and next steps. Use an email you check often — we send the link there too.</p>
         </div>
         <div class="access-step">
           <div class="access-step-num">Step 3</div>
           <h4>Join via link</h4>
-          <p>Open the email, tap the Telegram invite, and you are in. Alerts begin as soon as you are in the group.</p>
+          <p>Use the link from the checkout screen or your email, tap the Telegram invite, and you are in. Alerts begin as soon as you are in the group.</p>
         </div>
       </div>
-      <p class="access-note">Tip: If you do not see the message within a few minutes, check spam or promotions. The link is unique to your purchase.</p>
+      <p class="access-note">Tip: If you closed the checkout page, check your email — or spam/promotions folders. The link is unique to your purchase.</p>
       <div class="access-actions">
         <a href="#pricing" class="btn-checkout">See plans &amp; pricing</a>
         <a href="#faq" class="btn-checkout-outline">Questions? Read FAQ</a>
@@ -1661,59 +1500,6 @@
     else fn();
   }
   onDomReady(applyPaymentLinks);
-
-  // ── LIFETIME / SOURCE CODE INQUIRY (mailto) ──
-  // Set your real email before publishing. Visitors submit the form → their mail app opens with a draft to you.
-  const LIFETIME_OWNER_EMAIL = '';
-
-  function initLifetimeSection() {
-    var display = document.getElementById('lifetime-owner-display');
-    var hint = document.getElementById('lifetime-mail-hint');
-    if (!display) return;
-    if (LIFETIME_OWNER_EMAIL && String(LIFETIME_OWNER_EMAIL).trim().indexOf('@') !== -1) {
-      var em = String(LIFETIME_OWNER_EMAIL).trim();
-      var a = document.createElement('a');
-      a.href = 'mailto:' + em;
-      a.textContent = em;
-      display.textContent = '';
-      display.appendChild(a);
-    } else {
-      display.textContent = 'the owner';
-      if (hint) hint.innerHTML = 'Set <code style="font-size:10px;color:var(--accent);">LIFETIME_OWNER_EMAIL</code> in this page’s script, then the button will open a draft to you. Until then, add your contact email in the script so visitors know where to write.';
-    }
-  }
-
-  function submitLifetimeInquiry(ev) {
-    ev.preventDefault();
-    var emailInput = document.getElementById('lifetime-email');
-    var msgInput = document.getElementById('lifetime-message');
-    if (!emailInput) return false;
-    var buyer = emailInput.value.trim();
-    if (!buyer || buyer.indexOf('@') === -1) {
-      emailInput.focus();
-      alert('Please enter a valid email address so we can reach you.');
-      return false;
-    }
-    var owner = String(LIFETIME_OWNER_EMAIL || '').trim();
-    if (!owner || owner.indexOf('@') === -1) {
-      alert('This form is not configured yet. The site owner needs to set LIFETIME_OWNER_EMAIL in the page script.');
-      return false;
-    }
-    var msg = (msgInput && msgInput.value) ? msgInput.value.trim() : '';
-    var subject = 'Ghost Arb Bot — lifetime + source code inquiry';
-    var body = 'I am interested in discussing the lifetime package including the bot source code.\n\nMy email: ' + buyer + '\n\n';
-    if (msg) body += 'Message:\n' + msg + '\n';
-    window.location.href = 'mailto:' + encodeURIComponent(owner) +
-      '?subject=' + encodeURIComponent(subject) +
-      '&body=' + encodeURIComponent(body);
-    return false;
-  }
-
-  onDomReady(function () {
-    initLifetimeSection();
-    var form = document.getElementById('lifetime-form');
-    if (form) form.addEventListener('submit', submitLifetimeInquiry);
-  });
 
   // ── FAQ ──
   function toggleFaq(el) {
