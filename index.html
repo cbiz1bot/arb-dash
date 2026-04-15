@@ -4,15 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ghost Arb Bot — Automated Arbitrage Alerts</title>
-<!--
-  Logo 404 or wrong image on GitHub Pages?
-  Project sites use a URL like https://USER.github.io/REPO_NAME/ — relative "ghost-arb-logo.png"
-  must resolve under that folder. Uncomment ONE line below and set REPO_NAME to your repo
-  (e.g. arb-dash). Use trailing slash. Leave both commented for local file:// or custom domain at site root.
--->
-<!-- <base href="/REPO_NAME/"> -->
-<!-- <base href="https://USER.github.io/REPO_NAME/"> -->
-<link rel="preload" href="./ghost-arb-logo.png" as="image" type="image/png" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -39,8 +30,6 @@
     --radius-lg: 20px;
     --shadow: 0 4px 32px rgba(0,0,0,0.4);
     --shadow-accent: 0 0 40px rgba(0,230,118,0.08);
-    --section-space: clamp(64px, 8vw, 82px);
-    --section-sub-gap: clamp(28px, 4vw, 44px);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -124,10 +113,10 @@
     text-decoration: none; color: var(--text);
   }
   .nav-logo-img {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     object-fit: contain;
-    border-radius: 12px;
+    border-radius: 10px;
     border: 1px solid var(--border);
     background: rgba(18, 13, 34, 0.6);
     flex-shrink: 0;
@@ -169,28 +158,17 @@
 
   /* ── HERO ── */
   .hero {
-    padding: 128px 0 80px;
+    padding: 118px 0 80px;
     text-align: center;
-  }
-  /* Logo: own row, no overlap with site copy (logo already includes wordmark) */
-  .hero-logo-wrap {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 0 12px;
-    margin-bottom: clamp(10px, 2vw, 18px);
   }
   .hero-brand-logo {
     display: block;
-    width: 100%;
-    max-width: min(480px, 90vw);
+    width: min(280px, 68vw);
     height: auto;
-    margin: 0 auto;
+    margin: 0 auto 14px;
     object-fit: contain;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    filter: drop-shadow(0 16px 40px rgba(139, 92, 246, 0.38));
-    animation: fadeUp 0.55s ease both;
+    filter: drop-shadow(0 10px 28px rgba(139, 92, 246, 0.4));
+    animation: fadeUp 0.5s 0.04s ease both;
   }
 
   .hero-badge {
@@ -243,7 +221,7 @@
   .hero-actions {
     display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
     animation: fadeUp 0.5s 0.24s ease both;
-    margin-bottom: 48px;
+    margin-bottom: 56px;
   }
   .btn {
     padding: 13px 28px;
@@ -272,7 +250,7 @@
   /* ── LIVE STATS — HERO SECTION ── */
   .stats-hero {
     animation: fadeUp 0.5s 0.32s ease both;
-    margin-bottom: 48px;
+    margin-bottom: 60px;
   }
   .stats-hero-label {
     font-size: 11px;
@@ -339,11 +317,8 @@
   /* ── ALERT PREVIEW CARD ── */
   .alert-preview-wrap {
     animation: fadeUp 0.5s 0.4s ease both;
-    max-width: 1020px;
+    max-width: 400px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
   }
   .alert-card {
     background: var(--surface);
@@ -372,10 +347,8 @@
   .tg-bubble-logo {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
-    padding: 3px;
-    box-sizing: border-box;
   }
   .tg-name { font-size: 13px; font-weight: 700; }
   .tg-time { font-size: 11px; color: var(--muted); }
@@ -421,7 +394,7 @@
   .ticker-sep { color: var(--border-bright); }
 
   /* ── SECTION ── */
-  section { padding: var(--section-space) 0; position: relative; z-index: 1; }
+  section { padding: 80px 0; position: relative; z-index: 1; }
   .section-label {
     font-size: 11px;
     font-family: 'Space Mono', monospace;
@@ -450,7 +423,7 @@
     color: var(--text2);
     text-align: center;
     max-width: 540px;
-    margin: 0 auto var(--section-sub-gap);
+    margin: 0 auto 52px;
     line-height: 1.75;
     font-weight: 400;
   }
@@ -757,177 +730,77 @@
     transition: max-height 0.3s ease, padding 0.3s ease;
     padding: 0 20px;
   }
-  .faq-item.open .faq-a { max-height: 320px; padding: 0 20px 18px; }
+  .faq-item.open .faq-a { max-height: 200px; padding: 0 20px 18px; }
 
-  /* ── OWNER MESSAGE ── */
-  .owner-card {
-    max-width: 780px;
-    margin: 0 auto;
+  /* ── TESTIMONIALS ── */
+  .testimonials-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  }
+  .testimonial {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 30px 28px;
+    padding: 24px;
     backdrop-filter: blur(12px);
-    box-shadow: var(--shadow);
+    transition: border-color 0.25s;
   }
-  .owner-badge {
-    display: inline-block;
-    margin-bottom: 12px;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
+  .testimonial:hover { border-color: var(--border-bright); }
+  .testimonial-stars { font-size: 14px; color: var(--gold); margin-bottom: 12px; letter-spacing: 2px; }
+  .testimonial-text { font-size: 13.5px; color: var(--text2); line-height: 1.75; margin-bottom: 18px; font-style: italic; }
+  .testimonial-author { display: flex; align-items: center; gap: 10px; }
+  .testimonial-avatar {
+    width: 36px; height: 36px;
+    background: var(--purple-dim);
     border: 1px solid var(--border-bright);
-    border-radius: 100px;
-    padding: 5px 12px;
-    font-family: 'Space Mono', monospace;
-  }
-  .owner-quote {
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
     font-size: 16px;
-    line-height: 1.75;
-    color: var(--text);
-    margin-bottom: 18px;
+    flex-shrink: 0;
   }
-  .owner-quote strong { color: #fff; }
-  .owner-highlight {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 14px;
+  .testimonial-name { font-size: 13px; font-weight: 700; }
+  .testimonial-since { font-size: 11px; color: var(--muted); }
+
+  /* ── ABOUT OWNER ── */
+  .owner-story {
+    background: linear-gradient(165deg, rgba(139,92,246,0.15), rgba(255,255,255,0.04));
+    border: 1px solid var(--border-bright);
+    border-radius: 16px;
+    padding: 28px 24px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.26);
   }
-  .owner-metric {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 10px;
-    text-align: center;
-  }
-  .owner-metric .k {
-    display: block;
-    font-size: 10px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-family: 'Space Mono', monospace;
-    margin-bottom: 5px;
-  }
-  .owner-metric .v {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--accent);
-    letter-spacing: -0.5px;
-  }
-  .owner-note {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.65;
-    margin: 0;
-    font-family: 'Space Mono', monospace;
-  }
-  @media (max-width: 760px) {
-    .owner-highlight { grid-template-columns: 1fr; }
+  .owner-story p {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.85;
+    margin: 0 0 18px;
   }
 
-  /* ── GET ACCESS / CHECKOUT ── */
+  /* ── CONTACT ── */
   .contact-card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 40px 40px 44px;
+    padding: 48px;
     text-align: center;
-    max-width: 720px;
+    max-width: 560px;
     margin: 0 auto;
     backdrop-filter: blur(16px);
   }
-  .contact-icon { font-size: 44px; margin-bottom: 14px; }
-  .contact-card h3 { font-size: 22px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
-  .contact-card > p { font-size: 14.5px; color: var(--text2); line-height: 1.75; margin-bottom: 28px; max-width: 520px; margin-left: auto; margin-right: auto; }
-  .access-steps {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    text-align: left;
-    margin-bottom: 28px;
-  }
-  .access-step {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 16px;
-    position: relative;
-  }
-  .access-step-num {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .access-step h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
-  .access-step p { font-size: 12.5px; color: var(--text2); line-height: 1.65; margin: 0; }
-  .access-note {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.65;
-    margin-bottom: 22px;
-    font-family: 'Space Mono', monospace;
-  }
-  .contact-email {
-    margin: -4px 0 18px;
-    font-size: 13px;
-    color: var(--text2);
-    font-family: 'Space Mono', monospace;
-  }
-  .contact-email a {
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 700;
-  }
-  .contact-email a:hover { text-decoration: underline; }
-  .access-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-    align-items: center;
-  }
-  .btn-checkout {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: linear-gradient(135deg, var(--purple), var(--accent));
-    color: #0a0614;
-    padding: 14px 28px;
+  .contact-icon { font-size: 48px; margin-bottom: 16px; }
+  .contact-card h3 { font-size: 24px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
+  .contact-card p { font-size: 15px; color: var(--text2); line-height: 1.7; margin-bottom: 28px; }
+  .btn-telegram {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #29b6f6;
+    color: #fff;
+    padding: 14px 32px;
     border-radius: 12px;
     font-size: 15px;
-    font-weight: 800;
-    text-decoration: none;
-    transition: all 0.2s;
-    box-shadow: 0 6px 24px rgba(139, 92, 246, 0.28);
-  }
-  .btn-checkout:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(139, 92, 246, 0.35); color: #0a0614; }
-  .btn-checkout-outline {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 13px 22px;
-    border-radius: 12px;
-    font-size: 14px;
     font-weight: 700;
     text-decoration: none;
-    color: var(--text);
-    border: 1px solid var(--border-bright);
-    background: rgba(255,255,255,0.04);
     transition: all 0.2s;
   }
-  .btn-checkout-outline:hover { border-color: var(--accent); color: var(--accent); }
-  @media (max-width: 700px) {
-    .access-steps { grid-template-columns: 1fr; }
-    .contact-card { padding: 32px 22px 36px; }
-  }
+  .btn-telegram:hover { background: #039be5; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(41,182,246,0.3); }
 
   /* ── FOOTER ── */
   footer {
@@ -952,17 +825,17 @@
   .sticky-cta.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
   .sticky-cta a {
     display: inline-flex; align-items: center; gap: 8px;
-    background: linear-gradient(135deg, var(--purple), var(--accent));
-    color: #0a0614;
+    background: var(--accent);
+    color: #000;
     padding: 13px 22px;
     border-radius: 12px;
     font-size: 14px;
     font-weight: 800;
     text-decoration: none;
-    box-shadow: 0 4px 24px rgba(139, 92, 246, 0.35);
+    box-shadow: 0 4px 24px rgba(0,230,118,0.35);
     transition: all 0.2s;
   }
-  .sticky-cta a:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(139, 92, 246, 0.42); color: #0a0614; }
+  .sticky-cta a:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,230,118,0.4); }
 
   /* ── SCROLL FADE ── */
   .fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
@@ -970,8 +843,7 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 800px) {
-    .steps, .features-grid, .pricing-grid { grid-template-columns: 1fr; }
-    .alert-preview-wrap { grid-template-columns: 1fr; max-width: 420px; }
+    .steps, .features-grid, .pricing-grid, .testimonials-grid { grid-template-columns: 1fr; }
     .stats-grid { grid-template-columns: 1fr; gap: 10px; max-width: 520px; }
     .stat-number { font-size: 32px; }
     .nav-links { display: none; }
@@ -979,17 +851,11 @@
     .odds-form-grid { grid-template-columns: 1fr; }
     .hero h1 { letter-spacing: -1px; }
     .contact-card { padding: 32px 24px; }
-    :root {
-      --section-space: clamp(56px, 10vw, 70px);
-      --section-sub-gap: 30px;
-    }
   }
   @media (max-width: 540px) {
     .stats-grid { grid-template-columns: 1fr; max-width: 320px; }
     .calc-results { grid-template-columns: 1fr; }
     .hero { padding: 124px 0 64px; }
-    .hero-logo-wrap { margin-bottom: clamp(12px, 3vw, 22px); }
-    .hero-brand-logo { max-width: min(420px, 94vw); }
     .nav-inner { margin: 10px auto; padding: 10px 14px; }
     .nav-dash { padding: 7px 12px !important; font-size: 12px !important; }
   }
@@ -1014,17 +880,18 @@
 <nav>
   <div class="nav-inner">
     <a class="nav-logo" href="#">
-      <img class="nav-logo-img" src="./ghost-arb-logo.png" alt="Ghost Arb Bot logo" width="48" height="48" decoding="async" fetchpriority="high">
+      <img class="nav-logo-img" src="ghost-arb-logo.png" alt="Ghost Arb Bot — ghost holding two odds cards" width="40" height="40" decoding="async">
       <div class="nav-logo-text">Ghost <span>Arb Bot</span></div>
     </a>
     <div style="display:flex;align-items:center;gap:6px;">
       <ul class="nav-links">
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#features">Features</a></li>
+        <li><a href="#about-owner">About the Owner</a></li>
         <li><a href="#odds-calculator">Odds Calculator</a></li>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="#pricing" class="nav-cta">Get Access</a></li>
+        <li><a href="#contact" class="nav-cta">Checkout</a></li>
       </ul>
       <a href="https://cbiz1bot.github.io/arb-dash/dashboard.html" target="_blank" class="nav-dash">🔐 Dashboard</a>
     </div>
@@ -1034,9 +901,7 @@
 <!-- HERO -->
 <section class="hero">
   <div class="container">
-    <div class="hero-logo-wrap">
-      <img class="hero-brand-logo" src="./ghost-arb-logo.png" alt="Ghost Arb Bot — GHOST arbitrage betting bot logo" width="480" height="480" decoding="async" fetchpriority="high">
-    </div>
+    <img class="hero-brand-logo" src="ghost-arb-logo.png" alt="" width="280" height="280" decoding="async" aria-hidden="true">
     <div class="hero-badge">
       <div class="hero-dot"></div>
       Live — Real-Time Arbitrage Alerts
@@ -1075,7 +940,7 @@
       <div class="alert-card">
         <div class="alert-card-header">
           <div class="tg-bubble" aria-hidden="true">
-            <img class="tg-bubble-logo" src="./ghost-arb-logo.png" alt="">
+            <img class="tg-bubble-logo" src="ghost-arb-logo.png" alt="">
           </div>
           <div>
             <div class="tg-name">Ghost Arb Bot</div>
@@ -1097,62 +962,6 @@
             <div class="alert-calc-row">📌 Over 3.5 Cards @ Bet365 (1.95) → Stake <b>£53.66</b></div>
             <div class="alert-calc-row">📌 Under 3.5 Cards @ William Hill (2.20) → Stake <b>£46.34</b></div>
             <div class="alert-profit-line">💰 Guaranteed profit: <b>£24.00</b></div>
-          </div>
-        </div>
-      </div>
-      <div class="alert-card">
-        <div class="alert-card-header">
-          <div class="tg-bubble" aria-hidden="true">
-            <img class="tg-bubble-logo" src="./ghost-arb-logo.png" alt="">
-          </div>
-          <div>
-            <div class="tg-name">Ghost Arb Bot</div>
-            <div class="tg-time">1 min ago</div>
-          </div>
-          <div style="margin-left:auto;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);border-radius:6px;padding:3px 10px;font-size:11px;font-family:'Space Mono',monospace;color:var(--accent);">LIVE</div>
-        </div>
-        <div class="alert-body">
-          <div class="alert-title-row">🟢 New Arb Bet Alert! <span style="font-size:12px;color:var(--text2);font-weight:400;">(Example)</span></div>
-          <div class="alert-divider"></div>
-          <div class="alert-row"><span class="alert-key">🕐 Found at</span><span class="alert-val">22 Mar 2026 18:45</span></div>
-          <div class="alert-row"><span class="alert-key">🏆 Event</span><span class="alert-val">Inter vs Napoli</span></div>
-          <div class="alert-row"><span class="alert-key">🎯 Market</span><span class="alert-val">BTTS Yes / No</span></div>
-          <div class="alert-row"><span class="alert-key">💰 Profit</span><span class="alert-val profit">8.04%</span></div>
-          <div class="alert-row"><span class="alert-key">📚 Books</span><span class="alert-val">Sky Bet vs Paddy Power</span></div>
-          <div class="alert-row"><span class="alert-key">📊 Odds</span><span class="alert-val">1.94 / 2.27</span></div>
-          <div class="alert-calc">
-            <div class="alert-calc-title">🧮 Calculator (£100 total stake)</div>
-            <div class="alert-calc-row">📌 BTTS Yes @ Sky Bet (1.94) → Stake <b>£53.92</b></div>
-            <div class="alert-calc-row">📌 BTTS No @ Paddy Power (2.27) → Stake <b>£46.08</b></div>
-            <div class="alert-profit-line">💰 Guaranteed profit: <b>£4.60</b></div>
-          </div>
-        </div>
-      </div>
-      <div class="alert-card">
-        <div class="alert-card-header">
-          <div class="tg-bubble" aria-hidden="true">
-            <img class="tg-bubble-logo" src="./ghost-arb-logo.png" alt="">
-          </div>
-          <div>
-            <div class="tg-name">Ghost Arb Bot</div>
-            <div class="tg-time">2 mins ago</div>
-          </div>
-          <div style="margin-left:auto;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);border-radius:6px;padding:3px 10px;font-size:11px;font-family:'Space Mono',monospace;color:var(--accent);">LIVE</div>
-        </div>
-        <div class="alert-body">
-          <div class="alert-title-row">🟢 New Arb Bet Alert! <span style="font-size:12px;color:var(--text2);font-weight:400;">(Example)</span></div>
-          <div class="alert-divider"></div>
-          <div class="alert-row"><span class="alert-key">🕐 Found at</span><span class="alert-val">22 Mar 2026 18:47</span></div>
-          <div class="alert-row"><span class="alert-key">🏆 Event</span><span class="alert-val">Atletico vs Sevilla</span></div>
-          <div class="alert-row"><span class="alert-key">🎯 Market</span><span class="alert-val">Over/Under 0.5 Goals</span></div>
-          <div class="alert-row"><span class="alert-key">💰 Profit</span><span class="alert-val profit">2.83%</span></div>
-          <div class="alert-row"><span class="alert-key">📚 Books</span><span class="alert-val">Unibet vs BetVictor</span></div>
-          <div class="alert-row"><span class="alert-key">📊 Odds</span><span class="alert-val">1.14 / 10.50</span></div>
-          <div class="alert-calc">
-            <div class="alert-calc-title">🧮 Calculator (£100 total stake)</div>
-            <div class="alert-calc-row">📌 Over 0.5 Goals @ Unibet (1.14) → Stake <b>£90.22</b></div>
-            <div class="alert-calc-row">📌 Under 0.5 Goals @ BetVictor (10.50) → Stake <b>£9.78</b></div>
-            <div class="alert-profit-line">💰 Guaranteed profit: <b>£2.83</b></div>
           </div>
         </div>
       </div>
@@ -1181,27 +990,58 @@
 
 <hr class="divider">
 
+<!-- ODDS CALCULATOR -->
+<section id="odds-calculator">
+  <div class="container">
+    <div class="section-label">Tools</div>
+    <h2 class="section-title">Homemade <span class="highlight">Odds Calculator</span></h2>
+    <p class="section-sub">Enter both sides of the market and switch between decimal or fractional odds.</p>
+    <div class="odds-calc-box fade-up">
+      <div class="odds-form-grid">
+        <div class="odds-field">
+          <label for="odds-format">Odds Format</label>
+          <select id="odds-format" onchange="updateOddsCalc()">
+            <option value="decimal">Decimal</option>
+            <option value="fractional">Fractional</option>
+          </select>
+        </div>
+        <div class="odds-field">
+          <label for="odd-a">Side A Odds</label>
+          <input id="odd-a" type="text" value="1.95" oninput="updateOddsCalc()" placeholder="e.g. 1.95 or 19/20">
+        </div>
+        <div class="odds-field">
+          <label for="odd-b">Side B Odds</label>
+          <input id="odd-b" type="text" value="2.20" oninput="updateOddsCalc()" placeholder="e.g. 2.20 or 6/5">
+        </div>
+      </div>
+      <div id="odds-result" class="odds-result">Enter valid odds to calculate.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
 <!-- HOW IT WORKS -->
 <section id="how-it-works">
   <div class="container">
     <div class="section-label">How It Works</div>
     <h2 class="section-title">Up and Running in <span class="highlight">Minutes</span></h2>
-    <p class="section-sub">No technical knowledge required. Pay online, follow the on-screen steps after checkout — your invite link is shown there — and start receiving alerts in Telegram.</p>
+    <p class="section-sub">No technical knowledge required for group access. Join the private Telegram group and receive arb alerts instantly. (Self-hosted setup is optional.)</p>
     <div class="steps">
       <div class="step fade-up">
         <div class="step-num">1</div>
-        <h3>Choose your plan &amp; pay</h3>
-        <p>Pick monthly, 6 months, or annual and complete checkout securely. No back-and-forth messages required.</p>
+        <h3>Purchase Group Access</h3>
+        <p>Choose your plan and complete access via Telegram. We add you to the private alert group right away.</p>
       </div>
       <div class="step fade-up">
         <div class="step-num">2</div>
-        <h3>Get your invite</h3>
-        <p>When payment completes, your private Telegram invite link is shown on the success screen — follow the on-screen instructions. We also email the same link to the address you used at checkout.</p>
+        <h3>Join the Telegram Group</h3>
+        <p>Once payment is confirmed, you are added to the private group where all arb alerts are posted live.</p>
       </div>
       <div class="step fade-up">
         <div class="step-num">3</div>
         <h3>Receive Instant Alerts</h3>
-        <p>The bot scans every 5 seconds and fires Telegram alerts the moment a qualifying arb is found.</p>
+        <p>The bot scans every 5 seconds and posts Telegram alerts the moment a qualifying arb is found.</p>
       </div>
     </div>
   </div>
@@ -1234,34 +1074,84 @@
       <div class="feature fade-up">
         <div class="feature-icon">🔗</div>
         <h3>Direct Bookmaker Links</h3>
-        <p>One tap from the alert takes you straight to the right page on each bookmaker — no hunting required.</p>
+        <p>One tap from the alert takes you straight to the right page on each bookmaker where supported — no hunting required.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">🔒</div>
         <h3>Private Group Access</h3>
-        <p>Members join through a private invite link (shown after checkout and sent by email) so the group stays exclusive and automated.</p>
+        <p>Access is managed through a private Telegram group so members get fast, direct alerts in one place.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">🛠️</div>
         <h3>Setup Wizard</h3>
-        <p>A built-in interactive wizard configures everything for you. No editing config files by hand.</p>
+        <p>A built-in interactive wizard configures everything for self-hosted users. If you are buying Telegram access only, setup is handled for you.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">⏰</div>
         <h3>Age Filtering</h3>
-        <p>Set a maximum bet age so you only receive alerts for fresh opportunities — no stale odds.</p>
+        <p>For self-hosted users, set a maximum bet age so your local bot only sends fresh opportunities — no stale odds.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">📊</div>
         <h3>Profit Threshold</h3>
-        <p>Configure your minimum profit percentage so you only see arbs worth acting on.</p>
+        <p>For self-hosted users, configure your minimum profit percentage so your local bot only sends arbs worth acting on.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">📅</div>
         <h3>Daily Summary</h3>
         <p>An automated midnight recap shows you how many arbs were found today and in total.</p>
       </div>
+      <div class="feature fade-up">
+        <div class="feature-icon">💎</div>
+        <h3>Analytical Value Bets</h3>
+        <p>The bot also delivers analytically driven value bets. The strategy is to risk only a small percentage of arbitrage winnings on these to increase total money gains while keeping core staking disciplined.</p>
+      </div>
+      <div class="feature fade-up">
+        <div class="feature-icon">🤝</div>
+        <h3>Active Community</h3>
+        <p>Join a genuinely active member group where users share progress, ask questions, and help each other execute opportunities faster.</p>
+      </div>
+      <div class="feature fade-up">
+        <div class="feature-icon">💼</div>
+        <h3>Money-Minded Owner</h3>
+        <p>The owner is focused on real profits and uses the same alerts to make money every single day, while staying hands-on with updates and support. An incredible amount of time, effort, energy, and money has gone into developing and refining this bot.</p>
+      </div>
     </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- BOOKMAKERS -->
+<section>
+  <div class="container">
+    <div class="section-label">Supported Bookmakers</div>
+    <h2 class="section-title">Works With All <span class="highlight">Major Bookmakers</span></h2>
+    <p class="section-sub">The bot monitors all of these simultaneously so you never miss an opportunity.</p>
+    <div class="bookmaker-row fade-up">
+      <div class="bookmaker-pill">Bet365</div>
+      <div class="bookmaker-pill">William Hill</div>
+      <div class="bookmaker-pill">Betfair</div>
+      <div class="bookmaker-pill">Paddy Power</div>
+      <div class="bookmaker-pill">Sky Bet</div>
+      <div class="bookmaker-pill">Ladbrokes</div>
+      <div class="bookmaker-pill">Coral</div>
+      <div class="bookmaker-pill">Unibet</div>
+      <div class="bookmaker-pill">888sport</div>
+      <div class="bookmaker-pill">Betfred</div>
+      <div class="bookmaker-pill">BoyleSports</div>
+      <div class="bookmaker-pill">Spreadex</div>
+      <div class="bookmaker-pill">Midnite</div>
+      <div class="bookmaker-pill">QuinnBet</div>
+      <div class="bookmaker-pill">LiveScore Bet</div>
+      <div class="bookmaker-pill">Virgin Bet</div>
+      <div class="bookmaker-pill">Parimatch</div>
+      <div class="bookmaker-pill">BetMGM</div>
+      <div class="bookmaker-pill">BetUK</div>
+      <div class="bookmaker-pill">BetVictor</div>
+      <div class="bookmaker-pill">Bwin</div>
+    </div>
+    <p class="bookmaker-note">Also works with selected worldwide bookmakers and major exchanges, including Betfair Exchange and Smarkets.</p>
   </div>
 </section>
 
@@ -1280,16 +1170,12 @@
         <div class="pricing-price"><span>£</span>20</div>
         <div class="pricing-period">per month</div>
         <ul class="pricing-features">
-          <li>Full bot access</li>
+          <li>Private Telegram alert group access</li>
           <li>Telegram alerts</li>
           <li>Built-in calculator</li>
-          <li>Setup guide included</li>
-          <li>Includes our paid third-party software feed</li>
-          <li>Invite link on-screen after payment + emailed</li>
-          <li>Support available directly in the private group chat</li>
-          <li>Dedicated help section in-group for setup guidance + common trial FAQs</li>
+          <li>Simple getting-started guide included</li>
         </ul>
-        <a href="#contact" id="pl-monthly" class="btn-pricing btn-pricing-secondary">Buy now</a>
+        <a href="#contact" class="btn-pricing btn-pricing-secondary">Get Started</a>
       </div>
 
       <div class="pricing-card featured fade-up">
@@ -1298,17 +1184,13 @@
         <div class="pricing-price"><span>£</span>90</div>
         <div class="pricing-period">every 6 months — save £30</div>
         <ul class="pricing-features">
-          <li>Full bot access</li>
+          <li>Private Telegram alert group access</li>
           <li>Telegram alerts</li>
           <li>Built-in calculator</li>
-          <li>Setup guide included</li>
-          <li>Includes our paid third-party software feed</li>
-          <li>Invite link on-screen after payment + emailed</li>
+          <li>Simple getting-started guide included</li>
           <li>Priority support</li>
-          <li>Support available directly in the private group chat</li>
-          <li>Dedicated help section in-group for setup guidance + common trial FAQs</li>
         </ul>
-        <a href="#contact" id="pl-six" class="btn-pricing btn-pricing-primary">Buy now</a>
+        <a href="#contact" class="btn-pricing btn-pricing-primary">Get Started</a>
       </div>
 
       <div class="pricing-card fade-up">
@@ -1316,23 +1198,19 @@
         <div class="pricing-price"><span>£</span>120</div>
         <div class="pricing-period">per year — save £120</div>
         <ul class="pricing-features">
-          <li>Full bot access</li>
+          <li>Private Telegram alert group access</li>
           <li>Telegram alerts</li>
           <li>Built-in calculator</li>
-          <li>Setup guide included</li>
-          <li>Includes our paid third-party software feed</li>
-          <li>Invite link on-screen after payment + emailed</li>
+          <li>Simple getting-started guide included</li>
           <li>Priority support</li>
           <li>Best value</li>
-          <li>Support available directly in the private group chat</li>
-          <li>Dedicated help section in-group for setup guidance + common trial FAQs</li>
         </ul>
-        <a href="#contact" id="pl-annual" class="btn-pricing btn-pricing-secondary">Buy now</a>
+        <a href="#contact" class="btn-pricing btn-pricing-secondary">Get Started</a>
       </div>
 
     </div>
     <div class="disclaimer">
-      ⚠️ Access includes our paid third-party software feed via the private Telegram group — you do not need to buy that separate software yourself. Checkout is automated; after paying, your Telegram invite link appears on the confirmation screen — follow the prompts — and the same link is emailed to you. Always verify odds before placing. You are responsible for your own betting decisions.
+      ⚠️ No additional surebet subscription is required. You are buying direct access to our private Telegram alert group. Self-hosted bot setup is optional and handled separately. Always verify odds before placing. You are responsible for your own betting decisions.
     </div>
   </div>
 </section>
@@ -1386,42 +1264,6 @@
 
 <hr class="divider">
 
-<!-- OWNER MESSAGE -->
-<section>
-  <div class="container">
-    <div class="section-label">Message From The Owner</div>
-    <h2 class="section-title">Why I Believe This Is <span class="highlight">Insane Value</span></h2>
-    <p class="section-sub">Real numbers from my own trial run using the exact same alert flow you get.</p>
-    <div class="owner-card fade-up">
-      <div class="owner-badge">Owner-tested results</div>
-      <p class="owner-quote">
-        I started with an initial <strong>£400 bankroll</strong> and, by following the alerts with discipline, scaled it to <strong>£2,000+</strong> within <strong>31 days</strong>.
-        For me, that made the <strong>£20/month</strong> plan feel like a no-brainer.
-      </p>
-      <p class="owner-quote" style="font-size:14px; margin-top:-6px; margin-bottom:16px; color:var(--text2);">
-        This software is <strong>brand new</strong> (only a few weeks old) and is being actively updated at every opportunity to keep improving the experience for both users and the owner.
-      </p>
-      <div class="owner-highlight">
-        <div class="owner-metric">
-          <span class="k">Starting bankroll</span>
-          <span class="v">£400</span>
-        </div>
-        <div class="owner-metric">
-          <span class="k">31-day result</span>
-          <span class="v">£2,000+</span>
-        </div>
-        <div class="owner-metric">
-          <span class="k">Monthly cost</span>
-          <span class="v">£20</span>
-        </div>
-      </div>
-      <p class="owner-note">I actively use this bot myself and stay involved in the group chat daily — sharing wins, answering questions, and checking in on member performance. Of course results vary by bankroll, staking discipline and market availability.</p>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
 <!-- FAQ -->
 <section id="faq">
   <div class="container">
@@ -1439,15 +1281,11 @@
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">What do I need to get started?</div>
-        <div class="faq-a">A valid email (for your invite), a Telegram account to join the private group, and bookmaker accounts to place bets. You do not need to buy our underlying third-party paid software separately — it is already included through our private Telegram group access.</div>
-      </div>
-      <div class="faq-item fade-up">
-        <div class="faq-q" onclick="toggleFaq(this)">How do I get my Telegram invite after paying?</div>
-        <div class="faq-a">As soon as checkout completes, your invite link is shown on the payment success screen — follow the on-screen steps. We also email the same one-time link to the address you used. Tap it, join the group, and alerts start flowing. If you missed the screen and nothing arrives in your inbox within a few minutes, check spam or promotions folders.</div>
+        <div class="faq-a">For Telegram group access, you only need a Telegram account and bookmaker accounts to place your bets. No surebet.com subscription is needed.</div>
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">Do I need to leave my computer on?</div>
-        <div class="faq-a">No. Alerts are posted in our private Telegram group, so you can receive them directly on your phone without running anything locally.</div>
+        <div class="faq-a">No for Telegram group access. Alerts are posted in our private Telegram group, so you can receive them directly on your phone without running anything locally. (Only self-hosted users need to run the bot.)</div>
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">How quickly does it find bets?</div>
@@ -1459,7 +1297,7 @@
       </div>
       <div class="faq-item fade-up">
         <div class="faq-q" onclick="toggleFaq(this)">Can I share it with friends?</div>
-        <div class="faq-a">Access is for paying members only. Each person needs their own checkout so they receive their own invite email. Group or bulk deals may be available — reach out via the support channel listed in your welcome email.</div>
+        <div class="faq-a">Access is for paying members only. Friends need their own membership to join the private alert group. Group deals may be available — contact us for details.</div>
       </div>
     </div>
   </div>
@@ -1467,106 +1305,81 @@
 
 <hr class="divider">
 
-<!-- BOOKMAKERS -->
+<!-- ABOUT OWNER -->
+<section id="about-owner">
+  <div class="container">
+    <div class="section-label">About the Owner</div>
+    <h2 class="section-title">Built by an <span class="highlight">Ordinary Guy</span></h2>
+    <p class="section-sub">The exact reason this exists is simple: create a controlled side hustle that works from your phone.</p>
+    <div class="owner-story fade-up">
+      <p>I am just an ordinary guy who was looking to make a bit of extra cash and ended up uncovering a genius tactic that is profitable to take advantage of the very same people who would rob any man blind (bookies). With a bit of hard work, disciplined action, and commitment to developing this, I have perfected it and can now share it with anyone else who is looking to take part in a side hustle from their phone that is fully under their control.</p>
+      <a href="#contact" class="btn btn-primary">🚀 Join the Group</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TESTIMONIALS -->
 <section>
   <div class="container">
-    <div class="section-label">Supported Bookmakers</div>
-    <h2 class="section-title">Works With All <span class="highlight">Major Bookmakers</span></h2>
-    <p class="section-sub">The bot monitors all of these simultaneously so you never miss an opportunity.</p>
-    <div class="bookmaker-row fade-up">
-      <div class="bookmaker-pill">Bet365</div>
-      <div class="bookmaker-pill">William Hill</div>
-      <div class="bookmaker-pill">Betfair</div>
-      <div class="bookmaker-pill">Paddy Power</div>
-      <div class="bookmaker-pill">Sky Bet</div>
-      <div class="bookmaker-pill">Ladbrokes</div>
-      <div class="bookmaker-pill">Coral</div>
-      <div class="bookmaker-pill">Unibet</div>
-      <div class="bookmaker-pill">888sport</div>
-      <div class="bookmaker-pill">Betfred</div>
-      <div class="bookmaker-pill">BoyleSports</div>
-      <div class="bookmaker-pill">Spreadex</div>
-      <div class="bookmaker-pill">Midnite</div>
-      <div class="bookmaker-pill">QuinnBet</div>
-      <div class="bookmaker-pill">LiveScore Bet</div>
-      <div class="bookmaker-pill">Virgin Bet</div>
-      <div class="bookmaker-pill">Parimatch</div>
-      <div class="bookmaker-pill">BetMGM</div>
-      <div class="bookmaker-pill">BetUK</div>
-      <div class="bookmaker-pill">BetVictor</div>
-      <div class="bookmaker-pill">Bwin</div>
-    </div>
-    <p class="bookmaker-note">Also works with selected worldwide bookmakers and major exchanges, including Betfair Exchange and Smarkets.</p>
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- ODDS CALCULATOR -->
-<section id="odds-calculator">
-  <div class="container">
-    <div class="section-label">Tools</div>
-    <h2 class="section-title">Homemade <span class="highlight">Odds Calculator</span></h2>
-    <p class="section-sub">Enter both sides of the market and switch between decimal or fractional odds.</p>
-    <div class="odds-calc-box fade-up">
-      <div class="odds-form-grid">
-        <div class="odds-field">
-          <label for="odds-format">Odds Format</label>
-          <select id="odds-format" onchange="updateOddsCalc()">
-            <option value="decimal">Decimal</option>
-            <option value="fractional">Fractional</option>
-          </select>
-        </div>
-        <div class="odds-field">
-          <label for="odd-a">Side A Odds</label>
-          <input id="odd-a" type="text" value="1.95" oninput="updateOddsCalc()" placeholder="e.g. 1.95 or 19/20">
-        </div>
-        <div class="odds-field">
-          <label for="odd-b">Side B Odds</label>
-          <input id="odd-b" type="text" value="2.20" oninput="updateOddsCalc()" placeholder="e.g. 2.20 or 6/5">
+    <div class="section-label">What People Say</div>
+    <h2 class="section-title">Trusted by <span class="highlight">Arbers</span></h2>
+    <p class="section-sub">Don't just take our word for it.</p>
+    <div class="testimonials-grid">
+      <div class="testimonial fade-up">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"Found a 9% arb on a Premier League match within the first hour. The calculator made it dead simple to know how much to stake on each side. Brilliant tool."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">👤</div>
+          <div>
+            <div class="testimonial-name">Jamie T.</div>
+            <div class="testimonial-since">Member since Jan 2026</div>
+          </div>
         </div>
       </div>
-      <div id="odds-result" class="odds-result">Enter valid odds to calculate.</div>
+      <div class="testimonial fade-up">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"I was sceptical at first but it genuinely works. The Telegram alerts come through almost instantly and the bet instructions tell me exactly what to do every time."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">👤</div>
+          <div>
+            <div class="testimonial-name">Ryan M.</div>
+            <div class="testimonial-since">Member since Feb 2026</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial fade-up">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"Paid for itself on day one. Love the daily stats summary at midnight too — keeps you motivated. Group access was straightforward and alerts started quickly."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">👤</div>
+          <div>
+            <div class="testimonial-name">Lee P.</div>
+            <div class="testimonial-since">Member since Jan 2026</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <hr class="divider">
 
-<!-- GET ACCESS -->
+<!-- CONTACT -->
 <section id="contact">
   <div class="container">
-    <div class="section-label">Get Access</div>
+    <div class="section-label">Checkout</div>
     <h2 class="section-title">Ready to <span class="highlight">Start Arbing?</span></h2>
-    <p class="section-sub">Pay online in seconds. After checkout, your invite link appears on screen — follow the steps there — and we also send it to your email.</p>
+    <p class="section-sub">Choose your plan and complete checkout securely using the payment links above.</p>
     <div class="contact-card fade-up">
-      <div class="contact-icon">📧</div>
-      <h3>Instant checkout · On-screen invite</h3>
-      <p>Select a plan above and complete secure payment. On the confirmation page, your personal Telegram invite link is displayed — follow the on-screen instructions to join. We also email the same link to the address you used.</p>
-      <div class="access-steps">
-        <div class="access-step">
-          <div class="access-step-num">Step 1</div>
-          <h4>Pick a plan</h4>
-          <p>Use the <strong>Buy now</strong> button on Monthly, 6 Months, or Annual. You will be taken to our secure payment page.</p>
-        </div>
-        <div class="access-step">
-          <div class="access-step-num">Step 2</div>
-          <h4>Pay securely</h4>
-          <p>Complete checkout with your card or wallet. Watch the success page for your invite link and next steps. Use an email you check often — we send the link there too.</p>
-        </div>
-        <div class="access-step">
-          <div class="access-step-num">Step 3</div>
-          <h4>Join via link</h4>
-          <p>Use the link from the checkout screen or your email, tap the Telegram invite, and you are in. Alerts begin as soon as you are in the group.</p>
-        </div>
-      </div>
-      <p class="access-note">Tip: If you closed the checkout page, check your email — or spam/promotions folders. The link is unique to your purchase.</p>
-      <p class="contact-email">Need help? Email us at <a href="mailto:ghost.arb.bot.official@gmail.com">ghost.arb.bot.official@gmail.com</a></p>
-      <div class="access-actions">
-        <a href="#pricing" class="btn-checkout">See plans &amp; pricing</a>
-        <a href="mailto:ghost.arb.bot.official@gmail.com?subject=Ghost%20Arb%20Bot%20Support" class="btn-checkout-outline">Contact Us</a>
-        <a href="#faq" class="btn-checkout-outline">Questions? Read FAQ</a>
-      </div>
+      <div class="contact-icon">💳</div>
+      <h3>Checkout in Seconds</h3>
+      <p>Pick your plan from the pricing section and pay online. Access is automated and your Telegram group invite is delivered right after payment.</p>
+      <a href="#pricing" class="btn-telegram">
+        <span style="font-size:18px;">🚀</span>
+        Go to Pricing
+      </a>
     </div>
   </div>
 </section>
@@ -1581,43 +1394,10 @@
 
 <!-- STICKY CTA -->
 <div class="sticky-cta" id="sticky-cta">
-  <a href="#pricing">🚀 Buy access</a>
+  <a href="#contact">🚀 Checkout</a>
 </div>
 
 <script>
-  // ── PAYMENT LINKS (paste your Stripe Payment Links, Lemon Squeezy, etc.) ──
-  // Leave a string empty to keep that button scrolling to #contact until you add a URL.
-  // Paste your live checkout URLs (Stripe Payment Links, Lemon Squeezy, etc.).
-  // Non-empty strings wire the matching "Buy now" button (opens in a new tab).
-  const PAYMENT_LINKS = {
-    monthly: 'https://buy.stripe.com/bJeaEQ3tH2JT18a7qf2B205',
-    sixMonths: 'https://buy.stripe.com/bJe14g7JX0BL046h0P2B203',
-    annual: 'https://buy.stripe.com/7sY5kwaW9acl4km8uj2B202'
-  };
-
-  function applyPaymentLinks() {
-    const pairs = [
-      ['pl-monthly', PAYMENT_LINKS.monthly],
-      ['pl-six', PAYMENT_LINKS.sixMonths],
-      ['pl-annual', PAYMENT_LINKS.annual]
-    ];
-    pairs.forEach(function (pair) {
-      var id = pair[0];
-      var url = pair[1];
-      var a = document.getElementById(id);
-      if (!a || !url || typeof url !== 'string' || !url.trim()) return;
-      a.href = url.trim();
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-    });
-  }
-
-  function onDomReady(fn) {
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
-    else fn();
-  }
-  onDomReady(applyPaymentLinks);
-
   // ── FAQ ──
   function toggleFaq(el) {
     const item = el.closest('.faq-item');
