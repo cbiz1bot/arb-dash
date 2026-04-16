@@ -317,8 +317,12 @@
   /* ── ALERT PREVIEW CARD ── */
   .alert-preview-wrap {
     animation: fadeUp 0.5s 0.4s ease both;
-    max-width: 400px;
+    max-width: 1180px;
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    align-items: start;
   }
   .alert-card {
     background: var(--surface);
@@ -843,6 +847,7 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 800px) {
+    .alert-preview-wrap { grid-template-columns: 1fr; max-width: 400px; }
     .steps, .features-grid, .pricing-grid, .testimonials-grid { grid-template-columns: 1fr; }
     .stats-grid { grid-template-columns: 1fr; gap: 10px; max-width: 520px; }
     .stat-number { font-size: 32px; }
@@ -891,7 +896,7 @@
         <li><a href="#odds-calculator">Odds Calculator</a></li>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="#contact" class="nav-cta">Checkout</a></li>
+        <li><a href="#pricing" class="nav-cta">Checkout</a></li>
       </ul>
       <a href="https://cbiz1bot.github.io/arb-dash/dashboard.html" target="_blank" class="nav-dash">🔐 Dashboard</a>
     </div>
@@ -935,7 +940,7 @@
       </div>
     </div>
 
-    <!-- ALERT PREVIEW -->
+    <!-- ALERT PREVIEW (2-way arb: same math as Odds Calculator below) -->
     <div class="alert-preview-wrap">
       <div class="alert-card">
         <div class="alert-card-header">
@@ -953,15 +958,77 @@
           <div class="alert-divider"></div>
           <div class="alert-row"><span class="alert-key">🕐 Found at</span><span class="alert-val">22 Mar 2026 18:42</span></div>
           <div class="alert-row"><span class="alert-key">🏆 Event</span><span class="alert-val">Man City vs Arsenal</span></div>
+          <div class="alert-row"><span class="alert-key">🌍 Nation</span><span class="alert-val">England</span></div>
+          <div class="alert-row"><span class="alert-key">🏅 League</span><span class="alert-val">Premier League</span></div>
           <div class="alert-row"><span class="alert-key">🎯 Market</span><span class="alert-val">Over/Under Cards 3.5</span></div>
-          <div class="alert-row"><span class="alert-key">💰 Profit</span><span class="alert-val profit">24.00%</span></div>
+          <div class="alert-row"><span class="alert-key">💰 Profit</span><span class="alert-val profit">9.49%</span></div>
           <div class="alert-row"><span class="alert-key">📚 Books</span><span class="alert-val">Bet365 vs William Hill</span></div>
-          <div class="alert-row"><span class="alert-key">📊 Odds</span><span class="alert-val">1.95 / 2.20</span></div>
+          <div class="alert-row"><span class="alert-key">📊 Odds</span><span class="alert-val">2.05 / 2.35</span></div>
           <div class="alert-calc">
-            <div class="alert-calc-title">🧮 Calculator (£100 total stake)</div>
-            <div class="alert-calc-row">📌 Over 3.5 Cards @ Bet365 (1.95) → Stake <b>£53.66</b></div>
-            <div class="alert-calc-row">📌 Under 3.5 Cards @ William Hill (2.20) → Stake <b>£46.34</b></div>
-            <div class="alert-profit-line">💰 Guaranteed profit: <b>£24.00</b></div>
+            <div class="alert-calc-title">🧮 Calculator (£200 total stake)</div>
+            <div class="alert-calc-row">📌 Over 3.5 Cards @ Bet365 (2.05) → Stake <b>£106.82</b></div>
+            <div class="alert-calc-row">📌 Under 3.5 Cards @ William Hill (2.35) → Stake <b>£93.18</b></div>
+            <div class="alert-profit-line">💰 Guaranteed profit: <b>£18.98</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="alert-card">
+        <div class="alert-card-header">
+          <div class="tg-bubble" aria-hidden="true">
+            <img class="tg-bubble-logo" src="ghost-arb-logo.png" alt="">
+          </div>
+          <div>
+            <div class="tg-name">Ghost Arb Bot</div>
+            <div class="tg-time">1 min ago</div>
+          </div>
+          <div style="margin-left:auto;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);border-radius:6px;padding:3px 10px;font-size:11px;font-family:'Space Mono',monospace;color:var(--accent);">LIVE</div>
+        </div>
+        <div class="alert-body">
+          <div class="alert-title-row">🟠 New Arb Bet Alert! <span style="font-size:12px;color:var(--text2);font-weight:400;">(Example)</span></div>
+          <div class="alert-divider"></div>
+          <div class="alert-row"><span class="alert-key">🕐 Found at</span><span class="alert-val">22 Mar 2026 19:05</span></div>
+          <div class="alert-row"><span class="alert-key">🏆 Event</span><span class="alert-val">Bruins vs Maple Leafs</span></div>
+          <div class="alert-row"><span class="alert-key">🌍 Nation</span><span class="alert-val">USA &amp; Canada</span></div>
+          <div class="alert-row"><span class="alert-key">🏅 League</span><span class="alert-val">NHL</span></div>
+          <div class="alert-row"><span class="alert-key">🎯 Market</span><span class="alert-val">Puck Line −1.5 / +1.5</span></div>
+          <div class="alert-row"><span class="alert-key">💰 Profit</span><span class="alert-val profit">8.00%</span></div>
+          <div class="alert-row"><span class="alert-key">📚 Books</span><span class="alert-val">FanDuel vs DraftKings</span></div>
+          <div class="alert-row"><span class="alert-key">📊 Odds</span><span class="alert-val">2.16 / 2.16</span></div>
+          <div class="alert-calc">
+            <div class="alert-calc-title">🧮 Calculator (£200 total stake)</div>
+            <div class="alert-calc-row">📌 Bruins −1.5 @ FanDuel (2.16) → Stake <b>£100.00</b></div>
+            <div class="alert-calc-row">📌 Maple Leafs +1.5 @ DraftKings (2.16) → Stake <b>£100.00</b></div>
+            <div class="alert-profit-line">💰 Guaranteed profit: <b>£16.00</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="alert-card">
+        <div class="alert-card-header">
+          <div class="tg-bubble" aria-hidden="true">
+            <img class="tg-bubble-logo" src="ghost-arb-logo.png" alt="">
+          </div>
+          <div>
+            <div class="tg-name">Ghost Arb Bot</div>
+            <div class="tg-time">2 mins ago</div>
+          </div>
+          <div style="margin-left:auto;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);border-radius:6px;padding:3px 10px;font-size:11px;font-family:'Space Mono',monospace;color:var(--accent);">LIVE</div>
+        </div>
+        <div class="alert-body">
+          <div class="alert-title-row">🟠 New Arb Bet Alert! <span style="font-size:12px;color:var(--text2);font-weight:400;">(Example)</span></div>
+          <div class="alert-divider"></div>
+          <div class="alert-row"><span class="alert-key">🕐 Found at</span><span class="alert-val">22 Mar 2026 19:18</span></div>
+          <div class="alert-row"><span class="alert-key">🏆 Event</span><span class="alert-val">Djokovic vs Alcaraz</span></div>
+          <div class="alert-row"><span class="alert-key">🌍 Nation</span><span class="alert-val">International</span></div>
+          <div class="alert-row"><span class="alert-key">🏅 League</span><span class="alert-val">ATP Tour</span></div>
+          <div class="alert-row"><span class="alert-key">🎯 Market</span><span class="alert-val">Match Winner</span></div>
+          <div class="alert-row"><span class="alert-key">💰 Profit</span><span class="alert-val profit">9.00%</span></div>
+          <div class="alert-row"><span class="alert-key">📚 Books</span><span class="alert-val">Betfair vs Paddy Power</span></div>
+          <div class="alert-row"><span class="alert-key">📊 Odds</span><span class="alert-val">2.18 / 2.18</span></div>
+          <div class="alert-calc">
+            <div class="alert-calc-title">🧮 Calculator (£200 total stake)</div>
+            <div class="alert-calc-row">📌 Djokovic @ Betfair (2.18) → Stake <b>£100.00</b></div>
+            <div class="alert-calc-row">📌 Alcaraz @ Paddy Power (2.18) → Stake <b>£100.00</b></div>
+            <div class="alert-profit-line">💰 Guaranteed profit: <b>£18.00</b></div>
           </div>
         </div>
       </div>
@@ -972,16 +1039,16 @@
 <!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-track">
-    <div class="ticker-item">⚽ Man City vs Arsenal <span class="ticker-sep">·</span> Over/Under Cards 3.5 <span class="ticker-sep">·</span> <span class="ticker-profit">24.00%</span> profit <span class="ticker-sep">·</span> Bet365 vs William Hill <span class="ticker-sep">·</span> 2 mins ago</div>
-    <div class="ticker-item">🎾 Djokovic vs Alcaraz <span class="ticker-sep">·</span> Over/Under Games 22.5 <span class="ticker-sep">·</span> <span class="ticker-profit">5.12%</span> profit <span class="ticker-sep">·</span> Betfair vs Paddy Power <span class="ticker-sep">·</span> 4 mins ago</div>
-    <div class="ticker-item">🏀 Lakers vs Celtics <span class="ticker-sep">·</span> Over/Under Rebounds 46.5 <span class="ticker-sep">·</span> <span class="ticker-profit">9.87%</span> profit <span class="ticker-sep">·</span> BetMGM vs BetVictor <span class="ticker-sep">·</span> 7 mins ago</div>
+    <div class="ticker-item">⚽ Man City vs Arsenal <span class="ticker-sep">·</span> O/U Cards 3.5 <span class="ticker-sep">·</span> <span class="ticker-profit">9.49%</span> profit <span class="ticker-sep">·</span> Bet365 vs William Hill <span class="ticker-sep">·</span> 2 mins ago</div>
+    <div class="ticker-item">🏒 Bruins vs Maple Leafs <span class="ticker-sep">·</span> Puck Line ±1.5 <span class="ticker-sep">·</span> <span class="ticker-profit">8.00%</span> profit <span class="ticker-sep">·</span> FanDuel vs DraftKings <span class="ticker-sep">·</span> 4 mins ago</div>
+    <div class="ticker-item">🎾 Djokovic vs Alcaraz <span class="ticker-sep">·</span> Match Winner <span class="ticker-sep">·</span> <span class="ticker-profit">9.00%</span> profit <span class="ticker-sep">·</span> Betfair vs Paddy Power <span class="ticker-sep">·</span> 7 mins ago</div>
     <div class="ticker-item">⚽ Liverpool vs Chelsea <span class="ticker-sep">·</span> Over/Under Cards 4.5 <span class="ticker-sep">·</span> <span class="ticker-profit">6.21%</span> profit <span class="ticker-sep">·</span> Sky Bet vs Bwin <span class="ticker-sep">·</span> 11 mins ago</div>
     <div class="ticker-item">🎾 Sinner vs Medvedev <span class="ticker-sep">·</span> Over/Under Aces 10.5 <span class="ticker-sep">·</span> <span class="ticker-profit">4.55%</span> profit <span class="ticker-sep">·</span> Betuk vs William Hill <span class="ticker-sep">·</span> 15 mins ago</div>
     <div class="ticker-item">⚽ Barcelona vs Real Madrid <span class="ticker-sep">·</span> Over/Under Cards 5.5 <span class="ticker-sep">·</span> <span class="ticker-profit">11.20%</span> profit <span class="ticker-sep">·</span> Bet365 vs Betfair <span class="ticker-sep">·</span> 18 mins ago</div>
     <!-- duplicate for seamless loop -->
-    <div class="ticker-item">⚽ Man City vs Arsenal <span class="ticker-sep">·</span> Over/Under Cards 3.5 <span class="ticker-sep">·</span> <span class="ticker-profit">24.00%</span> profit <span class="ticker-sep">·</span> Bet365 vs William Hill <span class="ticker-sep">·</span> 2 mins ago</div>
-    <div class="ticker-item">🎾 Djokovic vs Alcaraz <span class="ticker-sep">·</span> Over/Under Games 22.5 <span class="ticker-sep">·</span> <span class="ticker-profit">5.12%</span> profit <span class="ticker-sep">·</span> Betfair vs Paddy Power <span class="ticker-sep">·</span> 4 mins ago</div>
-    <div class="ticker-item">🏀 Lakers vs Celtics <span class="ticker-sep">·</span> Over/Under Rebounds 46.5 <span class="ticker-sep">·</span> <span class="ticker-profit">9.87%</span> profit <span class="ticker-sep">·</span> BetMGM vs BetVictor <span class="ticker-sep">·</span> 7 mins ago</div>
+    <div class="ticker-item">⚽ Man City vs Arsenal <span class="ticker-sep">·</span> O/U Cards 3.5 <span class="ticker-sep">·</span> <span class="ticker-profit">9.49%</span> profit <span class="ticker-sep">·</span> Bet365 vs William Hill <span class="ticker-sep">·</span> 2 mins ago</div>
+    <div class="ticker-item">🏒 Bruins vs Maple Leafs <span class="ticker-sep">·</span> Puck Line ±1.5 <span class="ticker-sep">·</span> <span class="ticker-profit">8.00%</span> profit <span class="ticker-sep">·</span> FanDuel vs DraftKings <span class="ticker-sep">·</span> 4 mins ago</div>
+    <div class="ticker-item">🎾 Djokovic vs Alcaraz <span class="ticker-sep">·</span> Match Winner <span class="ticker-sep">·</span> <span class="ticker-profit">9.00%</span> profit <span class="ticker-sep">·</span> Betfair vs Paddy Power <span class="ticker-sep">·</span> 7 mins ago</div>
     <div class="ticker-item">⚽ Liverpool vs Chelsea <span class="ticker-sep">·</span> Over/Under Cards 4.5 <span class="ticker-sep">·</span> <span class="ticker-profit">6.21%</span> profit <span class="ticker-sep">·</span> Sky Bet vs Bwin <span class="ticker-sep">·</span> 11 mins ago</div>
     <div class="ticker-item">🎾 Sinner vs Medvedev <span class="ticker-sep">·</span> Over/Under Aces 10.5 <span class="ticker-sep">·</span> <span class="ticker-profit">4.55%</span> profit <span class="ticker-sep">·</span> Betuk vs William Hill <span class="ticker-sep">·</span> 15 mins ago</div>
     <div class="ticker-item">⚽ Barcelona vs Real Madrid <span class="ticker-sep">·</span> Over/Under Cards 5.5 <span class="ticker-sep">·</span> <span class="ticker-profit">11.20%</span> profit <span class="ticker-sep">·</span> Bet365 vs Betfair <span class="ticker-sep">·</span> 18 mins ago</div>
@@ -1175,7 +1242,7 @@
           <li>Built-in calculator</li>
           <li>Simple getting-started guide included</li>
         </ul>
-        <a href="#contact" class="btn-pricing btn-pricing-secondary">Get Started</a>
+        <a id="pl-monthly" href="https://buy.stripe.com/bJeaEQ3tH2JT18a7qf2B205" class="btn-pricing btn-pricing-secondary" target="_blank" rel="noopener noreferrer">Checkout</a>
       </div>
 
       <div class="pricing-card featured fade-up">
@@ -1190,7 +1257,7 @@
           <li>Simple getting-started guide included</li>
           <li>Priority support</li>
         </ul>
-        <a href="#contact" class="btn-pricing btn-pricing-primary">Get Started</a>
+        <a id="pl-six" href="https://buy.stripe.com/bJe14g7JX0BL046h0P2B203" class="btn-pricing btn-pricing-primary" target="_blank" rel="noopener noreferrer">Checkout</a>
       </div>
 
       <div class="pricing-card fade-up">
@@ -1205,7 +1272,7 @@
           <li>Priority support</li>
           <li>Best value</li>
         </ul>
-        <a href="#contact" class="btn-pricing btn-pricing-secondary">Get Started</a>
+        <a id="pl-annual" href="https://buy.stripe.com/7sY5kwaW9acl4km8uj2B202" class="btn-pricing btn-pricing-secondary" target="_blank" rel="noopener noreferrer">Checkout</a>
       </div>
 
     </div>
@@ -1394,10 +1461,26 @@
 
 <!-- STICKY CTA -->
 <div class="sticky-cta" id="sticky-cta">
-  <a href="#contact">🚀 Checkout</a>
+  <a href="#pricing">🚀 Checkout</a>
 </div>
 
 <script>
+  // ── Stripe payment links (single place to update URLs) ──
+  const PAYMENT_LINKS = {
+    monthly: 'https://buy.stripe.com/bJeaEQ3tH2JT18a7qf2B205',
+    six: 'https://buy.stripe.com/bJe14g7JX0BL046h0P2B203',
+    annual: 'https://buy.stripe.com/7sY5kwaW9acl4km8uj2B202'
+  };
+  function applyPaymentLinks() {
+    var m = document.getElementById('pl-monthly');
+    var s = document.getElementById('pl-six');
+    var a = document.getElementById('pl-annual');
+    if (m && PAYMENT_LINKS.monthly) m.href = PAYMENT_LINKS.monthly;
+    if (s && PAYMENT_LINKS.six) s.href = PAYMENT_LINKS.six;
+    if (a && PAYMENT_LINKS.annual) a.href = PAYMENT_LINKS.annual;
+  }
+  document.addEventListener('DOMContentLoaded', applyPaymentLinks);
+
   // ── FAQ ──
   function toggleFaq(el) {
     const item = el.closest('.faq-item');
