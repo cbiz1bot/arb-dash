@@ -36,6 +36,11 @@
     --warn: #ff9800;
     --danger: #ff3d6b;
     --gold: #ffd700;
+    --space-xs: 6px;
+    --space-sm: 12px;
+    --space-md: 18px;
+    --space-lg: 24px;
+    --radius-ui: 10px;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -97,6 +102,33 @@
 
   /* CONFIG */
   .config-banner { background: rgba(124,77,255,0.1); border: 1px solid rgba(124,77,255,0.3); border-radius: 12px; padding: 14px 20px; margin-bottom: 28px; display: flex; align-items: center; gap: 10px; font-size: 13px; color: #b39dff; flex-wrap: wrap; }
+  .conn-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border-radius: 100px; font-size: 11px; font-family: 'Space Mono', monospace;
+    border: 1px solid var(--border); margin-left: auto;
+  }
+  .conn-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .conn-pill.idle { color: var(--muted); }
+  .conn-pill.idle .dot { background: var(--muted); }
+  .conn-pill.loading { color: var(--warn); }
+  .conn-pill.loading .dot { background: var(--warn); animation: pulse 1s ease-in-out infinite; }
+  .conn-pill.ok { color: var(--accent); border-color: rgba(0,255,136,0.35); }
+  .conn-pill.ok .dot { background: var(--accent); }
+  .conn-pill.err { color: var(--danger); border-color: rgba(255,61,107,0.35); }
+  .conn-pill.err .dot { background: var(--danger); }
+
+  .dev-banner {
+    display: none;
+    background: rgba(255,152,0,0.12);
+    border: 1px solid rgba(255,152,0,0.35);
+    color: var(--warn);
+    border-radius: var(--radius-ui);
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-lg);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .dev-banner strong { color: var(--text); }
   .cfg-input { padding: 5px 10px; font-size: 12px; border-radius: 6px; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-family: 'Space Mono', monospace; outline: none; }
   .cfg-btn { padding: 6px 16px; background: linear-gradient(135deg, var(--accent), #00cc66); color: #000; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 12px; white-space: nowrap; }
 
@@ -128,14 +160,28 @@
   .search-input { flex: 1; min-width: 180px; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: 8px; font-size: 13px; font-family: 'Space Mono', monospace; outline: none; transition: border-color 0.2s; }
   .search-input:focus { border-color: var(--accent2); }
   .filter-select { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 8px; font-size: 12px; font-family: 'Syne', sans-serif; outline: none; cursor: pointer; }
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    position: relative;
+    box-shadow: inset -16px 0 12px -12px rgba(0,0,0,0.25);
+  }
+  [data-theme="light"] .table-wrap { box-shadow: inset -16px 0 12px -12px rgba(0,0,0,0.06); }
+  table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    position: sticky; top: 0; z-index: 2;
+    background: var(--surface);
+    box-shadow: 0 1px 0 var(--border);
+  }
   th { padding: 10px 14px; text-align: left; font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
   th:hover { color: var(--text); }
   td { padding: 12px 14px; border-bottom: 1px solid rgba(42,42,61,0.4); vertical-align: middle; }
   [data-theme="light"] td { border-bottom-color: rgba(200,200,220,0.4); }
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: rgba(124,77,255,0.04); }
+  tbody tr:nth-child(even) td { background: rgba(124,77,255,0.02); }
+  tr:hover td { background: rgba(124,77,255,0.07); }
+  tbody tr.row-copied td { background: rgba(0,255,136,0.1) !important; transition: background 0.4s ease; }
   .key-code { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent); background: rgba(0,255,136,0.06); padding: 3px 7px; border-radius: 5px; letter-spacing: 1px; cursor: pointer; }
   .key-code:hover { background: rgba(0,255,136,0.14); }
   .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 100px; font-size: 10px; font-weight: 700; font-family: 'Space Mono', monospace; }
@@ -146,6 +192,10 @@
   .plan-badge.lifetime { background: rgba(255,215,0,0.1); color: var(--gold); border-color: rgba(255,215,0,0.2); }
   .action-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 4px 9px; border-radius: 5px; cursor: pointer; font-size: 10px; font-family: 'Space Mono', monospace; transition: all 0.15s; margin-right: 3px; white-space: nowrap; }
   .action-btn:hover { border-color: var(--accent2); color: var(--text); }
+  .action-btn:focus-visible, .cfg-btn:focus-visible, .btn:focus-visible, .tab:focus-visible, .theme-toggle:focus-visible {
+    outline: 2px solid var(--accent2);
+    outline-offset: 2px;
+  }
   .action-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
   .device-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 4px; }
   .device-dot.on { background: var(--accent); } .device-dot.off { background: var(--muted); }
@@ -247,6 +297,10 @@
   @media (max-width: 500px) {
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .conn-pill.loading .dot { animation: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -277,12 +331,17 @@
     </div>
   </header>
 
+  <div class="dev-banner" id="dev-password-banner">
+    <strong>Before production:</strong> open <code style="font-size:11px;">dashboard.html</code> and replace <code style="font-size:11px;">PASSWORD</code> (search for <code style="font-size:11px;">CHANGE_ME</code>). The dashboard is locked until you do.
+  </div>
+
   <div class="config-banner">
     ⚙️ <strong>Supabase URL:</strong>
     <input id="cfg-url" class="cfg-input" placeholder="https://xxxx.supabase.co" style="width:230px;" oninput="saveConfig()">
     <strong>Anon Key:</strong>
     <input id="cfg-key" class="cfg-input" type="password" placeholder="eyJ..." style="width:180px;" oninput="saveConfig()">
     <button class="cfg-btn" onclick="loadLicenses()">⚡ Connect</button>
+    <div class="conn-pill idle" id="conn-pill"><span class="dot"></span><span id="conn-pill-text">Idle</span></div>
   </div>
 
   <!-- STATS -->
@@ -492,6 +551,33 @@
   const PASSWORD = 'CHANGE_ME';
   // ══════════════════════════════════════════════
 
+  function updateDevBanner() {
+    const b = document.getElementById('dev-password-banner');
+    if (!b) return;
+    const show = (PASSWORD === 'CHANGE_ME') && (sessionStorage.getItem('pw_ok') === '1');
+    b.style.display = show ? 'block' : 'none';
+  }
+
+  function setConnectionStatus(state) {
+    const pill = document.getElementById('conn-pill');
+    const label = document.getElementById('conn-pill-text');
+    if (!pill || !label) return;
+    pill.classList.remove('idle', 'loading', 'ok', 'err');
+    if (state === 'loading') {
+      pill.classList.add('loading');
+      label.textContent = 'Connecting…';
+    } else if (state === 'ok') {
+      pill.classList.add('ok');
+      label.textContent = 'Connected';
+    } else if (state === 'err') {
+      pill.classList.add('err');
+      label.textContent = 'Error';
+    } else {
+      pill.classList.add('idle');
+      label.textContent = 'Idle';
+    }
+  }
+
   let allLicenses = [];
   let bulkKeys = [];
   let sortKey = 'created_at';
@@ -507,6 +593,7 @@
     if (input.value === PASSWORD) {
       document.getElementById('pw-screen').style.display = 'none';
       sessionStorage.setItem('pw_ok', '1');
+      updateDevBanner();
       loadLicenses();
     } else {
       input.classList.add('error');
@@ -567,21 +654,32 @@
     if (savedKey) document.getElementById('cfg-key').value = savedKey;
     if (sessionStorage.getItem('pw_ok') === '1') {
       document.getElementById('pw-screen').style.display = 'none';
+      updateDevBanner();
       if (savedUrl && savedKey) loadLicenses();
     }
   };
 
   // LOAD
   async function loadLicenses() {
+    setConnectionStatus('loading');
+    const tbody = document.getElementById('table-body');
+    tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="emoji">⏳</div>Loading licenses…</div></td></tr>';
     try {
       const res = await fetch(sbUrl('licenses?select=*&order=created_at.desc'), { headers: sbHeaders() });
-      allLicenses = await res.json();
-      if (!Array.isArray(allLicenses)) throw new Error('bad response');
+      const data = await res.json();
+      if (!res.ok) throw new Error((data && data.message) || ('HTTP ' + res.status));
+      if (!Array.isArray(data)) throw new Error('bad response');
+      allLicenses = data;
+      setConnectionStatus('ok');
       renderTable(allLicenses);
       updateStats(allLicenses);
       updateRevenue();
       showToast('Connected — ' + allLicenses.length + ' keys loaded', 'success');
-    } catch(e) { showToast('Connection failed — check credentials', 'error'); }
+    } catch (e) {
+      setConnectionStatus('err');
+      tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="emoji">⚠️</div>Could not load licenses. Check URL, anon key, and RLS policies.<br><span style="font-size:11px;color:var(--muted);">' + String(e.message || e) + '</span></div></td></tr>';
+      showToast('Connection failed — check credentials', 'error');
+    }
   }
 
   // STATS
@@ -623,11 +721,19 @@
     document.getElementById('stat-revenue').textContent = '£' + total;
   }
 
+  function escAttr(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/'/g, '&#39;');
+  }
+
   // TABLE
   function renderTable(licenses) {
     const tbody = document.getElementById('table-body');
     if (!licenses.length) {
-      tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="emoji">🔑</div>No license keys found</div></td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="emoji">🔑</div>No license keys found — generate one from the sidebar.</div></td></tr>';
       return;
     }
     const now = new Date();
@@ -640,8 +746,8 @@
       const planCls = isLifetime ? 'lifetime' : '';
       const expiresStr = l.expires_at ? l.expires_at.substring(0,10) + (daysLeft !== null && daysLeft >= 0 ? ' <span style="font-size:10px;color:var(--muted)">(' + daysLeft + 'd)</span>' : '') : '<span style="color:var(--gold);">∞</span>';
       const deviceStr = l.device_fingerprint ? '<span class="device-dot on"></span><span style="font-size:10px;color:var(--accent)">Yes</span>' : '<span class="device-dot off"></span><span style="font-size:10px;color:var(--muted)">No</span>';
-      return '<tr onclick="selectKey(\'' + l.license_key + '\')" style="cursor:pointer;">' +
-        '<td><span class="key-code" title="Click to copy" onclick="event.stopPropagation();copyText(\'' + l.license_key + '\')">' + l.license_key + '</span></td>' +
+      return '<tr data-license-key="' + escAttr(l.license_key) + '" onclick="selectKeyFromTr(this)" style="cursor:pointer;">' +
+        '<td><span class="key-code" title="Click to copy" onclick="event.stopPropagation();copyKeyFromRow(this)">' + l.license_key + '</span></td>' +
         '<td><span class="plan-badge ' + planCls + '">' + (l.plan || '—') + '</span></td>' +
         '<td style="font-size:11px;font-family:Space Mono,monospace;">' + expiresStr + '</td>' +
         '<td>' + statusBadge + '</td>' +
@@ -687,8 +793,26 @@
     showToast('Key selected', 'success');
   }
 
+  function selectKeyFromTr(tr) {
+    const k = tr && tr.getAttribute('data-license-key');
+    if (k) selectKey(k);
+  }
+
   function copyText(text) {
     navigator.clipboard.writeText(text).then(() => showToast('Copied!', 'success'));
+  }
+
+  function copyKeyFromRow(el) {
+    const tr = el.closest('tr');
+    const key = tr && tr.getAttribute('data-license-key');
+    if (!key) return;
+    navigator.clipboard.writeText(key).then(() => {
+      showToast('Copied!', 'success');
+      if (tr) {
+        tr.classList.add('row-copied');
+        setTimeout(function () { tr.classList.remove('row-copied'); }, 700);
+      }
+    });
   }
 
   // GENERATE KEY
@@ -880,7 +1004,7 @@
 
   async function executeAction() {
     closeModal();
-    const endpoint = sbUrl('licenses?license_key=eq.' + pendingKey);
+    const endpoint = sbUrl('licenses?license_key=eq.' + encodeURIComponent(pendingKey));
     let payload = {};
     if (actionType === 'revoke') payload = { is_active: false };
     else if (actionType === 'reactivate') payload = { is_active: true };
