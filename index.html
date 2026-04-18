@@ -41,12 +41,7 @@
   html { scroll-behavior: smooth; }
 
   body {
-    background: linear-gradient(
-      155deg,
-      #010103 0%,
-      #09050f calc(40% + (var(--scroll-pct, 0) * 12%)),
-      #140a28 100%
-    );
+    background: #000000;
     color: var(--text);
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
@@ -54,37 +49,140 @@
     -webkit-font-smoothing: antialiased;
     position: relative;
   }
-  body::before {
-    content: '';
-    position: fixed;
-    inset: -20% -10% -20% -10%;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      radial-gradient(circle at 20% calc(15% + (var(--scroll-pct, 0) * 30%)), rgba(135,78,255,0.22), transparent 52%),
-      radial-gradient(circle at 85% calc(78% - (var(--scroll-pct, 0) * 28%)), rgba(189,120,255,0.20), transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(36,13,70,0.32), transparent 62%);
-    transform: translate3d(0, calc(var(--scroll-pct, 0) * -70px), 0);
-    transition: transform 0.12s linear;
-  }
 
-  /* ── BACKGROUND BLOBS ── */
-  .bg-blobs {
+  /* ── SPACE SCENE (trial background) ── */
+  .space-scene {
     position: fixed;
     inset: 0;
-    pointer-events: none;
     z-index: 0;
+    pointer-events: none;
     overflow: hidden;
+    background: radial-gradient(ellipse at bottom, #1a002a 0%, #000000 100%);
   }
-  .bg-blob {
+
+  /* Procedural stars (filled by JS): layered parallax drift */
+  .space-scene .star-field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    animation: spaceMoveStars linear infinite;
+  }
+
+  .space-scene .star-field--back { animation-duration: 145s; }
+  .space-scene .star-field--mid { animation-duration: 98s; }
+  .space-scene .star-field--front { animation-duration: 64s; }
+
+  .space-scene .star-dot {
     position: absolute;
     border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.12;
+    transform: translate(-50%, -50%);
   }
-  .bg-blob-1 { width: 600px; height: 600px; background: #8b5cf6; top: -150px; left: -150px; }
-  .bg-blob-2 { width: 500px; height: 500px; background: #c084fc; bottom: 10%; right: -100px; }
-  .bg-blob-3 { width: 400px; height: 400px; background: #6d28d9; top: 40%; left: 30%; }
+
+  @keyframes spaceMoveStars {
+    from { transform: translateY(0); }
+    to { transform: translateY(-1000px); }
+  }
+
+  @keyframes starTwinkle {
+    0%, 100% { opacity: var(--tw-lo, 0.4); }
+    50% { opacity: var(--tw-hi, 0.95); }
+  }
+
+  .space-scene .star-dot.is-twinkle {
+    animation: starTwinkle var(--tw-dur, 4s) ease-in-out infinite;
+  }
+
+  .space-scene .shooting-star {
+    position: absolute;
+    z-index: 1;
+    width: 2px;
+    height: 80px;
+    background: linear-gradient(-45deg, white, rgba(255, 255, 255, 0));
+    opacity: 0;
+    transform: rotate(45deg);
+    animation: spaceShoot 6s linear infinite;
+  }
+
+  .space-scene .shooting-star:nth-child(4) {
+    top: 10%;
+    left: 80%;
+    animation-delay: 2s;
+  }
+
+  .space-scene .shooting-star:nth-child(5) {
+    top: 30%;
+    left: 60%;
+    animation-delay: 5s;
+  }
+
+  .space-scene .shooting-star:nth-child(6) {
+    top: 60%;
+    left: 70%;
+    animation-delay: 8s;
+  }
+
+  @keyframes spaceShoot {
+    0% {
+      transform: translate(0, 0) rotate(45deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-300px, 300px) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  /* Rockets: spawned by JS (edge entry, up to 7). Nose up in SVG; skin rotates with --flight-deg. */
+  .rockets-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: visible;
+  }
+
+  .space-scene .rocket {
+    position: absolute;
+    --flight-deg: 0;
+    --flight-dist: 150vmax;
+    --flight-duration: 12s;
+    width: 60px;
+    left: 0;
+    top: 0;
+  }
+
+  .space-scene .rocket.is-flying {
+    animation: spaceFlyPath var(--flight-duration) linear forwards;
+  }
+
+  .space-scene .rocket-skin {
+    transform: rotate(calc(var(--flight-deg) * 1deg - 270deg));
+    transform-origin: 50% 50%;
+  }
+
+  .space-scene .rocket svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @keyframes spaceFlyPath {
+    from {
+      transform: translate(0, 0);
+    }
+    to {
+      transform: translate(
+        calc(cos(var(--flight-deg) * 1deg) * var(--flight-dist)),
+        calc(sin(var(--flight-deg) * 1deg) * var(--flight-dist))
+      );
+    }
+  }
 
   .container {
     max-width: 1080px;
@@ -173,14 +271,19 @@
   .hero {
     padding: 118px 0 80px;
     text-align: center;
+    position: relative;
+    z-index: 1;
+    isolation: isolate;
   }
   .hero-brand-logo {
     display: block;
+    position: relative;
+    z-index: 1;
     width: min(280px, 68vw);
     height: auto;
     margin: 0 auto 14px;
     object-fit: contain;
-    filter: drop-shadow(0 10px 28px rgba(139, 92, 246, 0.4));
+    filter: drop-shadow(0 10px 28px rgba(139, 92, 246, 0.55)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.08));
     animation: fadeUp 0.5s 0.04s ease both;
   }
 
@@ -837,21 +940,6 @@
   .testimonial-name { font-size: 13px; font-weight: 700; }
   .testimonial-since { font-size: 11px; color: var(--muted); }
 
-  /* ── ABOUT OWNER ── */
-  .owner-story {
-    background: linear-gradient(165deg, rgba(139,92,246,0.15), rgba(255,255,255,0.04));
-    border: 1px solid var(--border-bright);
-    border-radius: 16px;
-    padding: 28px 24px;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.26);
-  }
-  .owner-story p {
-    font-size: 15px;
-    color: var(--text2);
-    line-height: 1.85;
-    margin: 0 0 18px;
-  }
-
   /* ── CONTACT ── */
   .contact-card {
     background: var(--surface);
@@ -943,8 +1031,25 @@
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
     .ticker-track { animation: none !important; transform: none !important; }
-    body::before { transform: none !important; transition: none !important; }
     .fade-up { opacity: 1 !important; transform: none !important; }
+    /* fadeUp uses fill-mode “both”; crushing duration can leave opacity stuck at 0 (same as .fade-up fix) */
+    .hero-brand-logo,
+    .hero-badge,
+    .hero h1,
+    .hero-sub,
+    .hero-actions,
+    .stats-hero,
+    .alert-preview-wrap {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .hero-dot { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .space-scene .star-field { animation: none !important; transform: none !important; }
+    .space-scene .star-dot.is-twinkle { animation: none !important; }
+    .space-scene .rocket,
+    .space-scene .rocket.is-flying { animation: none !important; }
+    .space-scene .rocket-skin { transform: none !important; }
     .stat-number.is-loading {
       animation: none !important;
       background: rgba(255,255,255,0.07);
@@ -965,24 +1070,33 @@
 </head>
 <body>
 
-<div class="bg-blobs">
-  <div class="bg-blob bg-blob-1"></div>
-  <div class="bg-blob bg-blob-2"></div>
-  <div class="bg-blob bg-blob-3"></div>
+<div class="space-scene" aria-hidden="true">
+  <div class="star-field star-field--back" id="star-field-back"></div>
+  <div class="star-field star-field--mid" id="star-field-mid"></div>
+  <div class="star-field star-field--front" id="star-field-front"></div>
+  <div class="shooting-star"></div>
+  <div class="shooting-star"></div>
+  <div class="shooting-star"></div>
+  <div class="rockets-layer" id="rockets-layer"></div>
 </div>
+
+<template id="rocket-tpl">
+  <div class="rocket" data-rocket>
+    <div class="rocket-skin"></div>
+  </div>
+</template>
 
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
     <a class="nav-logo" href="#">
-      <img class="nav-logo-img" src="ghost-arb-logo.png" alt="Ghost Arb Bot — ghost holding two odds cards" width="40" height="40" decoding="async">
+      <img class="nav-logo-img" src="ghost-arb-logo-optimized.png" alt="Ghost Arb Bot — ghost holding two odds cards" width="40" height="40" decoding="async">
       <div class="nav-logo-text">Ghost <span>Arb Bot</span></div>
     </a>
     <div style="display:flex;align-items:center;gap:6px;">
       <ul class="nav-links">
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#features">Features</a></li>
-        <li><a href="#about-owner">About the Owner</a></li>
         <li><a href="#odds-calculator">Odds Calculator</a></li>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#faq">FAQ</a></li>
@@ -996,7 +1110,7 @@
 <!-- HERO -->
 <section class="hero">
   <div class="container">
-    <img class="hero-brand-logo" src="ghost-arb-logo.png" alt="" width="280" height="280" decoding="async" aria-hidden="true">
+    <img class="hero-brand-logo" src="ghost-arb-logo-optimized.png" alt="" width="280" height="280" decoding="async" aria-hidden="true">
     <div class="hero-badge">
       <div class="hero-dot"></div>
       Live — Real-Time Arbitrage Alerts
@@ -1039,7 +1153,7 @@
       <div class="alert-card">
         <div class="alert-card-header">
           <div class="tg-bubble" aria-hidden="true">
-            <img class="tg-bubble-logo" src="ghost-arb-logo.png" alt="">
+            <img class="tg-bubble-logo" src="ghost-arb-logo-optimized.png" alt="">
           </div>
           <div>
             <div class="tg-name">Ghost Arb Bot</div>
@@ -1069,7 +1183,7 @@
       <div class="alert-card">
         <div class="alert-card-header">
           <div class="tg-bubble" aria-hidden="true">
-            <img class="tg-bubble-logo" src="ghost-arb-logo.png" alt="">
+            <img class="tg-bubble-logo" src="ghost-arb-logo-optimized.png" alt="">
           </div>
           <div>
             <div class="tg-name">Ghost Arb Bot</div>
@@ -1099,7 +1213,7 @@
       <div class="alert-card">
         <div class="alert-card-header">
           <div class="tg-bubble" aria-hidden="true">
-            <img class="tg-bubble-logo" src="ghost-arb-logo.png" alt="">
+            <img class="tg-bubble-logo" src="ghost-arb-logo-optimized.png" alt="">
           </div>
           <div>
             <div class="tg-name">Ghost Arb Bot</div>
@@ -1202,7 +1316,7 @@
       <div class="step fade-up">
         <div class="step-num">3</div>
         <h3>Receive Instant Alerts</h3>
-        <p>The bot scans every 5 seconds and posts Telegram alerts the moment a qualifying arb is found.</p>
+        <p>The bot scans on a short interval (about every 10 seconds by default) and posts Telegram alerts as soon as a qualifying opportunity appears.</p>
       </div>
     </div>
   </div>
@@ -1214,68 +1328,68 @@
 <section id="features">
   <div class="container">
     <div class="section-label">Features</div>
-    <h2 class="section-title">Everything You Need to <span class="highlight">Arb Smarter</span></h2>
-    <p class="section-sub">Built from the ground up to be fast, reliable, and effortless to use.</p>
+    <h2 class="section-title">Built to Feel <span class="highlight">Simple &amp; Calm</span></h2>
+    <p class="section-sub">Clear alerts, no guesswork on stakes, and tools you can trust — whether you use the group or run it yourself.</p>
     <div class="features-grid">
       <div class="feature fade-up">
         <div class="feature-icon">⚡</div>
-        <h3>Real-Time Scanning</h3>
-        <p>Scans every 5 seconds so you're always the first to know when a new opportunity appears.</p>
+        <h3>Steady, Timely Scanning</h3>
+        <p>The monitor refreshes on a short, sensible interval so you see new opportunities soon after they appear — without you staring at a screen all day.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">📲</div>
-        <h3>Instant Telegram Alerts</h3>
-        <p>Alerts land directly in your Telegram — personal chat or group. Never miss a bet again.</p>
+        <h3>Alerts Where You Already Are</h3>
+        <p>Pings arrive in Telegram so you can check them on your phone, at your pace — no extra apps to learn.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">🧮</div>
-        <h3>Built-in Calculator</h3>
-        <p>Every alert includes an automatic stake breakdown so you know exactly how much to place on each side.</p>
+        <h3>Stake Suggestions Included</h3>
+        <p>Each alert can show a balanced split across legs (based on your chosen total stake) so you are not doing scratch-pad maths in a hurry.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">🔗</div>
-        <h3>Direct Bookmaker Links</h3>
-        <p>One tap from the alert takes you straight to the right page on each bookmaker where supported — no hunting required.</p>
+        <h3>Jump Straight to the Bet</h3>
+        <p>Where the bookmaker allows it, links get you close to the right market — less tab-hunting when seconds matter.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">🔒</div>
-        <h3>Private Group Access</h3>
-        <p>Access is managed through a private Telegram group so members get fast, direct alerts in one place.</p>
+        <h3>Members-Only Group</h3>
+        <p>Alerts go to a private Telegram space so the feed stays focused for people who have access.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">🛠️</div>
-        <h3>Setup Wizard</h3>
-        <p>A built-in interactive wizard configures everything for self-hosted users. If you are buying Telegram access only, setup is handled for you.</p>
+        <h3>Guided Self-Host Setup</h3>
+        <p>Prefer to run it on your own machine? A step-by-step wizard walks through config — or join the group and skip the technical side entirely.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">⏰</div>
-        <h3>Age Filtering</h3>
-        <p>For self-hosted users, set a maximum bet age so your local bot only sends fresh opportunities — no stale odds.</p>
+        <h3>Filter Out Stale Lines (Self-Host)</h3>
+        <p>When you run the bot locally, you can cap how “old” a line can be before it is ignored — so you are not chasing moved odds.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">📊</div>
-        <h3>Profit Threshold</h3>
-        <p>For self-hosted users, configure your minimum profit percentage so your local bot only sends arbs worth acting on.</p>
+        <h3>Your Minimum Edge (Self-Host)</h3>
+        <p>Set a profit floor you are comfortable acting on; the bot only nags you when the edge clears your bar.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">📅</div>
-        <h3>Daily Summary</h3>
-        <p>An automated midnight recap shows you how many arbs were found today and in total.</p>
+        <h3>Public Activity Counters</h3>
+        <p>The site can show daily and all-time alert counts so you get a sense of how active things are — no hype, just numbers.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">💎</div>
-        <h3>Analytical Value Bets</h3>
-        <p>The bot also delivers analytically driven value bets. The strategy is to risk only a small percentage of arbitrage winnings on these to increase total money gains while keeping core staking disciplined.</p>
+        <h3>Surebets &amp; Valuebets (Self-Host)</h3>
+        <p>Run the classic surebets list or switch to the Valuebets page on surebet.com — same Telegram flow, separate optional monitor so you can use one or both.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">🤝</div>
-        <h3>Active Community</h3>
-        <p>Join a genuinely active member group where users share progress, ask questions, and help each other execute opportunities faster.</p>
+        <h3>People Actually Using It</h3>
+        <p>Members share what works, ask questions, and compare notes — helpful when you are new or when markets move fast.</p>
       </div>
       <div class="feature fade-up">
         <div class="feature-icon">💼</div>
-        <h3>Money-Minded Owner</h3>
-        <p>The owner is focused on real profits and uses the same alerts to make money every single day, while staying hands-on with updates and support. An incredible amount of time, effort, energy, and money has gone into developing and refining this bot.</p>
+        <h3>Shipped by Someone in the Trenches</h3>
+        <p>This tool was built to solve a real problem: catching edges without living inside ten browser tabs. Expect pragmatic updates and straight answers.</p>
       </div>
     </div>
   </div>
@@ -1466,21 +1580,6 @@
 
 <hr class="divider">
 
-<!-- ABOUT OWNER -->
-<section id="about-owner">
-  <div class="container">
-    <div class="section-label">About the Owner</div>
-    <h2 class="section-title">Built by an <span class="highlight">Ordinary Guy</span></h2>
-    <p class="section-sub">The exact reason this exists is simple: create a controlled side hustle that works from your phone.</p>
-    <div class="owner-story fade-up">
-      <p>I am just an ordinary guy who was looking to make a bit of extra cash and ended up uncovering a genius tactic that is profitable to take advantage of the very same people who would rob any man blind (bookies). With a bit of hard work, disciplined action, and commitment to developing this, I have perfected it and can now share it with anyone else who is looking to take part in a side hustle from their phone that is fully under their control.</p>
-      <a href="#contact" class="btn btn-primary">🚀 Join the Group</a>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
 <!-- TESTIMONIALS -->
 <section>
   <div class="container">
@@ -1586,6 +1685,195 @@
   function prefersReducedMotion() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
+
+  function initStarField() {
+    function rnd(a, b) {
+      return a + Math.random() * (b - a);
+    }
+    function placeStars(container, opts) {
+      if (!container) return;
+      var n = opts.count;
+      var i;
+      var el;
+      var size;
+      var op;
+      var r;
+      var g;
+      var b;
+      var glow;
+      for (i = 0; i < n; i++) {
+        el = document.createElement('span');
+        el.className = 'star-dot';
+        el.style.left = rnd(0, 100) + '%';
+        el.style.top = rnd(0, 100) + '%';
+        size = rnd(opts.sizeMin, opts.sizeMax);
+        el.style.width = size.toFixed(2) + 'px';
+        el.style.height = size.toFixed(2) + 'px';
+        op = rnd(opts.opMin, opts.opMax);
+        r = Math.floor(rnd(210, 255));
+        g = Math.floor(rnd(215, 255));
+        b = Math.floor(rnd(235, 255));
+        el.style.background = 'rgb(' + r + ',' + g + ',' + b + ')';
+        if (opts.glowChance && Math.random() < opts.glowChance) {
+          glow = rnd(0.5, 2.8);
+          el.style.boxShadow =
+            '0 0 ' +
+            glow.toFixed(2) +
+            'px rgba(255,255,255,' +
+            rnd(0.25, 0.75).toFixed(3) +
+            '), 0 0 ' +
+            (glow * 2).toFixed(2) +
+            'px rgba(180,200,255,' +
+            rnd(0.08, 0.22).toFixed(3) +
+            ')';
+        }
+        if (!prefersReducedMotion() && opts.twinkleChance && Math.random() < opts.twinkleChance) {
+          el.classList.add('is-twinkle');
+          el.style.setProperty('--tw-lo', String(Math.max(0.08, op * rnd(0.35, 0.65))));
+          el.style.setProperty('--tw-hi', String(Math.min(1, op * rnd(1.05, 1.9))));
+          el.style.setProperty('--tw-dur', rnd(2.5, 9).toFixed(2) + 's');
+          el.style.animationDelay = rnd(0, 5).toFixed(2) + 's';
+        } else {
+          el.style.opacity = String(op);
+        }
+        container.appendChild(el);
+      }
+    }
+
+    placeStars(document.getElementById('star-field-back'), {
+      count: 130,
+      sizeMin: 0.45,
+      sizeMax: 1.35,
+      opMin: 0.1,
+      opMax: 0.42,
+      glowChance: 0.02,
+      twinkleChance: 0.06,
+    });
+    placeStars(document.getElementById('star-field-mid'), {
+      count: 95,
+      sizeMin: 0.9,
+      sizeMax: 2.35,
+      opMin: 0.18,
+      opMax: 0.58,
+      glowChance: 0.06,
+      twinkleChance: 0.1,
+    });
+    placeStars(document.getElementById('star-field-front'), {
+      count: 62,
+      sizeMin: 1.2,
+      sizeMax: 3.6,
+      opMin: 0.28,
+      opMax: 0.92,
+      glowChance: 0.14,
+      twinkleChance: 0.18,
+    });
+  }
+
+  var ROCKET_SVGS = [
+    '<svg viewBox="0 0 64 128" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="24" height="60" fill="#ccc"/><polygon points="32,0 20,20 44,20" fill="#ff4d4d"/><rect x="24" y="80" width="16" height="20" fill="#666"/><polygon points="24,100 32,128 40,100" fill="orange"/><circle cx="32" cy="50" r="6" fill="#4da6ff"/></svg>',
+    '<svg viewBox="0 0 64 128" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="24" height="60" fill="#ddd"/><polygon points="32,0 20,20 44,20" fill="#9933ff"/><rect x="24" y="80" width="16" height="20" fill="#555"/><polygon points="24,100 32,128 40,100" fill="orange"/><circle cx="32" cy="50" r="6" fill="#66ccff"/></svg>',
+    '<svg viewBox="0 0 64 128" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="24" height="60" fill="#bbb"/><polygon points="32,0 20,20 44,20" fill="#ff66cc"/><rect x="24" y="80" width="16" height="20" fill="#444"/><polygon points="24,100 32,128 40,100" fill="orange"/><circle cx="32" cy="50" r="6" fill="#99ddff"/></svg>',
+  ];
+
+  var MAX_ROCKETS = 7;
+  var rocketCount = 0;
+
+  function initSpaceRockets() {
+    if (prefersReducedMotion()) return;
+    var layer = document.getElementById('rockets-layer');
+    var tpl = document.getElementById('rocket-tpl');
+    if (!layer || !tpl) return;
+
+    function rnd(a, b) {
+      return a + Math.random() * (b - a);
+    }
+
+    function spawnRocket() {
+      if (rocketCount >= MAX_ROCKETS) return;
+      var w = document.documentElement.clientWidth;
+      var h = document.documentElement.clientHeight;
+      var pad = 36 + Math.random() * 110;
+      var edge = Math.floor(Math.random() * 4);
+      var x;
+      var y;
+      var deg;
+
+      if (edge === 0) {
+        x = -pad;
+        y = rnd(0, h);
+        deg = rnd(-80, 80);
+      } else if (edge === 1) {
+        x = w + pad;
+        y = rnd(0, h);
+        deg = rnd(100, 260);
+      } else if (edge === 2) {
+        x = rnd(0, w);
+        y = -pad;
+        deg = rnd(15, 165);
+      } else {
+        x = rnd(0, w);
+        y = h + pad;
+        deg = rnd(195, 345);
+      }
+
+      var frag = tpl.content.cloneNode(true);
+      var rocket = frag.querySelector('[data-rocket]');
+      var skin = rocket.querySelector('.rocket-skin');
+      if (!rocket || !skin) return;
+      skin.innerHTML = ROCKET_SVGS[Math.floor(Math.random() * ROCKET_SVGS.length)];
+
+      rocket.style.left = x + 'px';
+      rocket.style.top = y + 'px';
+      rocket.style.width = 45 + rnd(0, 48) + 'px';
+
+      var dist = Math.hypot(w, h) * (1.3 + Math.random() * 0.45) + rnd(200, 420);
+      rocket.style.setProperty('--flight-dist', dist + 'px');
+      rocket.style.setProperty('--flight-deg', String(deg));
+      var duration = Math.max(4.2, Math.min(26, dist / rnd(75, 195)));
+      rocket.style.setProperty('--flight-duration', duration + 's');
+
+      rocketCount++;
+      layer.appendChild(rocket);
+
+      requestAnimationFrame(function () {
+        rocket.classList.add('is-flying');
+      });
+
+      rocket.addEventListener('animationend', function onRocketAnimEnd(e) {
+        if (e.animationName !== 'spaceFlyPath') return;
+        rocket.removeEventListener('animationend', onRocketAnimEnd);
+        if (rocket.parentNode) rocket.parentNode.removeChild(rocket);
+        rocketCount--;
+      });
+    }
+
+    function scheduleSpawner() {
+      function tick() {
+        if (prefersReducedMotion()) return;
+        if (rocketCount < MAX_ROCKETS && Math.random() > 0.12) {
+          spawnRocket();
+        }
+        setTimeout(tick, 380 + Math.random() * 2600);
+      }
+      setTimeout(tick, 250 + Math.random() * 400);
+    }
+
+    var initialBursts = 3 + Math.floor(Math.random() * 5);
+    var i;
+    for (i = 0; i < initialBursts; i++) {
+      (function (delay) {
+        setTimeout(function () {
+          if (!prefersReducedMotion()) spawnRocket();
+        }, delay);
+      })(80 + i * 260 + Math.random() * 220);
+    }
+    scheduleSpawner();
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initStarField();
+    initSpaceRockets();
+  });
 
   function animateCounter(id, target) {
     const el = document.getElementById(id);
@@ -1702,12 +1990,7 @@
   // ── STICKY CTA ──
   const heroSection = document.querySelector('.hero');
   const stickyCta = document.getElementById('sticky-cta');
-  const root = document.documentElement;
   window.addEventListener('scroll', () => {
-    const maxScroll = Math.max(document.body.scrollHeight - window.innerHeight, 1);
-    const scrollPct = Math.min(window.scrollY / maxScroll, 1);
-    root.style.setProperty('--scroll-pct', scrollPct.toFixed(3));
-
     if (heroSection) {
       stickyCta.classList.toggle('show', heroSection.getBoundingClientRect().bottom < 0);
     }
