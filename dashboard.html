@@ -46,22 +46,167 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background: var(--bg);
+    background: #000000;
     color: var(--text);
     font-family: 'Syne', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  [data-theme="light"] body {
+    background: var(--bg);
     transition: background 0.3s, color 0.3s;
   }
 
-  body::before {
+  [data-theme="light"] body::before {
     content: '';
     position: fixed;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
     background: radial-gradient(ellipse at 20% 20%, var(--glow1) 0%, transparent 50%),
                 radial-gradient(ellipse at 80% 80%, var(--glow2) 0%, transparent 50%);
-    pointer-events: none; z-index: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Match index.html space background (dark theme) */
+  .space-scene {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background: radial-gradient(ellipse at bottom, #1a002a 0%, #000000 100%);
+  }
+
+  [data-theme="light"] .space-scene {
+    display: none !important;
+  }
+
+  .space-scene .star-field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    animation: dashSpaceMoveStars linear infinite;
+  }
+
+  .space-scene .star-field--back { animation-duration: 145s; }
+  .space-scene .star-field--mid { animation-duration: 98s; }
+  .space-scene .star-field--front { animation-duration: 64s; }
+
+  .space-scene .star-dot {
+    position: absolute;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  @keyframes dashSpaceMoveStars {
+    from { transform: translateY(0); }
+    to { transform: translateY(-1000px); }
+  }
+
+  @keyframes dashStarTwinkle {
+    0%, 100% { opacity: var(--tw-lo, 0.4); }
+    50% { opacity: var(--tw-hi, 0.95); }
+  }
+
+  .space-scene .star-dot.is-twinkle {
+    animation: dashStarTwinkle var(--tw-dur, 4s) ease-in-out infinite;
+  }
+
+  .space-scene .shooting-star {
+    position: absolute;
+    z-index: 1;
+    width: 2px;
+    height: 80px;
+    background: linear-gradient(-45deg, white, rgba(255, 255, 255, 0));
+    opacity: 0;
+    transform: rotate(45deg);
+    animation: dashSpaceShoot 6s linear infinite;
+  }
+
+  .space-scene .shooting-star:nth-child(4) {
+    top: 10%;
+    left: 80%;
+    animation-delay: 2s;
+  }
+
+  .space-scene .shooting-star:nth-child(5) {
+    top: 30%;
+    left: 60%;
+    animation-delay: 5s;
+  }
+
+  .space-scene .shooting-star:nth-child(6) {
+    top: 60%;
+    left: 70%;
+    animation-delay: 8s;
+  }
+
+  @keyframes dashSpaceShoot {
+    0% {
+      transform: translate(0, 0) rotate(45deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-300px, 300px) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  .rockets-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: visible;
+  }
+
+  .space-scene .rocket {
+    position: absolute;
+    --flight-deg: 0;
+    --flight-dist: 150vmax;
+    --flight-duration: 12s;
+    width: 60px;
+    left: 0;
+    top: 0;
+  }
+
+  .space-scene .rocket.is-flying {
+    animation: dashSpaceFlyPath var(--flight-duration) linear forwards;
+  }
+
+  .space-scene .rocket-skin {
+    transform: rotate(calc(var(--flight-deg) * 1deg - 270deg));
+    transform-origin: 50% 50%;
+  }
+
+  .space-scene .rocket svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @keyframes dashSpaceFlyPath {
+    from {
+      transform: translate(0, 0);
+    }
+    to {
+      transform: translate(
+        calc(cos(var(--flight-deg) * 1deg) * var(--flight-dist)),
+        calc(sin(var(--flight-deg) * 1deg) * var(--flight-dist))
+      );
+    }
   }
 
   .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
@@ -300,15 +445,36 @@
 
   @media (prefers-reduced-motion: reduce) {
     .conn-pill.loading .dot { animation: none !important; }
+    .space-scene .star-field { animation: none !important; transform: none !important; }
+    .space-scene .star-dot.is-twinkle { animation: none !important; }
+    .space-scene .rocket,
+    .space-scene .rocket.is-flying { animation: none !important; }
+    .space-scene .rocket-skin { transform: none !important; }
   }
 </style>
 </head>
 <body>
 
+<div class="space-scene" aria-hidden="true">
+  <div class="star-field star-field--back" id="star-field-back"></div>
+  <div class="star-field star-field--mid" id="star-field-mid"></div>
+  <div class="star-field star-field--front" id="star-field-front"></div>
+  <div class="shooting-star"></div>
+  <div class="shooting-star"></div>
+  <div class="shooting-star"></div>
+  <div class="rockets-layer" id="rockets-layer"></div>
+</div>
+
+<template id="rocket-tpl">
+  <div class="rocket" data-rocket>
+    <div class="rocket-skin"></div>
+  </div>
+</template>
+
 <!-- PASSWORD SCREEN -->
 <div class="pw-screen" id="pw-screen">
   <div class="pw-box">
-    <img class="pw-logo" src="ghost-arb-logo.png" alt="Ghost Arb Bot" width="72" height="72" decoding="async">
+    <img class="pw-logo" src="ghost-arb-logo-optimized.png" alt="Ghost Arb Bot" width="72" height="72" decoding="async">
     <div class="pw-title">Ghost Arb Bot</div>
     <div class="pw-subtitle">Enter your dashboard password to continue</div>
     <input class="pw-input" id="pw-input" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPassword()">
@@ -321,7 +487,7 @@
   <header>
     <div class="header-inner">
       <div class="logo">
-        <img class="logo-img" src="ghost-arb-logo.png" alt="Ghost Arb Bot" width="40" height="40" decoding="async">
+        <img class="logo-img" src="ghost-arb-logo-optimized.png" alt="Ghost Arb Bot" width="40" height="40" decoding="async">
         <div class="logo-text">Ghost Arb Bot <span>Dashboard</span></div>
       </div>
       <div class="header-right">
@@ -585,6 +751,199 @@
   let actionType = null;
   let pendingKey = null;
   let charts = {};
+
+  function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function initStarField() {
+    function rnd(a, b) {
+      return a + Math.random() * (b - a);
+    }
+    function placeStars(container, opts) {
+      if (!container) return;
+      var n = opts.count;
+      var i;
+      var el;
+      var size;
+      var op;
+      var r;
+      var g;
+      var b;
+      var glow;
+      for (i = 0; i < n; i++) {
+        el = document.createElement('span');
+        el.className = 'star-dot';
+        el.style.left = rnd(0, 100) + '%';
+        el.style.top = rnd(0, 100) + '%';
+        size = rnd(opts.sizeMin, opts.sizeMax);
+        el.style.width = size.toFixed(2) + 'px';
+        el.style.height = size.toFixed(2) + 'px';
+        op = rnd(opts.opMin, opts.opMax);
+        r = Math.floor(rnd(210, 255));
+        g = Math.floor(rnd(215, 255));
+        b = Math.floor(rnd(235, 255));
+        el.style.background = 'rgb(' + r + ',' + g + ',' + b + ')';
+        if (opts.glowChance && Math.random() < opts.glowChance) {
+          glow = rnd(0.5, 2.8);
+          el.style.boxShadow =
+            '0 0 ' +
+            glow.toFixed(2) +
+            'px rgba(255,255,255,' +
+            rnd(0.25, 0.75).toFixed(3) +
+            '), 0 0 ' +
+            (glow * 2).toFixed(2) +
+            'px rgba(180,200,255,' +
+            rnd(0.08, 0.22).toFixed(3) +
+            ')';
+        }
+        if (!prefersReducedMotion() && opts.twinkleChance && Math.random() < opts.twinkleChance) {
+          el.classList.add('is-twinkle');
+          el.style.setProperty('--tw-lo', String(Math.max(0.08, op * rnd(0.35, 0.65))));
+          el.style.setProperty('--tw-hi', String(Math.min(1, op * rnd(1.05, 1.9))));
+          el.style.setProperty('--tw-dur', rnd(2.5, 9).toFixed(2) + 's');
+          el.style.animationDelay = rnd(0, 5).toFixed(2) + 's';
+        } else {
+          el.style.opacity = String(op);
+        }
+        container.appendChild(el);
+      }
+    }
+
+    placeStars(document.getElementById('star-field-back'), {
+      count: 130,
+      sizeMin: 0.45,
+      sizeMax: 1.35,
+      opMin: 0.1,
+      opMax: 0.42,
+      glowChance: 0.02,
+      twinkleChance: 0.06,
+    });
+    placeStars(document.getElementById('star-field-mid'), {
+      count: 95,
+      sizeMin: 0.9,
+      sizeMax: 2.35,
+      opMin: 0.18,
+      opMax: 0.58,
+      glowChance: 0.06,
+      twinkleChance: 0.1,
+    });
+    placeStars(document.getElementById('star-field-front'), {
+      count: 62,
+      sizeMin: 1.2,
+      sizeMax: 3.6,
+      opMin: 0.28,
+      opMax: 0.92,
+      glowChance: 0.14,
+      twinkleChance: 0.18,
+    });
+  }
+
+  var ROCKET_SVGS = [
+    '<svg viewBox="0 0 64 128" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="24" height="60" fill="#ccc"/><polygon points="32,0 20,20 44,20" fill="#ff4d4d"/><rect x="24" y="80" width="16" height="20" fill="#666"/><polygon points="24,100 32,128 40,100" fill="orange"/><circle cx="32" cy="50" r="6" fill="#4da6ff"/></svg>',
+    '<svg viewBox="0 0 64 128" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="24" height="60" fill="#ddd"/><polygon points="32,0 20,20 44,20" fill="#9933ff"/><rect x="24" y="80" width="16" height="20" fill="#555"/><polygon points="24,100 32,128 40,100" fill="orange"/><circle cx="32" cy="50" r="6" fill="#66ccff"/></svg>',
+    '<svg viewBox="0 0 64 128" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="24" height="60" fill="#bbb"/><polygon points="32,0 20,20 44,20" fill="#ff66cc"/><rect x="24" y="80" width="16" height="20" fill="#444"/><polygon points="24,100 32,128 40,100" fill="orange"/><circle cx="32" cy="50" r="6" fill="#99ddff"/></svg>',
+  ];
+
+  var MAX_ROCKETS = 7;
+  var rocketCount = 0;
+
+  function initSpaceRockets() {
+    if (prefersReducedMotion()) return;
+    var layer = document.getElementById('rockets-layer');
+    var tpl = document.getElementById('rocket-tpl');
+    if (!layer || !tpl) return;
+
+    function rnd(a, b) {
+      return a + Math.random() * (b - a);
+    }
+
+    function spawnRocket() {
+      if (rocketCount >= MAX_ROCKETS) return;
+      var w = document.documentElement.clientWidth;
+      var h = document.documentElement.clientHeight;
+      var pad = 36 + Math.random() * 110;
+      var edge = Math.floor(Math.random() * 4);
+      var x;
+      var y;
+      var deg;
+
+      if (edge === 0) {
+        x = -pad;
+        y = rnd(0, h);
+        deg = rnd(-80, 80);
+      } else if (edge === 1) {
+        x = w + pad;
+        y = rnd(0, h);
+        deg = rnd(100, 260);
+      } else if (edge === 2) {
+        x = rnd(0, w);
+        y = -pad;
+        deg = rnd(15, 165);
+      } else {
+        x = rnd(0, w);
+        y = h + pad;
+        deg = rnd(195, 345);
+      }
+
+      var frag = tpl.content.cloneNode(true);
+      var rocket = frag.querySelector('[data-rocket]');
+      var skin = rocket.querySelector('.rocket-skin');
+      if (!rocket || !skin) return;
+      skin.innerHTML = ROCKET_SVGS[Math.floor(Math.random() * ROCKET_SVGS.length)];
+
+      rocket.style.left = x + 'px';
+      rocket.style.top = y + 'px';
+      rocket.style.width = 45 + rnd(0, 48) + 'px';
+
+      var dist = Math.hypot(w, h) * (1.3 + Math.random() * 0.45) + rnd(200, 420);
+      rocket.style.setProperty('--flight-dist', dist + 'px');
+      rocket.style.setProperty('--flight-deg', String(deg));
+      var duration = Math.max(4.2, Math.min(26, dist / rnd(75, 195)));
+      rocket.style.setProperty('--flight-duration', duration + 's');
+
+      rocketCount++;
+      layer.appendChild(rocket);
+
+      requestAnimationFrame(function () {
+        rocket.classList.add('is-flying');
+      });
+
+      rocket.addEventListener('animationend', function onRocketAnimEnd(e) {
+        if (e.animationName !== 'dashSpaceFlyPath') return;
+        rocket.removeEventListener('animationend', onRocketAnimEnd);
+        if (rocket.parentNode) rocket.parentNode.removeChild(rocket);
+        rocketCount--;
+      });
+    }
+
+    function scheduleSpawner() {
+      function tick() {
+        if (prefersReducedMotion()) return;
+        if (rocketCount < MAX_ROCKETS && Math.random() > 0.12) {
+          spawnRocket();
+        }
+        setTimeout(tick, 380 + Math.random() * 2600);
+      }
+      setTimeout(tick, 250 + Math.random() * 400);
+    }
+
+    var initialBursts = 3 + Math.floor(Math.random() * 5);
+    var i;
+    for (i = 0; i < initialBursts; i++) {
+      (function (delay) {
+        setTimeout(function () {
+          if (!prefersReducedMotion()) spawnRocket();
+        }, delay);
+      })(80 + i * 260 + Math.random() * 220);
+    }
+    scheduleSpawner();
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initStarField();
+    initSpaceRockets();
+  });
 
   // PASSWORD
   function checkPassword() {
