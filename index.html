@@ -95,45 +95,34 @@
     animation: starTwinkle var(--tw-dur, 4s) ease-in-out infinite;
   }
 
+  /* Trajectory + timing set per star in JS (--shoot-angle, --shoot-dx/y, --shoot-dur, …) */
   .space-scene .shooting-star {
     position: absolute;
     z-index: 1;
     width: 2px;
-    height: 80px;
-    background: linear-gradient(-45deg, white, rgba(255, 255, 255, 0));
+    height: var(--shoot-len, 80px);
+    top: var(--shoot-top, 12%);
+    left: var(--shoot-left, 50%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0));
     opacity: 0;
-    transform: rotate(45deg);
-    animation: spaceShoot 6s linear infinite;
+    border-radius: 2px;
+    transform: rotate(calc(var(--shoot-angle, 45deg) - 90deg));
+    animation: spaceShootVar var(--shoot-dur, 6s) linear infinite;
+    animation-delay: var(--shoot-delay, 0s);
+    will-change: transform, opacity;
   }
 
-  .space-scene .shooting-star:nth-child(4) {
-    top: 10%;
-    left: 80%;
-    animation-delay: 2s;
-  }
-
-  .space-scene .shooting-star:nth-child(5) {
-    top: 30%;
-    left: 60%;
-    animation-delay: 5s;
-  }
-
-  .space-scene .shooting-star:nth-child(6) {
-    top: 60%;
-    left: 70%;
-    animation-delay: 8s;
-  }
-
-  @keyframes spaceShoot {
+  @keyframes spaceShootVar {
     0% {
-      transform: translate(0, 0) rotate(45deg);
+      transform: translate(0, 0) rotate(calc(var(--shoot-angle, 45deg) - 90deg));
       opacity: 0;
     }
-    10% {
+    8% {
       opacity: 1;
     }
     100% {
-      transform: translate(-300px, 300px) rotate(45deg);
+      transform: translate(var(--shoot-dx, -240px), var(--shoot-dy, 240px))
+        rotate(calc(var(--shoot-angle, 45deg) - 90deg));
       opacity: 0;
     }
   }
@@ -1047,6 +1036,7 @@
     .hero-dot { animation: none !important; opacity: 1 !important; transform: none !important; }
     .space-scene .star-field { animation: none !important; transform: none !important; }
     .space-scene .star-dot.is-twinkle { animation: none !important; }
+    .space-scene .shooting-star { animation: none !important; opacity: 0 !important; }
     .space-scene .rocket,
     .space-scene .rocket.is-flying { animation: none !important; }
     .space-scene .rocket-skin { transform: none !important; }
@@ -1769,6 +1759,34 @@
     });
   }
 
+  function initShootingStars() {
+    if (prefersReducedMotion()) return;
+    var stars = document.querySelectorAll('.space-scene .shooting-star');
+    var i;
+    var el;
+    var deg;
+    var rad;
+    var dist;
+    var dx;
+    var dy;
+    for (i = 0; i < stars.length; i++) {
+      el = stars[i];
+      deg = Math.random() * 360;
+      rad = (deg * Math.PI) / 180;
+      dist = 260 + Math.random() * 540;
+      dx = Math.cos(rad) * dist;
+      dy = Math.sin(rad) * dist;
+      el.style.setProperty('--shoot-angle', deg.toFixed(2) + 'deg');
+      el.style.setProperty('--shoot-dx', dx.toFixed(1) + 'px');
+      el.style.setProperty('--shoot-dy', dy.toFixed(1) + 'px');
+      el.style.setProperty('--shoot-dur', (3.8 + Math.random() * 5.2).toFixed(2) + 's');
+      el.style.setProperty('--shoot-delay', (-Math.random() * 14).toFixed(2) + 's');
+      el.style.setProperty('--shoot-top', (4 + Math.random() * 88).toFixed(1) + '%');
+      el.style.setProperty('--shoot-left', (4 + Math.random() * 88).toFixed(1) + '%');
+      el.style.setProperty('--shoot-len', (56 + Math.random() * 48).toFixed(0) + 'px');
+    }
+  }
+
   var ROCKET_SVGS = [
     '<svg viewBox="0 0 64 128" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="24" height="60" fill="#ccc"/><polygon points="32,0 20,20 44,20" fill="#ff4d4d"/><rect x="24" y="80" width="16" height="20" fill="#666"/><polygon points="24,100 32,128 40,100" fill="orange"/><circle cx="32" cy="50" r="6" fill="#4da6ff"/></svg>',
     '<svg viewBox="0 0 64 128" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="24" height="60" fill="#ddd"/><polygon points="32,0 20,20 44,20" fill="#9933ff"/><rect x="24" y="80" width="16" height="20" fill="#555"/><polygon points="24,100 32,128 40,100" fill="orange"/><circle cx="32" cy="50" r="6" fill="#66ccff"/></svg>',
@@ -1872,6 +1890,7 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     initStarField();
+    initShootingStars();
     initSpaceRockets();
   });
 
@@ -1993,7 +2012,10 @@
       if (msg) {
         if (rows.length === 0) {
           msg.textContent =
-            'No stats rows yet — run supabase_rpc.sql + supabase_patch_public_stats_rls.sql (RLS on public_stats_kv).';
+            'No stats rows — run supabase_rpc.sql and supabase_patch_public_stats_rls.sql in Supabase SQL.';
+        } else if (daily === 0 && total === 0) {
+          msg.textContent =
+            'Live — counts start at 0; they go up when your bot sends an alert (Supabase stats +1 in the monitor log).';
         } else {
           msg.textContent = '';
         }
@@ -2004,7 +2026,7 @@
       setStatsLoading(false);
       dailyEl.textContent = '—';
       totalEl.textContent = '—';
-      var errStr = e && e.message ? e.message : String(e);
+      const errStr = e && e.message ? e.message : String(e);
       if (msg) {
         if (errStr.indexOf('Failed to fetch') !== -1 || errStr.indexOf('NetworkError') !== -1) {
           msg.textContent =
