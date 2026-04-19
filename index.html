@@ -1124,7 +1124,7 @@
 
     <!-- LIVE STATS -->
     <div class="stats-hero">
-      <div class="stats-hero-label">⚡ Live Stats — Updated Every 30 Seconds</div>
+      <div class="stats-hero-label">⚡ Live Stats — Auto-refresh every 5s</div>
       <div class="stats-grid">
         <div class="stat-card green">
           <div class="stat-label">Alerts Today</div>
@@ -1935,13 +1935,15 @@
 
     try {
       const res = await fetch(
-        SB_URL + '/rest/v1/public_stats?select=id,value',
+        SB_URL + '/rest/v1/public_stats?select=id,value&_cb=' + Date.now(),
         {
           cache: 'no-store',
           headers: {
             'apikey': SB_ANON_KEY,
             'Authorization': 'Bearer ' + SB_ANON_KEY,
             'Accept': 'application/json',
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
           }
         }
       );
@@ -1957,7 +1959,14 @@
       });
 
       setStatsLoading(false);
-      if (msg) msg.textContent = '';
+      if (msg) {
+        if (!rows || rows.length === 0) {
+          msg.textContent =
+            'Stats returned no rows — in Supabase run supabase_rpc.sql (RLS policy on public_stats_kv).';
+        } else {
+          msg.textContent = '';
+        }
+      }
       animateCounter('counter-daily', daily);
       animateCounter('counter-total', total);
     } catch (e) {
@@ -1975,7 +1984,10 @@
     if (retryBtn) retryBtn.addEventListener('click', fetchStats);
   })();
   fetchStats();
-  setInterval(fetchStats, 30000);
+  setInterval(fetchStats, 5000);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') fetchStats();
+  });
 
   // ── SCROLL FADE ──
   if (prefersReducedMotion()) {
