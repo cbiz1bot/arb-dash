@@ -1897,8 +1897,9 @@
   // ── LIVE STATS (minimal risk w/ anon key + locked-down view) ──
   // 1) In Supabase, create a VIEW named `public_stats` that exposes only the stats you want public.
   // 2) Put your *anon* key below (anon keys are meant to be public).
+  // Paste Project URL + anon public key from Supabase → Project Settings → API (must match your project).
   const SB_URL = 'https://yhcdhnjbcyvcvfpcvrsm.supabase.co';
-  const SB_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloY2RobmpiY3l2Y3ZmcGN2cnNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDY5MTUsImV4cCI6MjA4OTYyMjkxNX0.70L8oi4uPd70CtuNYyRb10mjpQakubN6O9YpDXv3fv8'
+  const SB_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloY2RobmpiY3l2Y3ZmcGN2cnNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDY5MTUsImV4cCI6MjA4OTYyMjkxNX0.70L8oi4uPd70CtuNYyRb10mjpQakubN6O9YpDXv3fv8';
 
   function setStatsLoading(on) {
     const d = document.getElementById('counter-daily');
@@ -1938,31 +1939,60 @@
         SB_URL + '/rest/v1/public_stats?select=id,value&_cb=' + Date.now(),
         {
           cache: 'no-store',
+          mode: 'cors',
           headers: {
             'apikey': SB_ANON_KEY,
             'Authorization': 'Bearer ' + SB_ANON_KEY,
             'Accept': 'application/json',
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache',
-          }
+          },
         }
       );
 
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const rows = await res.json();
+      const rawText = await res.text();
+      let parsed = null;
+      if (rawText) {
+        try {
+          parsed = JSON.parse(rawText);
+        } catch (parseErr) {
+          throw new Error('Bad response (not JSON): ' + String(rawText).slice(0, 120));
+        }
+      }
+
+      if (!res.ok) {
+        let hint =
+          res.status === 401 || res.status === 403
+            ? ' Update SB_ANON_KEY in index.html from Supabase → Settings → API (anon public).'
+            : res.status === 404
+              ? ' Run supabase_rpc.sql so view public_stats exists.'
+              : '';
+        let errMsg = '';
+        if (parsed && typeof parsed === 'object' && parsed.message) {
+          errMsg = String(parsed.message);
+        } else if (parsed && typeof parsed === 'object' && parsed.hint) {
+          errMsg = String(parsed.hint);
+        } else {
+          errMsg = String(rawText || '').slice(0, 200);
+        }
+        throw new Error('HTTP ' + res.status + (errMsg ? ': ' + errMsg : '') + hint);
+      }
+
+      if (!Array.isArray(parsed)) {
+        throw new Error('Unexpected response (expected a JSON array from public_stats).');
+      }
+      const rows = parsed;
 
       let daily = 0;
       let total = 0;
-      (rows || []).forEach((row) => {
+      rows.forEach(function (row) {
         if (row.id === 'daily_alerts') daily = Number(row.value || 0);
         if (row.id === 'total_alerts') total = Number(row.value || 0);
       });
 
       setStatsLoading(false);
       if (msg) {
-        if (!rows || rows.length === 0) {
+        if (rows.length === 0) {
           msg.textContent =
-            'Stats returned no rows — in Supabase run supabase_rpc.sql (RLS policy on public_stats_kv).';
+            'No stats rows yet — run supabase_rpc.sql + supabase_patch_public_stats_rls.sql (RLS on public_stats_kv).';
         } else {
           msg.textContent = '';
         }
@@ -1973,9 +2003,20 @@
       setStatsLoading(false);
       dailyEl.textContent = '—';
       totalEl.textContent = '—';
-      if (msg) msg.textContent = 'Could not load stats. Check connection or Supabase.';
+      var errStr = e && e.message ? e.message : String(e);
+      if (msg) {
+        if (errStr.indexOf('Failed to fetch') !== -1 || errStr.indexOf('NetworkError') !== -1) {
+          msg.textContent =
+            'Cannot reach Supabase (network, offline, or browser blocked the request). If testing from a local file, use a local server or GitHub Pages — not file://.';
+        } else {
+          msg.textContent = 'Stats: ' + errStr;
+        }
+      }
       if (bar) bar.classList.add('error');
       if (retry) retry.style.display = 'inline-block';
+      if (typeof console !== 'undefined' && console.error) {
+        console.error('Ghost Arb live stats fetch failed:', errStr);
+      }
     }
   }
 
