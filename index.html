@@ -1936,7 +1936,8 @@
 
     try {
       const res = await fetch(
-        SB_URL + '/rest/v1/public_stats?select=id,value&_cb=' + Date.now(),
+        /* No extra query params — PostgREST treats unknown params as filters and breaks (e.g. &_cb=timestamp → HTTP 400). Cache bust via URL fragment only (not sent to server). */
+        SB_URL + '/rest/v1/public_stats?select=id,value#' + Date.now(),
         {
           cache: 'no-store',
           mode: 'cors',
